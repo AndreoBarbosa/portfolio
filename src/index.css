@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #1A1714;
+    color: #F5F0E8;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #C8A96E;
+    color: #1A1714;
+  }
+
+  :focus-visible {
+    outline: 2px solid #C8A96E;
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .font-satoshi {
+    font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Glass morphism — vidro fosco sutil */
+  .glass {
+    background: rgba(30, 27, 22, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(242, 237, 227, 0.08);
+  }
+
+  .glass-strong {
+    background: rgba(30, 27, 22, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(242, 237, 227, 0.10);
+  }
+
+  /* Glass para cards de projeto — blur sutil, border controlada via JS */
+  .glass-card {
+    background: rgba(30, 27, 22, 0.55);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+}
+
+/* Prose style for case study content */
+.prose-case {
+  @apply space-y-5 text-muted leading-[1.75] text-base;
+}
+
+.prose-case p {
+  @apply text-cream/75;
+}
+
+.prose-case strong {
+  @apply text-cream font-medium;
+}
+
+.prose-case ul {
+  @apply list-none pl-0 space-y-2;
+}
+
+.prose-case ul li {
+  @apply text-cream/70 pl-5 relative;
+}
+
+.prose-case ul li::before {
+  content: '—';
+  @apply absolute left-0 text-amber/50 font-mono text-xs leading-[1.75];
+}
+
+/* Grain texture overlay — estático (sem animação para evitar artifact de borda) */
+.grain-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  pointer-events: none;
+}

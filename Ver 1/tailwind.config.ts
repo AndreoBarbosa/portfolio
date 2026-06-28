@@ -1,0 +1,44 @@
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        ink: '#1A1714',
+        slate: '#1E1B16',
+        cream: '#F5F0E8',
+        amber: '#C8A96E',
+        muted: '#9A9384',
+      },
+      fontFamily: {
+        sans: ['Satoshi', 'Inter', 'system-ui', 'sans-serif'],
+        body: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
+      },
+      letterSpacing: {
+        tight: '-0.02em',
+      },
+      animation: {
+        'grain': 'grain 8s steps(10) infinite',
+      },
+      keyframes: {
+        grain: {
+          '0%, 100%': { transform: 'translate(0, 0)' },
+          '10%': { transform: 'translate(-5%, -10%)' },
+          '20%': { transform: 'translate(-15%, 5%)' },
+          '30%': { transform: 'translate(7%, -25%)' },
+          '40%': { transform: 'translate(-5%, 25%)' },
+          '50%': { transform: 'translate(-15%, 10%)' },
+          '60%': { transform: 'translate(15%, 0%)' },
+          '70%': { transform: 'translate(0%, 15%)' },
+          '80%': { transform: 'translate(3%, 35%)' },
+          '90%': { transform: 'translate(-10%, 10%)' },
+        },
+      },
+    },
+  },
+  plugins: [],
+}
+
+export default config
