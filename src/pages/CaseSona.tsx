@@ -8,6 +8,7 @@ import AnimateOnScroll from '../components/ui/AnimateOnScroll'
 import Callout from '../components/ui/Callout'
 import ProjectImage from '../components/ui/ProjectImage'
 import SonaSection from '../components/ui/SonaSection'
+import { FilledLinkedInIcon, FigmaIcon } from '../components/ui/SocialIcons'
 import usePageMeta from '../hooks/usePageMeta'
 
 const IMG = '/projects/sona'
@@ -110,7 +111,7 @@ export default function CaseSona() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.25 }}
-                  className="text-sona-off/70 text-case-base leading-relaxed mb-10 max-w-[640px]"
+                  className="text-sona-off/70 text-case-base leading-relaxed mb-12 max-w-[640px]"
                 >
                   Um planejador financeiro automatizado via Open Finance, desenhado do zero: da
                   pesquisa que matou a primeira ideia até um design system com decisões de
@@ -128,11 +129,29 @@ export default function CaseSona() {
                       <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-sona-off/50">
                         {item.label}
                       </p>
-                      <p className="font-outfit font-normal text-[14px] text-sona-off mt-2">
+                      <p className="font-outfit font-normal text-[14px] text-sona-off mt-4">
                         {item.value}
                       </p>
                     </div>
                   ))}
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="mt-10"
+                >
+                  <a
+                    href="https://www.figma.com/design/JH7ZB20Ofzt3cgdFnxGrPW/SONA---Planejador-Financeiro?m=auto&t=MrxcASAIUAliQyOX-1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Ver projeto no Figma"
+                    title="Ver projeto no Figma"
+                    className="inline-flex items-center justify-center p-2 -m-2 text-sona-off opacity-70 hover:opacity-100 transition-opacity duration-200"
+                  >
+                    <FigmaIcon size={32} />
+                  </a>
                 </motion.div>
               </div>
 
@@ -678,17 +697,9 @@ export default function CaseSona() {
             {/* Closing */}
             <AnimateOnScroll>
               <div className="pt-4 border-t border-sona-off/10">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mt-10">
-                  <div className="flex flex-wrap gap-4">
-                    <a
-                      href="https://linkedin.com/in/andreo-barbosa/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 font-mono text-xs text-sona-off border border-sona-off/30 hover:border-sona-coral/60 px-4 py-2 rounded-sm transition-all duration-200"
-                    >
-                      LinkedIn
-                      <ArrowUpRight size={12} />
-                    </a>
+                <div className="mt-10 flex flex-col gap-8">
+                  {/* Linha 1: CTAs */}
+                  <div className="flex items-center gap-4">
                     <a
                       href="https://www.figma.com/design/JH7ZB20Ofzt3cgdFnxGrPW/SONA---Planejador-Financeiro?m=auto&t=MrxcASAIUAliQyOX-1"
                       target="_blank"
@@ -698,6 +709,19 @@ export default function CaseSona() {
                       Ver o projeto no Figma
                       <ArrowUpRight size={12} />
                     </a>
+                    <a
+                      href="https://linkedin.com/in/andreo-barbosa/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn de Andreo Barbosa"
+                      className="text-sona-off/60 hover:text-sona-coral transition-colors duration-200"
+                    >
+                      <FilledLinkedInIcon size={18} />
+                    </a>
+                  </div>
+
+                  {/* Linha 2: navegação entre cases */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
                     <Link
                       to="/#projetos"
                       className="inline-flex items-center gap-2 font-mono text-xs text-sona-off/60 hover:text-sona-off transition-colors duration-200"
@@ -705,14 +729,14 @@ export default function CaseSona() {
                       <ArrowLeft size={12} />
                       Voltar aos projetos
                     </Link>
-                  </div>
 
-                  <Link
-                    to="/case/gabriel"
-                    className="font-mono text-xs text-sona-off/60 hover:text-sona-off transition-colors duration-200 whitespace-nowrap"
-                  >
-                    Próximo case → Gabriel Alves
-                  </Link>
+                    <Link
+                      to="/case/gabriel"
+                      className="font-mono text-xs text-sona-off/60 hover:text-sona-off transition-colors duration-200 whitespace-nowrap"
+                    >
+                      Próximo case → Landing page para psicólogo clínico
+                    </Link>
+                  </div>
                 </div>
               </div>
             </AnimateOnScroll>

@@ -8,18 +8,13 @@ import AnimateOnScroll from '../components/ui/AnimateOnScroll'
 import Callout from '../components/ui/Callout'
 import ProjectImage from '../components/ui/ProjectImage'
 import GabrielSection from '../components/ui/GabrielSection'
+import { FilledLinkedInIcon } from '../components/ui/SocialIcons'
 import usePageMeta from '../hooks/usePageMeta'
 
 const IMG = '/projects/gabriel'
 const TEXT_COL = 'max-w-[720px]'
 
-const metaTags = [
-  'UX/UI Design',
-  'Pesquisa com usuário',
-  'Identidade visual',
-  'Front-end (HTML/CSS/JS)',
-  'Deploy',
-]
+const metaTagsLine = 'UX/UI Design · Pesquisa com usuário · Identidade visual · Front-end e Deploy'
 
 const quickInfo = [
   { label: 'Papel', value: 'UX/UI Designer e Front-end (solo)' },
@@ -74,110 +69,118 @@ export default function CaseGabriel() {
             >
               <Link
                 to="/#projetos"
-                className="inline-flex items-center gap-2 font-mono text-xs text-gabriel-offwhite/60 hover:text-gabriel-offwhite transition-colors duration-200 mb-10 group"
+                className="inline-flex items-center gap-2 font-mono text-xs text-gabriel-offwhite/60 hover:text-gabriel-offwhite transition-colors duration-200 mb-16 group"
               >
                 <ArrowLeft size={12} className="transition-transform duration-200 group-hover:-translate-x-1" />
                 Voltar aos projetos
               </Link>
             </motion.div>
 
-            <div className={TEXT_COL}>
-              <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.05 }}
-                className="font-mono text-case-xs text-gabriel-sage tracking-widest uppercase mb-6"
-              >
-                Case Study · 02
-              </motion.p>
+            <div className="grid md:grid-cols-2 gap-16 md:items-center">
+              <div className={TEXT_COL}>
+                <motion.p
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.05 }}
+                  className="font-mono text-case-xs text-gabriel-sage tracking-widest uppercase mb-6"
+                >
+                  Case Study · 02
+                </motion.p>
 
-              <motion.h1
+                <motion.h1
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  className="font-outfit font-light text-gabriel-offwhite text-case-3xl md:text-case-5xl leading-[1.1] mb-6"
+                  style={{ letterSpacing: '-0.01em' }}
+                >
+                  Landing page para psicólogo clínico
+                </motion.h1>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="text-gabriel-offwhite/70 text-[18px] md:text-case-lg leading-[1.5] max-w-[560px] mb-12"
+                >
+                  Como transformar uma identidade digital desatualizada em uma experiência
+                  que acolhe, transmite confiança e converte visitantes em pacientes.
+                </motion.p>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.25 }}
+                  className="max-w-[640px] border-t border-gabriel-offwhite/10 pt-6 grid grid-cols-2 sm:grid-cols-4 gap-6"
+                >
+                  {quickInfo.map((item) => (
+                    <div key={item.label}>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-gabriel-offwhite/50">
+                        {item.label}
+                      </p>
+                      <p className="font-outfit font-normal text-[14px] text-gabriel-offwhite mt-4">
+                        {item.value}
+                      </p>
+                    </div>
+                  ))}
+                </motion.div>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="font-mono text-case-xs uppercase tracking-widest leading-[1.8] text-gabriel-offwhite/50 mt-6 mb-10"
+                >
+                  {metaTagsLine}
+                </motion.p>
+
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="flex flex-wrap gap-6"
+                >
+                  <a
+                    href="https://psicologogabrielalves.com.br"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 font-mono text-xs text-gabriel-sage hover:text-gabriel-sage/70 border border-gabriel-sage/30 hover:border-gabriel-sage/60 px-4 py-2 rounded-sm transition-all duration-200"
+                  >
+                    Ver projeto no ar
+                    <ArrowUpRight size={12} />
+                  </a>
+                  <a
+                    href="#visao-geral"
+                    className="inline-flex items-center gap-2 font-mono text-xs text-gabriel-offwhite/60 hover:text-gabriel-offwhite transition-colors duration-200"
+                  >
+                    Ler o case
+                    <ChevronDown size={12} />
+                  </a>
+                </motion.div>
+              </div>
+
+              <motion.div
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="font-outfit font-light text-gabriel-offwhite text-case-5xl md:text-case-6xl leading-[1.05] mb-6"
-                style={{ letterSpacing: '-0.01em' }}
+                transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="relative"
               >
-                Landing page para psicólogo clínico
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-gabriel-offwhite/70 text-case-lg leading-relaxed mb-8"
-              >
-                Como transformar uma identidade digital desatualizada em uma experiência
-                que acolhe, transmite confiança e converte visitantes em pacientes.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.25 }}
-                className="max-w-[640px] border-t border-gabriel-offwhite/10 pt-6 grid grid-cols-2 sm:grid-cols-4 gap-6 mb-10"
-              >
-                {quickInfo.map((item) => (
-                  <div key={item.label}>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-gabriel-offwhite/50">
-                      {item.label}
-                    </p>
-                    <p className="font-outfit font-normal text-[14px] text-gabriel-offwhite mt-2">
-                      {item.value}
-                    </p>
+                <div className="absolute inset-0 md:-m-8 rounded-full bg-gabriel-sage/10 blur-[100px]" aria-hidden="true" />
+                <div className="relative rounded-card overflow-hidden border border-gabriel-offwhite/15 shadow-[0_24px_64px_rgba(0,0,0,0.35)]">
+                  <div className="flex items-center gap-2 px-4 py-4 bg-gabriel-dark border-b border-gabriel-offwhite/10">
+                    <span className="w-2 h-2 rounded-full bg-gabriel-offwhite/15" aria-hidden="true" />
+                    <span className="w-2 h-2 rounded-full bg-gabriel-offwhite/15" aria-hidden="true" />
+                    <span className="w-2 h-2 rounded-full bg-gabriel-offwhite/15" aria-hidden="true" />
                   </div>
-                ))}
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="flex flex-wrap gap-2 mb-10"
-              >
-                {metaTags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="font-mono text-case-xs text-gabriel-offwhite/70 border border-gabriel-offwhite/20 px-2.5 py-2 rounded-chip"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="flex flex-wrap gap-6"
-              >
-                <a
-                  href="https://psicologogabrielalves.com.br"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 font-mono text-xs text-gabriel-sage hover:text-gabriel-sage/70 border border-gabriel-sage/30 hover:border-gabriel-sage/60 px-4 py-2 rounded-sm transition-all duration-200"
-                >
-                  Ver projeto no ar
-                  <ArrowUpRight size={12} />
-                </a>
-                <a
-                  href="#visao-geral"
-                  className="inline-flex items-center gap-2 font-mono text-xs text-gabriel-offwhite/60 hover:text-gabriel-offwhite transition-colors duration-200"
-                >
-                  Ler o case
-                  <ChevronDown size={12} />
-                </a>
+                  <img
+                    src={`${IMG}/desktop-hero.png`}
+                    alt="Hero da landing page do Psicólogo Gabriel Alves, visão desktop"
+                    loading="lazy"
+                    className="w-full h-auto block"
+                  />
+                </div>
               </motion.div>
             </div>
-
-            <AnimateOnScroll className="mt-16">
-              <ProjectImage
-                src={`${IMG}/desktop-hero.png`}
-                alt="Hero da landing page do Psicólogo Gabriel Alves, visão desktop"
-                size="wide"
-                tone="gabriel-dark"
-              />
-            </AnimateOnScroll>
           </div>
         </GabrielSection>
 
@@ -508,8 +511,9 @@ export default function CaseGabriel() {
             {/* Closing */}
             <AnimateOnScroll>
               <div className="pt-4 border-t border-gabriel-offwhite/10">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mt-10">
-                  <div className="flex flex-wrap gap-4">
+                <div className="mt-10 flex flex-col gap-8">
+                  {/* Linha 1: CTAs */}
+                  <div className="flex items-center gap-4">
                     <a
                       href="https://psicologogabrielalves.com.br"
                       target="_blank"
@@ -519,6 +523,19 @@ export default function CaseGabriel() {
                       Ver projeto no ar
                       <ArrowUpRight size={12} />
                     </a>
+                    <a
+                      href="https://linkedin.com/in/andreo-barbosa/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn de Andreo Barbosa"
+                      className="text-gabriel-offwhite/60 hover:text-gabriel-sage transition-colors duration-200"
+                    >
+                      <FilledLinkedInIcon size={18} />
+                    </a>
+                  </div>
+
+                  {/* Linha 2: navegação entre cases */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
                     <Link
                       to="/#projetos"
                       className="inline-flex items-center gap-2 font-mono text-xs text-gabriel-offwhite/60 hover:text-gabriel-offwhite transition-colors duration-200"
@@ -526,14 +543,14 @@ export default function CaseGabriel() {
                       <ArrowLeft size={12} />
                       Voltar aos projetos
                     </Link>
-                  </div>
 
-                  <Link
-                    to="/case/sona"
-                    className="font-mono text-xs text-gabriel-offwhite/60 hover:text-gabriel-offwhite transition-colors duration-200 whitespace-nowrap"
-                  >
-                    Próximo case → Sona
-                  </Link>
+                    <Link
+                      to="/case/sona"
+                      className="font-mono text-xs text-gabriel-offwhite/60 hover:text-gabriel-offwhite transition-colors duration-200 whitespace-nowrap"
+                    >
+                      Próximo case → Sona
+                    </Link>
+                  </div>
                 </div>
               </div>
             </AnimateOnScroll>
