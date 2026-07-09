@@ -36,10 +36,10 @@ export default function Header() {
     >
       <nav className="max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" aria-label="Andreo Barbosa — início">
+        <Link to="/" aria-label="Ir para o início">
           <img
             src="/logo/logo-ab-colorida.png"
-            alt="AB — Andreo Barbosa"
+            alt="Logo AB, Andreo Barbosa"
             className="h-8 w-auto"
           />
         </Link>

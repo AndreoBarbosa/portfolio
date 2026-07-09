@@ -18,11 +18,21 @@ type Project = {
 
 const projects: Project[] = [
   {
-    id: 'gabriel-alves',
+    id: 'sona',
     index: '/01',
+    category: 'UX/UI · PRODUCT DESIGN',
+    context: 'CASE CONCEITUAL · FINTECH',
+    badge: 'NOVO',
+    title: 'Sona: planejador financeiro automatizado',
+    description:
+      'Da pesquisa que matou a primeira ideia até um design system com decisões de acessibilidade documentadas.',
+    caseRoute: '/case/sona',
+  },
+  {
+    id: 'gabriel-alves',
+    index: '/02',
     category: 'UX/UI · FRONT-END',
     context: 'LANDING PAGE · SAÚDE',
-    badge: 'NOVO',
     title: 'Landing page para psicólogo clínico',
     description:
       'Transforma a primeira impressão digital em acolhimento e converte visitantes em pacientes.',

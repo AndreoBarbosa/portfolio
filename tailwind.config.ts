@@ -10,11 +10,43 @@ const config: Config = {
         cream: '#F5F0E8',
         amber: '#C8A96E',
         muted: '#9A9384',
+        sona: {
+          navy: '#0C1A22',
+          green: '#628E70',
+          coral: '#C96040',
+          off: '#FAFAF8',
+          sand: '#F0EDE6',
+        },
+        gabriel: {
+          dark: '#2E2E2E',
+          offwhite: '#F8F8F5',
+          moss: '#4F6B58',
+          mossDark: '#3A5142',
+          sage: '#8FAF9A',
+          sand: '#E5DDD2',
+          beige: '#EFEAE3',
+        },
       },
       fontFamily: {
         sans: ['Satoshi', 'Inter', 'system-ui', 'sans-serif'],
         body: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
+        outfit: ['Outfit', 'system-ui', 'sans-serif'],
+      },
+      fontSize: {
+        // Escala par reutilizável nas páginas de case (Sona, Gabriel, ...)
+        'case-xs': '12px',
+        'case-sm': '14px',
+        'case-base': '16px',
+        'case-lg': '20px',
+        'case-xl': '24px',
+        'case-2xl': '32px',
+        'case-3xl': '40px',
+        'case-4xl': '48px',
+        'case-5xl': '56px',
+        'case-6xl': '64px',
+        'case-7xl': '80px',
+        'case-8xl': '96px',
       },
       borderRadius: {
         card:  '20px',    // cards grandes

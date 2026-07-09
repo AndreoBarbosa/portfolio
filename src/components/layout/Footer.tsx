@@ -1,5 +1,5 @@
 import Container from '../ui/Container'
-import { FilledMailIcon, FilledLinkedInIcon } from '../ui/SocialIcons'
+import { FilledLinkedInIcon } from '../ui/SocialIcons'
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -23,13 +23,6 @@ export default function Footer() {
 
         {/* Links sociais */}
         <div className="flex items-center gap-4">
-          <a
-            href="mailto:andreosnsd@gmail.com"
-            aria-label="E-mail"
-            className="text-muted/60 hover:text-amber transition-colors duration-200"
-          >
-            <FilledMailIcon size={15} />
-          </a>
           <a
             href="https://linkedin.com/in/andreo-barbosa/"
             target="_blank"

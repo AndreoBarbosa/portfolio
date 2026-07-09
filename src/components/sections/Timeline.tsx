@@ -6,15 +6,15 @@ import Container from '../ui/Container'
 const education = [
   {
     year: '2025 – 2026',
-    role: 'Pós-graduação — User Experience Design and Beyond',
+    role: 'Pós-graduação em User Experience Design and Beyond',
     org: 'PUCRS',
     description: null,
   },
   {
     year: '2018 – 2024',
     role: 'Licenciatura em Computação',
-    org: 'IFRJ — Campus Pinheiral',
-    description: 'TCC: Pesquisa de UX em Ambiente Hospitalar (IHC) — aprovado com louvor.',
+    org: 'IFRJ, Campus Pinheiral',
+    description: 'TCC: Pesquisa de UX em Ambiente Hospitalar (IHC), aprovado com louvor.',
   },
 ]
 
@@ -22,7 +22,7 @@ const certifications = [
   { label: 'Google UX Certificate', source: 'Coursera' },
   { label: 'Excel & Power BI', source: 'Klabin' },
   { label: 'Python', source: 'Fundação Bradesco' },
-  { label: 'Python', source: 'DIO — em andamento' },
+  { label: 'Python', source: 'DIO (em andamento)' },
 ]
 
 const experience = [
@@ -42,7 +42,7 @@ const experience = [
     role: 'Auxiliar de Faturamento',
     org: 'Hospital Municipal Dr. Munir Rafful',
     bullets: [
-      'Fluxo completo de prontuários e conformidade documental — zero falhas no período',
+      'Fluxo completo de prontuários e conformidade documental, zero falhas no período',
       'Visão de processos ponta a ponta e onde os fluxos travam',
     ],
   },

@@ -31,6 +31,10 @@
     font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
   }
 
+  .font-outfit {
+    font-family: 'Outfit', system-ui, sans-serif;
+  }
+
   .text-balance {
     text-wrap: balance;
   }

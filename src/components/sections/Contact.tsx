@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { FilledMailIcon, FilledLinkedInIcon } from '../ui/SocialIcons'
+import { FilledLinkedInIcon } from '../ui/SocialIcons'
 import SectionLabel from '../ui/SectionLabel'
 import AnimateOnScroll from '../ui/AnimateOnScroll'
 import Container from '../ui/Container'
@@ -166,13 +166,6 @@ export default function Contact() {
             {/* Ícones de contato — preenchidos âmbar, sem label, sem moldura */}
             <AnimateOnScroll delay={0.1}>
               <div className="flex gap-4 mb-10">
-                <a
-                  href="mailto:andreosnsd@gmail.com"
-                  aria-label="Enviar e-mail para Andreo Barbosa"
-                  className="text-amber hover:scale-110 transition-transform duration-200"
-                >
-                  <FilledMailIcon size={36} />
-                </a>
                 <a
                   href="https://linkedin.com/in/andreo-barbosa/"
                   target="_blank"

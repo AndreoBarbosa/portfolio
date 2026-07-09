@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
 import Button from '../ui/Button'
 import Container from '../ui/Container'
-import { FilledMailIcon, FilledLinkedInIcon } from '../ui/SocialIcons'
+import { FilledLinkedInIcon } from '../ui/SocialIcons'
 
 const HeroGeometry = lazy(() => import('../ui/HeroGeometry'))
 
@@ -197,8 +197,8 @@ export default function Hero() {
           className="text-muted text-base sm:text-lg leading-relaxed max-w-lg mb-10"
         >
           Antes de projetar interfaces, passei anos resolvendo os problemas de quem
-          usava as ruins. Hoje desenho experiências centradas no usuário — da pesquisa
-          à prototipação — com a vantagem de quem também sabe construir.
+          usava as ruins. Hoje desenho experiências centradas no usuário, da pesquisa
+          à prototipação, com a vantagem de quem também sabe construir.
         </motion.p>
 
         <motion.div {...fadeUp(0.3)} className="flex flex-wrap gap-3 mb-10">
@@ -225,13 +225,6 @@ export default function Hero() {
             className="text-cream/60 hover:text-amber transition-colors duration-200"
           >
             <FilledLinkedInIcon size={18} />
-          </a>
-          <a
-            href="mailto:andreosnsd@gmail.com"
-            aria-label="E-mail de Andreo Barbosa"
-            className="text-cream/60 hover:text-amber transition-colors duration-200"
-          >
-            <FilledMailIcon size={18} />
           </a>
         </motion.div>
       </Container>

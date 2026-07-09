@@ -79,7 +79,7 @@ export default function About() {
                 Cheguei ao design pela porta dos fundos: o suporte técnico. Em 5+ anos
                 num hospital de alta complexidade, atendi mais de{' '}
                 <span className="text-amber font-semibold">20.000 chamados</span>{' '}
-                — e aprendi algo que nenhum curso ensina: a maioria não era problema
+                e aprendi algo que nenhum curso ensina: a maioria não era problema
                 de hardware. Era{' '}
                 <span className="text-amber font-semibold">problema de experiência</span>.
               </p>
@@ -96,8 +96,8 @@ export default function About() {
                 Tenho{' '}
                 <span className="text-amber">Computação (IFRJ)</span>{' '}
                 e pós em{' '}
-                <span className="text-amber">UX Design (PUCRS)</span>{' '}
-                — base técnica que me deixa desenhar experiências que também funcionam
+                <span className="text-amber">UX Design (PUCRS)</span>.
+                É a base técnica que me deixa desenhar experiências que também funcionam
                 de verdade. Hoje projeto produtos a partir de pesquisa e dados, com
                 foco em{' '}
                 <span className="text-amber">healthtech</span>.
