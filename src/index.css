@@ -3,6 +3,23 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Grade de espaçamento — base 8px. Componentes usam as classes Tailwind
+       equivalentes (p-2, gap-6, etc.); estas custom properties documentam
+       a escala para uso em CSS bruto/inline quando necessário. */
+    --space-1: 8px;
+    --space-2: 16px;
+    --space-3: 24px;
+    --space-4: 32px;
+    --space-5: 40px;
+    --space-6: 48px;
+    --space-8: 64px;
+    --space-10: 80px;
+    --space-12: 96px;
+    --space-16: 128px;
+    --space-20: 160px;
+  }
+
   html {
     scroll-behavior: smooth;
   }
@@ -27,6 +44,37 @@
 }
 
 @layer utilities {
+  /* Ícone de contato — mesmo SVG (LinkedInIcon), três variantes de container
+     conforme a função do ícone naquele ponto da página. Hierarquia intencional:
+     não igualar cor/tamanho entre variantes. */
+  .social-link {
+    text-decoration: none;
+  }
+
+  /* Hero — secundário, discreto: sem fundo, cinza que só aparece no hover */
+  .social-link--hero {
+    @apply inline-flex items-center justify-center w-8 h-8 rounded-md bg-transparent text-muted transition-colors duration-200 hover:text-cream;
+  }
+  .social-link--hero svg {
+    @apply w-5 h-5;
+  }
+
+  /* Contato (home) e CTA do case — é o CTA da página, precisa ter peso */
+  .social-link--cta {
+    @apply inline-flex items-center justify-center w-12 h-12 rounded-lg bg-amber text-ink transition-all duration-200 hover:opacity-90 hover:-translate-y-0.5;
+  }
+  .social-link--cta svg {
+    @apply w-6 h-6;
+  }
+
+  /* Footer — utilitário, mínimo: sem fundo, sem radius, opacidade baixa */
+  .social-link--footer {
+    @apply inline-flex items-center justify-center w-6 h-6 bg-transparent text-muted opacity-60 transition-opacity duration-200 hover:opacity-100;
+  }
+  .social-link--footer svg {
+    @apply w-4 h-4;
+  }
+
   .font-satoshi {
     font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
   }
@@ -86,6 +134,13 @@
 .prose-case ul li::before {
   content: '—';
   @apply absolute left-0 text-amber/50 font-mono text-xs leading-[1.75];
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Grain texture overlay — estático (sem animação para evitar artifact de borda) */

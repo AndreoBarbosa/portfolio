@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { FilledLinkedInIcon } from '../ui/SocialIcons'
+import { LinkedInIcon } from '../icons/LinkedInIcon'
 import SectionLabel from '../ui/SectionLabel'
 import AnimateOnScroll from '../ui/AnimateOnScroll'
 import Container from '../ui/Container'
@@ -163,7 +163,7 @@ export default function Contact() {
               </p>
             </AnimateOnScroll>
 
-            {/* Ícones de contato — preenchidos âmbar, sem label, sem moldura */}
+            {/* Ícone de contato — botão padronizado (mesmo em todo o site base) */}
             <AnimateOnScroll delay={0.1}>
               <div className="flex gap-4 mb-10">
                 <a
@@ -171,9 +171,9 @@ export default function Contact() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn de Andreo Barbosa"
-                  className="text-amber hover:scale-110 transition-transform duration-200"
+                  className="social-link social-link--cta"
                 >
-                  <FilledLinkedInIcon size={36} />
+                  <LinkedInIcon />
                 </a>
               </div>
             </AnimateOnScroll>

@@ -8,7 +8,7 @@ import AnimateOnScroll from '../components/ui/AnimateOnScroll'
 import Callout from '../components/ui/Callout'
 import ProjectImage from '../components/ui/ProjectImage'
 import GabrielSection from '../components/ui/GabrielSection'
-import { FilledLinkedInIcon } from '../components/ui/SocialIcons'
+import { LinkedInIcon } from '../components/icons/LinkedInIcon'
 import usePageMeta from '../hooks/usePageMeta'
 
 const IMG = '/projects/gabriel'
@@ -84,7 +84,7 @@ export default function CaseGabriel() {
                   transition={{ duration: 0.5, delay: 0.05 }}
                   className="font-mono text-case-xs text-gabriel-sage tracking-widest uppercase mb-6"
                 >
-                  Case Study · 02
+                  Case Study · 03
                 </motion.p>
 
                 <motion.h1
@@ -530,7 +530,7 @@ export default function CaseGabriel() {
                       aria-label="LinkedIn de Andreo Barbosa"
                       className="text-gabriel-offwhite/60 hover:text-gabriel-sage transition-colors duration-200"
                     >
-                      <FilledLinkedInIcon size={18} />
+                      <LinkedInIcon className="w-[18px] h-[18px]" />
                     </a>
                   </div>
 

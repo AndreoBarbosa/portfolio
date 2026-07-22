@@ -22,15 +22,25 @@ const projects: Project[] = [
     index: '/01',
     category: 'UX/UI · PRODUCT DESIGN',
     context: 'CASE CONCEITUAL · FINTECH',
-    badge: 'NOVO',
     title: 'Sona: planejador financeiro automatizado',
     description:
       'Da pesquisa que matou a primeira ideia até um design system com decisões de acessibilidade documentadas.',
     caseRoute: '/case/sona',
   },
   {
-    id: 'gabriel-alves',
+    id: 'sysmed',
     index: '/02',
+    category: 'UX RESEARCH · HEALTHTECH',
+    context: 'PESQUISA APLICADA · IA',
+    badge: 'NOVO',
+    title: 'Onde a IA erra ao avaliar um sistema hospitalar',
+    description:
+      '89 problemas classificados por humanos e por um LLM. A divergência não foi ruído — foi padrão.',
+    caseRoute: '/case/sysmed',
+  },
+  {
+    id: 'gabriel-alves',
+    index: '/03',
     category: 'UX/UI · FRONT-END',
     context: 'LANDING PAGE · SAÚDE',
     title: 'Landing page para psicólogo clínico',
@@ -88,13 +98,13 @@ export default function Projects() {
           <SectionLabel index="/01" label="Projetos" />
         </AnimateOnScroll>
 
-        {/* Grade pronta para 2–3 colunas quando houver mais cases */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Grade de 2 colunas — com 3 projetos, o 3º fica sozinho na 2ª linha (assimetria intencional) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {projects.map((project, i) => (
-            <AnimateOnScroll key={project.id} delay={i * 0.1}>
-              <Link to={project.caseRoute} className="block group">
+            <AnimateOnScroll key={project.id} delay={i * 0.1} className="h-full">
+              <Link to={project.caseRoute} className="block h-full group">
                 <motion.article
-                  className="relative glass-card rounded-card border overflow-hidden flex flex-col min-h-[440px]"
+                  className="relative glass-card rounded-card border overflow-hidden flex flex-col h-full min-h-[440px]"
                   animate={{ borderColor: 'rgba(242,237,227,0.12)' }}
                   whileHover={{
                     y: -4,
@@ -109,55 +119,48 @@ export default function Projects() {
                   </div>
 
                   {/* Conteúdo — relativo, por cima do padrão */}
-                  <div className="relative flex flex-col flex-1 p-6 lg:p-8">
+                  <div className="relative flex flex-col flex-1 p-8">
 
-                    {/* ── Topo: rótulo duplo + badge ── */}
-                    <div className="flex items-start justify-between gap-4 mb-2">
-                      <div>
-                        {/* Linha 1: índice + categoria */}
-                        <div className="flex items-center gap-2 mb-1.5">
-                          <span className="font-mono text-xs text-amber tracking-wider">
-                            {project.index}
-                          </span>
-                          <span className="w-px h-3 bg-cream/20" aria-hidden="true" />
-                          <span className="font-mono text-xs text-cream/90 tracking-widest uppercase">
-                            {project.category}
-                          </span>
-                        </div>
-                        {/* Linha 2: contexto */}
-                        <p className="font-mono text-[10px] text-muted/60 tracking-widest uppercase">
-                          {project.context}
-                        </p>
-                      </div>
-
-                      {/* Badge opcional */}
-                      {project.badge && (
-                        <span className="shrink-0 font-mono text-[10px] tracking-widest uppercase bg-amber text-ink px-2.5 py-1 rounded-chip">
-                          {project.badge}
+                    {/* ── Topo: rótulo duplo ── */}
+                    <div className="pr-[72px]">
+                      {/* Linha 1: índice + categoria */}
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="font-mono text-xs text-amber tracking-wider">
+                          {project.index}
                         </span>
-                      )}
+                        <span className="w-px h-3 bg-cream/20" aria-hidden="true" />
+                        <span className="font-mono text-xs text-cream/90 tracking-widest uppercase">
+                          {project.category}
+                        </span>
+                      </div>
+                      {/* Linha 2: contexto */}
+                      <p className="font-mono text-[10px] text-muted/60 tracking-widest uppercase">
+                        {project.context}
+                      </p>
                     </div>
 
-                    {/* ── Meio: respiro para o padrão respirar ── */}
-                    <div className="flex-1 min-h-[120px]" />
+                    {/* Badge — posição absoluta, não empurra o layout */}
+                    {project.badge && (
+                      <span className="absolute top-4 right-4 font-mono text-[10px] tracking-widest uppercase bg-amber text-ink px-2.5 py-1 rounded-chip">
+                        {project.badge}
+                      </span>
+                    )}
 
-                    {/* ── Base: título, descrição, CTA ── */}
-                    <div>
+                    {/* ── Conteúdo: título, descrição, divisor e CTA — ancorado ao rodapé ── */}
+                    <div className="mt-auto flex flex-col gap-4">
                       <h3
-                        className="font-satoshi font-medium text-cream text-2xl lg:text-[1.75rem] leading-tight mb-3"
+                        className="font-satoshi font-medium text-cream text-2xl lg:text-[1.75rem] leading-tight max-w-[16ch]"
                         style={{ letterSpacing: '-0.02em' }}
                       >
                         {project.title}
                       </h3>
 
-                      <p className="text-muted text-sm leading-relaxed mb-5 max-w-sm">
+                      <p className="text-muted text-sm leading-relaxed max-w-sm">
                         {project.description}
                       </p>
 
-                      {/* Divisória */}
-                      <div className="h-px bg-cream/10 mb-4" aria-hidden="true" />
+                      <div className="mt-6 mb-4 border-t border-muted/15" aria-hidden="true" />
 
-                      {/* CTA */}
                       <div className="flex items-center justify-between">
                         <span className="font-mono text-xs text-amber tracking-widest uppercase">
                           Ver case completo

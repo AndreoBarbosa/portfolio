@@ -8,7 +8,8 @@ import AnimateOnScroll from '../components/ui/AnimateOnScroll'
 import Callout from '../components/ui/Callout'
 import ProjectImage from '../components/ui/ProjectImage'
 import SonaSection from '../components/ui/SonaSection'
-import { FilledLinkedInIcon, FigmaIcon } from '../components/ui/SocialIcons'
+import { FigmaIcon } from '../components/ui/SocialIcons'
+import { LinkedInIcon } from '../components/icons/LinkedInIcon'
 import usePageMeta from '../hooks/usePageMeta'
 
 const IMG = '/projects/sona'
@@ -716,7 +717,7 @@ export default function CaseSona() {
                       aria-label="LinkedIn de Andreo Barbosa"
                       className="text-sona-off/60 hover:text-sona-coral transition-colors duration-200"
                     >
-                      <FilledLinkedInIcon size={18} />
+                      <LinkedInIcon className="w-[18px] h-[18px]" />
                     </a>
                   </div>
 
@@ -731,10 +732,10 @@ export default function CaseSona() {
                     </Link>
 
                     <Link
-                      to="/case/gabriel"
+                      to="/case/sysmed"
                       className="font-mono text-xs text-sona-off/60 hover:text-sona-off transition-colors duration-200 whitespace-nowrap"
                     >
-                      Próximo case → Landing page para psicólogo clínico
+                      Próximo case → Onde a IA erra ao avaliar um sistema hospitalar
                     </Link>
                   </div>
                 </div>

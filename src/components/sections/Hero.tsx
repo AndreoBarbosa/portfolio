@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
 import Button from '../ui/Button'
 import Container from '../ui/Container'
-import { FilledLinkedInIcon } from '../ui/SocialIcons'
+import { LinkedInIcon } from '../icons/LinkedInIcon'
 
 const HeroGeometry = lazy(() => import('../ui/HeroGeometry'))
 
@@ -222,9 +222,9 @@ export default function Hero() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn de Andreo Barbosa"
-            className="text-cream/60 hover:text-amber transition-colors duration-200"
+            className="social-link social-link--hero"
           >
-            <FilledLinkedInIcon size={18} />
+            <LinkedInIcon />
           </a>
         </motion.div>
       </Container>

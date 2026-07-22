@@ -5,7 +5,7 @@ import Container from '../ui/Container'
 
 const education = [
   {
-    year: '2025 – 2026',
+    year: 'Concluída em 2026',
     role: 'Pós-graduação em User Experience Design and Beyond',
     org: 'PUCRS',
     description: null,
@@ -19,10 +19,10 @@ const education = [
 ]
 
 const certifications = [
-  { label: 'Google UX Certificate', source: 'Coursera' },
-  { label: 'Excel & Power BI', source: 'Klabin' },
-  { label: 'Python', source: 'Fundação Bradesco' },
-  { label: 'Python', source: 'DIO (em andamento)' },
+  { label: 'Curso de Figma', source: 'Intuitive Start', date: 'mai 2026' },
+  { label: 'UX Design: entenda a área da User Experience', source: 'Alura', date: 'out 2025' },
+  { label: 'Introdução ao Excel e Power BI Dashboards com a Klabin', source: 'DIO', date: 'set 2025' },
+  { label: 'Conceitos básicos do Design de Experiência do Usuário (UX)', source: 'Google', date: 'dez 2024' },
 ]
 
 const experience = [
@@ -31,7 +31,7 @@ const experience = [
     role: 'Analista de Suporte de TI',
     org: 'Hospital Regional Zilda Arns',
     bullets: [
-      '1400 colaboradores · ~700 usuários ativos/dia · ambiente crítico',
+      'Mais de 800 colaboradores · ~700 usuários ativos/dia · ambiente crítico',
       '20.000+ chamados atendidos (~650/mês); suporte N1/N2 a sistemas hospitalares',
       'Implantação dos sistemas MV e SoulMV; Active Directory, M365, GLPI',
       'Mapeamento de padrões de fricção e usabilidade em sistemas críticos',
@@ -127,7 +127,7 @@ export default function Timeline() {
           <SectionLabel index="/03" label="Trajetória" />
         </AnimateOnScroll>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
 
           {/* Coluna esquerda — Formação acadêmica */}
           <AnimateOnScroll>
@@ -150,15 +150,21 @@ export default function Timeline() {
                 <p className="font-mono text-[10px] text-muted/50 tracking-widest uppercase mb-3">
                   Certificações
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {certifications.map((cert) => (
-                    <span
+                <div className="flex flex-col">
+                  {certifications.map((cert, i) => (
+                    <div
                       key={`${cert.label}-${cert.source}`}
-                      className="inline-flex items-center gap-1.5 font-body text-xs text-cream/55 border border-cream/10 px-3 py-1.5 rounded-chip"
+                      className={`flex flex-wrap items-baseline gap-2 py-4 ${
+                        i < certifications.length - 1 ? 'border-b border-muted/[0.12]' : ''
+                      }`}
                     >
-                      {cert.label}
-                      <span className="text-muted/40 text-[10px]">· {cert.source}</span>
-                    </span>
+                      <span className="font-body text-base leading-[1.4] text-cream">
+                        {cert.label}
+                      </span>
+                      <span className="font-mono text-xs tracking-[0.06em] text-muted whitespace-nowrap">
+                        · {cert.source} · {cert.date}
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import Container from '../ui/Container'
-import { FilledLinkedInIcon } from '../ui/SocialIcons'
+import { LinkedInIcon } from '../icons/LinkedInIcon'
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -28,9 +28,9 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
-            className="text-muted/60 hover:text-amber transition-colors duration-200"
+            className="social-link social-link--footer"
           >
-            <FilledLinkedInIcon size={15} />
+            <LinkedInIcon />
           </a>
         </div>
       </Container>
