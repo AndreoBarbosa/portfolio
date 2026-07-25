@@ -1,7 +1,13 @@
 import { motion } from 'framer-motion'
-import { processSteps } from '../../data/sysmed'
 
-export default function ProcessTimeline() {
+export type ProcessStepItem = {
+  n: string
+  title: string
+  subtitle?: string
+  body: string
+}
+
+export default function ProcessTimeline({ steps }: { steps: ProcessStepItem[] }) {
   return (
     <div className="relative">
       <div
@@ -9,7 +15,7 @@ export default function ProcessTimeline() {
         aria-hidden="true"
       />
       <ol className="space-y-10">
-        {processSteps.map((step, i) => (
+        {steps.map((step, i) => (
           <motion.li
             key={step.n}
             initial={{ opacity: 0, y: 20 }}
@@ -26,8 +32,8 @@ export default function ProcessTimeline() {
             </span>
             <p className="font-mono text-xs text-amber tracking-widest uppercase mb-1">{step.n}</p>
             <h3 className="font-satoshi font-medium text-cream text-xl mb-2">{step.title}</h3>
-            <p className="text-muted text-sm mb-2">{step.subtitle}</p>
-            <p className="text-cream/70 text-base leading-relaxed max-w-[60ch]">{step.body}</p>
+            {step.subtitle && <p className="text-muted text-sm mb-2">{step.subtitle}</p>}
+            <p className="text-cream/70 text-base leading-[1.6] max-w-[60ch]">{step.body}</p>
           </motion.li>
         ))}
       </ol>

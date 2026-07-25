@@ -26,7 +26,7 @@ export default function ModelSteps() {
               {step.n}
             </span>
             <h3 className="font-satoshi font-medium text-cream text-lg mb-2">{step.title}</h3>
-            <p className="text-cream/70 text-sm leading-relaxed mb-4 flex-1">{step.body}</p>
+            <p className="text-cream/70 text-sm leading-[1.5] mb-4 flex-1">{step.body}</p>
             <span
               className={`self-start font-mono text-[10px] tracking-widest uppercase px-2.5 py-1 rounded-chip ${
                 isHuman

@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
-import { sectionIndex } from '../../data/sysmed'
 
-export default function SectionIndex() {
-  const [active, setActive] = useState(sectionIndex[0].id)
+export type SectionIndexItem = {
+  id: string
+  label: string
+}
+
+export default function SectionIndex({ items }: { items: SectionIndexItem[] }) {
+  const [active, setActive] = useState(items[0].id)
 
   useEffect(() => {
-    const elements = sectionIndex
+    const elements = items
       .map((s) => document.getElementById(s.id))
       .filter((el): el is HTMLElement => el !== null)
 
@@ -21,7 +25,7 @@ export default function SectionIndex() {
 
     elements.forEach((el) => observer.observe(el))
     return () => observer.disconnect()
-  }, [])
+  }, [items])
 
   return (
     <nav
@@ -29,7 +33,7 @@ export default function SectionIndex() {
       className="hidden xl:block fixed top-1/2 -translate-y-1/2 right-8 z-40 max-w-[180px]"
     >
       <ul className="space-y-3" role="list">
-        {sectionIndex.map((s) => (
+        {items.map((s) => (
           <li key={s.id}>
             <a
               href={`#${s.id}`}

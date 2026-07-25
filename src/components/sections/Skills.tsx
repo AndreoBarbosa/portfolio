@@ -15,7 +15,7 @@ const icons: Record<IconName, LucideIcon> = {
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-16 md:py-20 lg:py-32 border-t border-cream/5">
+    <section id="skills" className="section-shell border-t border-cream/5">
       <Container>
         <AnimateOnScroll>
           <SectionLabel index="/02" label="Skills" />
@@ -28,7 +28,7 @@ export default function Skills() {
             // Ordenado aqui (não no dado) para que novas skills se encaixem sozinhas.
             const sortedSkills = [...group.skills].sort((a, b) => a.length - b.length)
             return (
-              <AnimateOnScroll key={group.label} delay={i * 0.07} className="h-full">
+              <AnimateOnScroll key={group.label} delay={i * 0.06} className="h-full">
                 <div className="h-full glass rounded-card p-5 lg:p-6 flex flex-col gap-4 hover:border-amber/20 transition-colors duration-300">
                   {/* Cabeçalho da categoria */}
                   <div className="flex items-center gap-2">

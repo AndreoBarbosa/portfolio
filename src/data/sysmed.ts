@@ -10,10 +10,10 @@ export type Metric = {
 }
 
 export const metrics: Metric[] = [
-  { value: 89, suffix: '', label: 'violações analisadas' },
+  { value: 89, suffix: '', label: 'problemas de usabilidade analisados' },
   { value: 11, suffix: '', label: 'profissionais entrevistados' },
-  { value: 68, suffix: '%', label: 'concordância na classificação\nhumano vs IA' },
-  { value: 48, suffix: '%', label: 'concordância na priorização\nhumano vs IA' },
+  { value: 68, suffix: '%', label: 'concordância na heurística\nhumano vs IA' },
+  { value: 48, suffix: '%', label: 'concordância na severidade\nhumano vs IA' },
 ]
 
 export const metricsFootnote = 'A diferença entre esses dois números é o case inteiro.'

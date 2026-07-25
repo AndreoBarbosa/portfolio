@@ -27,7 +27,7 @@ export default function SeverityMatrix() {
       <div className="overflow-x-auto pb-2" style={{ scrollSnapType: 'x mandatory' }}>
         <svg
           role="img"
-          aria-label={`Matriz de correspondência entre severidade humana e severidade da IA, em ${severityMatrixTotal} pares. A concentração de células cai sobre a diagonal central: a IA superestima problemas cosméticos e rebaixa violações catastróficas, esvaziando o canto inferior direito.`}
+          aria-label={`Matriz de correspondência entre severidade humana e severidade da IA, em ${severityMatrixTotal} pares. A concentração de células cai sobre a diagonal central: a IA superestima problemas cosméticos e rebaixa problemas catastróficos, esvaziando o canto inferior direito.`}
           viewBox={`0 0 ${width} ${height}`}
           width={width}
           height={height}
@@ -93,7 +93,7 @@ export default function SeverityMatrix() {
                     onMouseLeave={() => setHovered(null)}
                     style={{ cursor: 'default' }}
                   >
-                    <title>{`Humano: ${r + 1} · IA: ${c + 1} · ${count} violações`}</title>
+                    <title>{`Humano: ${r + 1} · IA: ${c + 1} · ${count} problemas`}</title>
                     <motion.rect
                       x={HEADER_W + c * CELL + 3}
                       y={HEADER_H + r * CELL + 3}
@@ -171,7 +171,9 @@ export default function SeverityMatrix() {
         </svg>
       </div>
 
-      <p className="text-center font-mono text-xs text-muted tracking-wide mt-4">
+      {/* Leitura-chave da matriz — não é legenda de rodapé, é a interpretação central
+          do achado, por isso peso de corpo de texto e alinhada como o resto da seção. */}
+      <p className="block-gap max-w-[60ch] text-cream/75 text-base leading-[1.6]">
         Tudo acima da diagonal é superestimação. Tudo abaixo é rebaixamento. Note que o canto
         inferior direito — os catastróficos — esvaziou.
       </p>

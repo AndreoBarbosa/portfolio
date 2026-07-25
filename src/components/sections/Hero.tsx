@@ -174,45 +174,42 @@ export default function Hero() {
       {/* ── Conteúdo de texto ──
           Mobile: mt-[38vh] posiciona o texto sobrepondo a base do icosaedro.
           Desktop: pt-32 posiciona abaixo do header fixo (64px) com folga. */}
-      <Container className="relative z-10 mt-[42vh] pb-16 lg:mt-0 lg:pt-32 lg:pb-24">
-        <motion.p
-          {...fadeUp(0)}
-          className="font-mono text-xs text-amber tracking-widest uppercase mb-6"
-        >
-          UX/UI Designer · Pesquisa + Produto
-        </motion.p>
+      <Container className="relative z-10 mt-[42vh] pb-12 lg:mt-0 lg:pt-32 lg:pb-16">
+        <motion.div {...fadeUp(0)} className="flex items-center gap-3 mb-6">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber shrink-0" aria-hidden="true" />
+          <div className="h-px flex-1 max-w-[48px] bg-amber/30" aria-hidden="true" />
+          <span className="font-mono text-xs text-amber tracking-widest uppercase">
+            UX/UI Designer · Pesquisa + Produto
+          </span>
+        </motion.div>
 
         <motion.h1
           {...fadeUp(0.1)}
-          className="font-satoshi font-semibold text-cream leading-[1.1] text-4xl sm:text-5xl lg:text-6xl xl:text-7xl max-w-2xl mb-6"
-          style={{ letterSpacing: '-0.02em' }}
+          className="font-satoshi font-bold text-cream max-w-[800px] mb-8 text-balance"
+          style={{
+            fontSize: 'clamp(56px, 6.5vw, 88px)',
+            lineHeight: 0.95,
+            letterSpacing: '-0.03em',
+          }}
         >
-          Designer que une{' '}
-          <span className="text-amber">estratégia</span>,{' '}
-          usabilidade e código.
+          Transformo complexidade em clareza.
         </motion.h1>
 
         <motion.p
           {...fadeUp(0.2)}
-          className="text-muted text-base sm:text-lg leading-relaxed max-w-lg mb-10"
+          className="text-cream/70 text-[17px] leading-[1.6] max-w-[52ch] text-pretty"
         >
-          Antes de projetar interfaces, passei anos resolvendo os problemas de quem
-          usava as ruins. Hoje desenho experiências centradas no usuário, da pesquisa
-          à prototipação, com a vantagem de quem também sabe construir.
+          Product Designer com base em UX Research. Transformo pesquisa em decisões
+          de produto que reduzem esforço e simplificam experiências complexas.
         </motion.p>
 
-        <motion.div {...fadeUp(0.3)} className="flex flex-wrap gap-3 mb-10">
-          <Button variant="primary" href="#projetos">
+        <motion.div {...fadeUp(0.3)} className="action-gap flex flex-wrap gap-3 mb-8">
+          <Button variant="solid" href="#projetos">
             Ver projetos
             <ArrowDown size={14} />
           </Button>
-          <Button
-            variant="secondary"
-            href="/curriculo-andreo.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Baixar currículo
+          <Button variant="secondary" href="#sobre">
+            Conhecer minha trajetória
           </Button>
         </motion.div>
 

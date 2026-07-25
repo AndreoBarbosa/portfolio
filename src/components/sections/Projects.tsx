@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowUpRight } from 'lucide-react'
-import SectionLabel from '../ui/SectionLabel'
 import AnimateOnScroll from '../ui/AnimateOnScroll'
 import Container from '../ui/Container'
+import SectionLabel from '../ui/SectionLabel'
 
 type Project = {
   id: string
@@ -11,8 +11,8 @@ type Project = {
   category: string
   context: string
   badge?: string
+  tese: string
   title: string
-  description: string
   caseRoute: string
 }
 
@@ -20,32 +20,29 @@ const projects: Project[] = [
   {
     id: 'sona',
     index: '/01',
-    category: 'UX/UI · PRODUCT DESIGN',
+    category: 'DISCOVERY · PRODUCT STRATEGY · DESIGN SYSTEM',
     context: 'CASE CONCEITUAL · FINTECH',
-    title: 'Sona: planejador financeiro automatizado',
-    description:
-      'Da pesquisa que matou a primeira ideia até um design system com decisões de acessibilidade documentadas.',
+    tese: 'O problema não era organizar dinheiro. Era decidir o que fazer com ele.',
+    title: 'Sona — plataforma de clareza financeira',
     caseRoute: '/case/sona',
   },
   {
     id: 'sysmed',
     index: '/02',
-    category: 'UX RESEARCH · HEALTHTECH',
+    category: 'UX RESEARCH · IA APLICADA · HEALTHTECH',
     context: 'PESQUISA APLICADA · IA',
     badge: 'NOVO',
+    tese: 'O problema não era identificar falhas. Era entender o contexto delas.',
     title: 'Onde a IA erra ao avaliar um sistema hospitalar',
-    description:
-      '89 problemas classificados por humanos e por um LLM. A divergência não foi ruído — foi padrão.',
-    caseRoute: '/case/sysmed',
+    caseRoute: '/case/ia-hospitalar',
   },
   {
     id: 'gabriel-alves',
     index: '/03',
-    category: 'UX/UI · FRONT-END',
+    category: 'PRODUCT THINKING · CONVERSÃO · UX WRITING',
     context: 'LANDING PAGE · SAÚDE',
+    tese: 'O problema não era a interface. Era a confiança.',
     title: 'Landing page para psicólogo clínico',
-    description:
-      'Transforma a primeira impressão digital em acolhimento e converte visitantes em pacientes.',
     caseRoute: '/case/gabriel',
   },
 ]
@@ -92,7 +89,7 @@ function CardPattern({ id }: { id: string }) {
 
 export default function Projects() {
   return (
-    <section id="projetos" className="py-16 md:py-20 lg:py-32">
+    <section id="projetos" className="section-shell">
       <Container>
         <AnimateOnScroll>
           <SectionLabel index="/01" label="Projetos" />
@@ -146,18 +143,20 @@ export default function Projects() {
                       </span>
                     )}
 
-                    {/* ── Conteúdo: título, descrição, divisor e CTA — ancorado ao rodapé ── */}
-                    <div className="mt-auto flex flex-col gap-4">
-                      <h3
-                        className="font-satoshi font-medium text-cream text-2xl lg:text-[1.75rem] leading-tight max-w-[16ch]"
-                        style={{ letterSpacing: '-0.02em' }}
+                    {/* ── Conteúdo: tese (hero do card), título, divisor e CTA — ancorado ao rodapé ──
+                        Tese abre o card — mesma estrutura nos três projetos, o que transforma
+                        padrão de escrita em assinatura. Título vem depois, menor. */}
+                    <div className="mt-auto flex flex-col gap-3">
+                      <p
+                        className="font-satoshi font-medium text-cream text-lg lg:text-xl leading-[1.3] max-w-sm"
+                        style={{ letterSpacing: '-0.01em' }}
                       >
+                        {project.tese}
+                      </p>
+
+                      <h3 className="font-satoshi font-medium text-muted text-sm leading-[1.4] max-w-[22ch]">
                         {project.title}
                       </h3>
-
-                      <p className="text-muted text-sm leading-relaxed max-w-sm">
-                        {project.description}
-                      </p>
 
                       <div className="mt-6 mb-4 border-t border-muted/15" aria-hidden="true" />
 

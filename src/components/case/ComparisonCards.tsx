@@ -36,7 +36,7 @@ function Card({
       <p className="font-mono text-xs text-muted tracking-widest uppercase mb-6">{label}</p>
       <p className="font-satoshi font-bold text-cream text-[56px] leading-none mb-4">{count}%</p>
       <p className="text-cream/80 text-base mb-5">{sublabel}</p>
-      <p className="font-mono text-xs text-muted leading-relaxed">{note}</p>
+      <p className="font-mono text-xs text-muted leading-[1.5]">{note}</p>
     </motion.div>
   )
 }

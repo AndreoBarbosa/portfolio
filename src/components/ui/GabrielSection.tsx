@@ -14,7 +14,7 @@ export default function GabrielSection({ children, tone, className = '', id }: P
       : 'bg-gabriel-offwhite text-gabriel-mossDark'
 
   return (
-    <section id={id} className={`font-outfit py-16 md:py-24 ${toneClasses} ${className}`}>
+    <section id={id} className={`font-outfit section-shell ${toneClasses} ${className}`}>
       {children}
     </section>
   )

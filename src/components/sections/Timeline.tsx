@@ -1,4 +1,4 @@
-import { GraduationCap, Briefcase } from 'lucide-react'
+import { GraduationCap, Briefcase, Award } from 'lucide-react'
 import SectionLabel from '../ui/SectionLabel'
 import AnimateOnScroll from '../ui/AnimateOnScroll'
 import Container from '../ui/Container'
@@ -54,15 +54,20 @@ type TimelineColumnProps = {
   children: React.ReactNode
 }
 
+function BlockHeader({ label, icon }: { label: string; icon: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-2 mb-8">
+      <span className="text-amber/50 shrink-0" aria-hidden="true">{icon}</span>
+      <span className="font-mono text-xs text-muted tracking-widest uppercase">{label}</span>
+      <div className="h-px flex-1 bg-cream/5" aria-hidden="true" />
+    </div>
+  )
+}
+
 function TimelineColumn({ label, icon, children }: TimelineColumnProps) {
   return (
     <div>
-      {/* Cabeçalho da coluna */}
-      <div className="flex items-center gap-2 mb-8">
-        <span className="text-amber/50 shrink-0" aria-hidden="true">{icon}</span>
-        <span className="font-mono text-xs text-muted tracking-widest uppercase">{label}</span>
-        <div className="h-px flex-1 bg-cream/5" aria-hidden="true" />
-      </div>
+      <BlockHeader label={label} icon={icon} />
 
       {/* Itens com linha vertical */}
       <div className="relative">
@@ -102,14 +107,14 @@ function TimelineItem({ year, role, org, description, bullets }: TimelineItemPro
       <p className="font-mono text-xs text-muted tracking-wide mb-2">{org}</p>
 
       {description && (
-        <p className="text-sm text-muted/80 leading-relaxed">{description}</p>
+        <p className="text-sm text-muted leading-[1.5]">{description}</p>
       )}
 
       {bullets && bullets.length > 0 && (
         <ul className="space-y-1.5 mt-1">
           {bullets.map((bullet) => (
-            <li key={bullet} className="flex items-start gap-2 text-sm text-muted/80 leading-relaxed">
-              <span className="text-amber/40 font-mono shrink-0 mt-px">—</span>
+            <li key={bullet} className="flex items-start gap-3 text-sm text-muted leading-[1.5]">
+              <span className="text-amber/40 font-mono shrink-0 mt-[2px]" aria-hidden="true">—</span>
               {bullet}
             </li>
           ))}
@@ -121,15 +126,15 @@ function TimelineItem({ year, role, org, description, bullets }: TimelineItemPro
 
 export default function Timeline() {
   return (
-    <section id="trajetoria" className="py-16 md:py-20 lg:py-32 border-t border-cream/5">
+    <section id="trajetoria" className="section-shell border-t border-cream/5">
       <Container>
         <AnimateOnScroll>
-          <SectionLabel index="/03" label="Trajetória" />
+          <SectionLabel index="/04" label="Trajetória" />
         </AnimateOnScroll>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
 
-          {/* Coluna esquerda — Formação acadêmica */}
+          {/* Coluna esquerda — Formação acadêmica + Certificações (blocos irmãos) */}
           <AnimateOnScroll>
             <TimelineColumn
               label="Formação acadêmica"
@@ -144,31 +149,29 @@ export default function Timeline() {
                   description={item.description}
                 />
               ))}
-
-              {/* Certificações — dentro da coluna de formação */}
-              <div className="pt-6 border-t border-cream/5">
-                <p className="font-mono text-[10px] text-muted/50 tracking-widest uppercase mb-3">
-                  Certificações
-                </p>
-                <div className="flex flex-col">
-                  {certifications.map((cert, i) => (
-                    <div
-                      key={`${cert.label}-${cert.source}`}
-                      className={`flex flex-wrap items-baseline gap-2 py-4 ${
-                        i < certifications.length - 1 ? 'border-b border-muted/[0.12]' : ''
-                      }`}
-                    >
-                      <span className="font-body text-base leading-[1.4] text-cream">
-                        {cert.label}
-                      </span>
-                      <span className="font-mono text-xs tracking-[0.06em] text-muted whitespace-nowrap">
-                        · {cert.source} · {cert.date}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </TimelineColumn>
+
+            {/* Bloco irmão, não continuação da lista acima — mesmo tratamento de cabeçalho */}
+            <div className="mt-12">
+              <BlockHeader label="Certificações" icon={<Award size={13} />} />
+              <div className="flex flex-col">
+                {certifications.map((cert, i) => (
+                  <div
+                    key={`${cert.label}-${cert.source}`}
+                    className={`flex flex-wrap items-baseline gap-2 py-4 ${
+                      i < certifications.length - 1 ? 'border-b border-muted/[0.12]' : ''
+                    }`}
+                  >
+                    <span className="font-body text-base leading-[1.4] text-cream">
+                      {cert.label}
+                    </span>
+                    <span className="font-mono text-xs tracking-[0.06em] text-muted whitespace-nowrap">
+                      · {cert.source} · {cert.date}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </AnimateOnScroll>
 
           {/* Coluna direita — Experiência profissional */}

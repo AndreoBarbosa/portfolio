@@ -4,19 +4,17 @@ const config: Config = {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      spacing: {
+        // --space-block (72px) — não existe por padrão na escala Tailwind
+        // (o degrau 16 salta para 20). Habilita mt-18, gap-18, py-18 etc.
+        18: '72px',
+      },
       colors: {
         ink: '#1A1714',
         slate: '#1E1B16',
         cream: '#F5F0E8',
         amber: '#C8A96E',
         muted: '#9A9384',
-        sona: {
-          navy: '#0C1A22',
-          green: '#628E70',
-          coral: '#C96040',
-          off: '#FAFAF8',
-          sand: '#F0EDE6',
-        },
         gabriel: {
           dark: '#2E2E2E',
           offwhite: '#F8F8F5',

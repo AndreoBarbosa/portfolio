@@ -20,14 +20,14 @@ function MetricCard({ value, suffix, label, delay }: { value: number; suffix: st
         {count}
         {suffix}
       </p>
-      <p className="font-mono text-[11px] text-muted tracking-wide uppercase leading-relaxed whitespace-pre-line">
+      <p className="font-mono text-[11px] text-muted tracking-wide uppercase leading-[1.5] whitespace-pre-line">
         {label}
       </p>
     </motion.div>
   )
 }
 
-export default function MetricStrip() {
+export default function MetricStrip({ showFootnote = true }: { showFootnote?: boolean }) {
   return (
     <div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
@@ -35,9 +35,11 @@ export default function MetricStrip() {
           <MetricCard key={m.label} value={m.value} suffix={m.suffix} label={m.label} delay={i * 0.08} />
         ))}
       </div>
-      <p className="text-center font-mono text-xs text-muted tracking-wide mt-8">
-        {metricsFootnote}
-      </p>
+      {showFootnote && (
+        <p className="text-center font-mono text-xs text-muted tracking-wide mt-8">
+          {metricsFootnote}
+        </p>
+      )}
     </div>
   )
 }

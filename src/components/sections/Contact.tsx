@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
+import { Mail, Download } from 'lucide-react'
 import { LinkedInIcon } from '../icons/LinkedInIcon'
 import SectionLabel from '../ui/SectionLabel'
 import AnimateOnScroll from '../ui/AnimateOnScroll'
@@ -134,7 +135,7 @@ export default function Contact() {
   return (
     <section
       id="contato"
-      className="py-16 md:py-20 lg:py-32 border-t border-cream/5 relative overflow-hidden"
+      className="section-shell border-t border-cream/5 relative overflow-hidden"
     >
       {/* Ambient background */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
@@ -144,7 +145,7 @@ export default function Contact() {
 
       <Container className="relative">
         <AnimateOnScroll>
-          <SectionLabel index="/05" label="Contato" />
+          <SectionLabel index="/06" label="Vamos conversar" />
         </AnimateOnScroll>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
@@ -153,19 +154,20 @@ export default function Contact() {
           <div>
             <AnimateOnScroll>
               <h2
-                className="font-satoshi font-bold text-cream leading-none mb-6"
+                className="font-satoshi font-bold text-cream leading-[1.1] mb-6 text-balance"
                 style={{ fontSize: 'clamp(3rem, 8vw, 5.5rem)', letterSpacing: '-0.03em' }}
               >
                 Vamos<br />conversar?
               </h2>
-              <p className="text-muted text-base lg:text-lg leading-relaxed mb-10 max-w-md">
-                Aberto a oportunidades, freelas e boas conversas sobre design e produto.
+              <p className="text-muted text-base lg:text-lg leading-[1.6] max-w-[42ch] text-pretty">
+                Se você acredita que bons produtos nascem de boas perguntas, temos
+                muito para conversar.
               </p>
             </AnimateOnScroll>
 
-            {/* Ícone de contato — botão padronizado (mesmo em todo o site base) */}
-            <AnimateOnScroll delay={0.1}>
-              <div className="flex gap-4 mb-10">
+            {/* Ícones de contato — botão padronizado (mesmo em todo o site base) */}
+            <AnimateOnScroll delay={0.1} className="action-gap">
+              <div className="flex gap-4">
                 <a
                   href="https://linkedin.com/in/andreo-barbosa/"
                   target="_blank"
@@ -174,6 +176,22 @@ export default function Contact() {
                   className="social-link social-link--cta"
                 >
                   <LinkedInIcon />
+                </a>
+                <a
+                  href="mailto:andreosnsd@gmail.com"
+                  aria-label="Enviar e-mail para Andreo Barbosa"
+                  className="social-link social-link--cta"
+                >
+                  <Mail />
+                </a>
+                <a
+                  href="/curriculo-andreo.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Ver currículo de Andreo Barbosa"
+                  className="social-link social-link--cta"
+                >
+                  <Download />
                 </a>
               </div>
             </AnimateOnScroll>

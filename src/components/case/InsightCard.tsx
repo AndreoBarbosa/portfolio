@@ -15,7 +15,7 @@ export default function InsightCard({ children, label, variant = 'default' }: Pr
             {label}
           </span>
         )}
-        <div className="text-cream leading-relaxed text-[1.05rem]">{children}</div>
+        <div className="text-cream leading-[1.6] text-[1.05rem]">{children}</div>
       </div>
     )
   }
@@ -28,7 +28,7 @@ export default function InsightCard({ children, label, variant = 'default' }: Pr
             {label}
           </span>
         )}
-        <div className="text-cream/90 leading-relaxed text-[1.05rem] space-y-4">{children}</div>
+        <div className="text-cream/90 leading-[1.6] text-[1.05rem] space-y-4">{children}</div>
       </div>
     )
   }
@@ -40,7 +40,7 @@ export default function InsightCard({ children, label, variant = 'default' }: Pr
           {label}
         </span>
       )}
-      <div className="text-cream/80 leading-relaxed text-[0.98rem]">{children}</div>
+      <div className="text-cream/80 leading-[1.6] text-[0.98rem]">{children}</div>
     </div>
   )
 }

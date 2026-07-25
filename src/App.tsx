@@ -13,6 +13,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/case/gabriel" element={<CaseGabriel />} />
         <Route path="/case/sona" element={<CaseSona />} />
+        <Route path="/case/ia-hospitalar" element={<CaseSysmed />} />
         <Route path="/case/sysmed" element={<CaseSysmed />} />
       </Routes>
     </BrowserRouter>

@@ -1,9 +1,15 @@
 import { useId, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
-import { guidelines } from '../../data/sysmed'
 
-function Item({ n, title, body, why }: (typeof guidelines)[number]) {
+export type AccordionItem = {
+  n: string
+  title: string
+  body: string
+  why: string
+}
+
+function Item({ n, title, body, why }: AccordionItem) {
   const [open, setOpen] = useState(false)
   const panelId = useId()
 
@@ -36,8 +42,8 @@ function Item({ n, title, body, why }: (typeof guidelines)[number]) {
             className="overflow-hidden"
           >
             <div className="px-6 pb-6 pl-[52px]">
-              <p className="text-cream/70 text-sm leading-relaxed mb-3">{body}</p>
-              <p className="font-mono text-xs text-amber/80 leading-relaxed">→ {why}</p>
+              <p className="text-cream/70 text-sm leading-[1.5] mb-3">{body}</p>
+              <p className="font-mono text-xs text-amber/80 leading-[1.5]">→ {why}</p>
             </div>
           </motion.div>
         )}
@@ -46,12 +52,38 @@ function Item({ n, title, body, why }: (typeof guidelines)[number]) {
   )
 }
 
-export default function GuidelineAccordion() {
+export default function GuidelineAccordion({ items }: { items: AccordionItem[] }) {
+  const shouldReduce = useReducedMotion()
+
+  if (shouldReduce) {
+    return (
+      <div className="space-y-4">
+        {items.map((item) => (
+          <Item key={item.n} {...item} />
+        ))}
+      </div>
+    )
+  }
+
   return (
-    <div className="space-y-4">
-      {guidelines.map((g) => (
-        <Item key={g.n} {...g} />
+    <motion.div
+      className="space-y-4"
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: '-80px' }}
+      variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}
+    >
+      {items.map((item) => (
+        <motion.div
+          key={item.n}
+          variants={{
+            hidden: { opacity: 0, y: 16 },
+            show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+          }}
+        >
+          <Item {...item} />
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   )
 }

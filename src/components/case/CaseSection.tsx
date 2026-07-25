@@ -11,7 +11,7 @@ export default function CaseSection({ children, id, className = '', ...rest }: P
   return (
     <section
       id={id}
-      className={`py-[72px] md:py-24 lg:py-[160px] ${className}`}
+      className={`section-shell ${className}`}
       {...rest}
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">{children}</div>

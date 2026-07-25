@@ -16,7 +16,8 @@
       "mcp__figma-developer-mcp__get_figma_data",
       "mcp__figma-developer-mcp__download_figma_images",
       "Bash(mv \"/c/Users/andre/OneDrive/Documents/Portifolio/tmp-sona-export\"/*.png \"/c/Users/andre/OneDrive/Documents/SONA/\")",
-      "Bash(rmdir \"/c/Users/andre/OneDrive/Documents/Portifolio/tmp-sona-export\")"
+      "Bash(rmdir \"/c/Users/andre/OneDrive/Documents/Portifolio/tmp-sona-export\")",
+      "Bash(npm run *)"
     ]
   }
 }
