@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import CaseGabriel from './pages/CaseGabriel'
 import CaseSona from './pages/CaseSona'
 import CaseSysmed from './pages/CaseSysmed'
+import DesignSystemShowcase from './pages/DesignSystemShowcase'
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/case/sona" element={<CaseSona />} />
         <Route path="/case/ia-hospitalar" element={<CaseSysmed />} />
         <Route path="/case/sysmed" element={<CaseSysmed />} />
+        <Route path="/design-system" element={<DesignSystemShowcase />} />
       </Routes>
     </BrowserRouter>
   )

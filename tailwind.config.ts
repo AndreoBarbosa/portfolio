@@ -2,6 +2,10 @@ import type { Config } from 'tailwindcss'
 
 const config: Config = {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
+  // Seletor customizado (não class no <html>) para escopar o tema escuro do
+  // showcase Liquid Glass ao próprio container (.liquid-root[data-theme="dark"]),
+  // sem afetar o resto do site (que não usa dark: em nenhum lugar hoje).
+  darkMode: ['selector', '[data-theme="dark"]'],
   theme: {
     extend: {
       spacing: {
@@ -30,6 +34,7 @@ const config: Config = {
         body: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
         outfit: ['Outfit', 'system-ui', 'sans-serif'],
+        hanken: ['"Hanken Grotesk"', 'sans-serif'],
       },
       fontSize: {
         // Escala par reutilizável nas páginas de case (Sona, Gabriel, ...)
@@ -50,6 +55,8 @@ const config: Config = {
         card:  '20px',    // cards grandes
         badge: '12px',    // imagens, frames, badges médios
         chip:  '9999px',  // pílula — tags, chips
+        glass:      '16px', // Liquid Glass — controles, botões
+        'glass-lg': '24px', // Liquid Glass — cards e superfícies grandes
       },
       letterSpacing: {
         tight: '-0.02em',
