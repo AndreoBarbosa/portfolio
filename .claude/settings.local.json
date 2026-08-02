@@ -48,7 +48,10 @@
       "Read(//tmp/**)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5183/)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 2 http://localhost:5183/)",
-      "PowerShell($conn = Get-NetTCPConnection -LocalPort 5183 -ErrorAction SilentlyContinue; if \\($conn\\) { $procId = $conn[0].OwningProcess; Stop-Process -Id $procId -Force; \"killed $procId\" } else { \"no listener\" })"
+      "PowerShell($conn = Get-NetTCPConnection -LocalPort 5183 -ErrorAction SilentlyContinue; if \\($conn\\) { $procId = $conn[0].OwningProcess; Stop-Process -Id $procId -Force; \"killed $procId\" } else { \"no listener\" })",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
     ]
   }
 }
