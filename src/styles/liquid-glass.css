@@ -1,0 +1,1258 @@
+/* Liquid Glass — Fase 0 (Fundação), Revisão 2. Escopado em .liquid-root
+   para não vazar no tema ink/cream/amber do resto do site. Importado só
+   pela página do showcase.
+
+   Filosofia: sistema monocromático — branco + cinzas glass + petróleo
+   #0C1A22. NÃO existe segunda cor (o teal da revisão anterior foi
+   eliminado). Em repouso, zero cor. Petróleo glass (translúcido, nunca
+   chapado) só acende em hover, :active (toque), foco e nos dois
+   detalhes de scroll (ScrollAccent). */
+
+.liquid-root {
+  /* Base neutra (LIGHT) — cinza-vidro presente + cinzas glass. --bg é
+     um tom ABAIXO de --surface-1 agora (era o inverso, --bg branco e
+     tudo mais escurecia a partir dele) — os cards precisam ficar
+     visivelmente acima do fundo pra não sumirem, ver .liquid-card/
+     .liquid-glass-surface mais abaixo. */
+  /* --bg branco #FFFFFF — Brief MESTRE §8: consistência de white mode em
+     TODAS as seções (antes só hero/tese forçavam branco inline, o resto
+     herdava um cinza-vidro). Cards/superfícies glass continuam com a
+     mesma opacidade — ficam mais sutis sobre branco (igual à tese, já
+     aprovada), efeito intencional, não regressão de contraste. */
+  --bg:            #FFFFFF;
+  --surface-1:     #EAE9E7;
+  --surface-2:     #CFCECB;
+  --neutral-mid:   #D9D5D2;
+  --neutral-faint: #BFBAB8;
+  --text-strong:   #0C1A22;   /* petróleo: títulos, texto forte */
+  --text-body:     #2C2C2A;
+  --text-muted:    #5F5E5A;   /* 4.73:1 sobre o novo --bg — ainda passa AA */
+  /* #8C8988 original falhava mesmo sobre o branco antigo. Sobre o novo
+     --bg (mais escuro) o #6E6C6A que eu já vinha usando cai pra 3.81:1
+     (< AA 4.5:1) — escurecido de novo para #625F5D (4.61:1), o mais
+     claro que ainda passa. Ver regra de contraste não-negociável. */
+  --text-faint:    #625F5D;
+
+  /* Acento ÚNICO — petróleo, sempre aplicado como glass translúcido,
+     nunca chapado. Sem verde/teal em lugar nenhum do sistema. */
+  --accent:            #0C1A22;
+  --accent-glass:      rgba(12,26,34,0.72);   /* hover/active do CTA primário */
+  --accent-glass-soft: rgba(12,26,34,0.10);   /* hover/active do secundário, mais sutil */
+
+  /* Vidro — brilho de borda padronizado (Brief MESTRE, seção GLASS) em
+     TODA superfície .liquid-glass-surface/.liquid-card/etc via este var,
+     mais os hardcoded (project-frame, thesis-card, timeline-panel,
+     education-card) que replicam o mesmo valor abaixo. */
+  --glass-bg:      rgba(255,255,255,0.55);
+  --glass-border:  rgba(255,255,255,0.70);
+  --glass-blur:    16px;
+  --glass-shadow:  inset 0 1px 1px rgba(255,255,255,0.9), inset 0 -1px 1px rgba(0,0,0,0.04), 0 8px 32px rgba(20,20,30,0.10);
+
+  --radius:    16px;
+  --radius-lg: 24px;
+
+  background: var(--bg);
+  color: var(--text-body);
+  font-family: 'Outfit', system-ui, sans-serif;
+}
+
+.liquid-root * {
+  transition: background-color 250ms cubic-bezier(0.16,1,0.3,1),
+              border-color 250ms cubic-bezier(0.16,1,0.3,1),
+              color 250ms cubic-bezier(0.16,1,0.3,1),
+              box-shadow 250ms cubic-bezier(0.16,1,0.3,1);
+}
+
+/* Superfície de vidro — padrão único reusado em nav/card/chip/modal. */
+.liquid-glass-surface {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
+}
+
+/* Sem suporte a backdrop-filter: superfície sólida garante o contraste. */
+@supports not (backdrop-filter: blur(1px)) {
+  .liquid-glass-surface {
+    background: var(--surface-1);
+  }
+}
+
+/* Navbar — Estado A (topo/Hero, Figma Node 133:382): sem card, sem
+   glass, sem sombra — só logo/links/CTA flutuando sobre o Hero. Estado
+   B (rolado) é a lâmina de vidro (Refinamento §9), aprovada mas sem
+   correspondência no Figma — existe só pra legibilidade sobre conteúdo
+   que rola atrás. Ver useScrolled (threshold 32px) e LiquidHeader. */
+.liquid-navbar {
+  position: relative;
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  transition: background 300ms cubic-bezier(0.16,1,0.3,1),
+              border-color 300ms cubic-bezier(0.16,1,0.3,1),
+              box-shadow 300ms cubic-bezier(0.16,1,0.3,1),
+              backdrop-filter 300ms cubic-bezier(0.16,1,0.3,1);
+}
+/* Camada 2 — highlight físico da lâmina de vidro. Só existe no Estado B
+   (não há vidro no Estado A pra simular luz incidindo); crossfade via
+   opacity junto com o resto do container, sem flicker no threshold. */
+.liquid-navbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.7);
+  background: linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0) 40%);
+  opacity: 0;
+  transition: opacity 300ms cubic-bezier(0.16,1,0.3,1);
+}
+/* Estado B — vidro translúcido aprovado (valores antes aplicados a
+   partir de 8px de scroll, preservados aqui a partir de 32px). */
+.liquid-navbar.is-scrolled {
+  background: rgba(255,255,255,0.34);
+  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+  backdrop-filter: blur(18px) saturate(1.1);
+  border-color: rgba(255,255,255,0.35);
+  box-shadow: 0 4px 20px rgba(20,20,30,0.05);
+}
+.liquid-navbar.is-scrolled::before {
+  opacity: 1;
+}
+/* CTA "Contato" — Estado A: contorno cream sutil, sem preenchimento
+   (Figma Node 133:382, valores exatos). Estado B recupera o vidro. */
+.liquid-navbar-cta {
+  background: transparent;
+  border: 1px solid #F2EEEB;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  transition: background 300ms cubic-bezier(0.16,1,0.3,1),
+              border-color 300ms cubic-bezier(0.16,1,0.3,1),
+              backdrop-filter 300ms cubic-bezier(0.16,1,0.3,1);
+}
+.liquid-navbar.is-scrolled .liquid-navbar-cta {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.4);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Botão hambúrguer — só < md. Segue a mesma linguagem do CTA (contorno
+   sutil no Estado A, vidro no Estado B), nunca um preenchimento chapado. */
+.liquid-mobile-menu-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-strong);
+  transition: background 300ms cubic-bezier(0.16,1,0.3,1),
+              border-color 300ms cubic-bezier(0.16,1,0.3,1);
+}
+.liquid-navbar.is-scrolled .liquid-mobile-menu-btn {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.4);
+}
+.liquid-mobile-menu-btn:hover,
+.liquid-mobile-menu-btn:active,
+.liquid-mobile-menu-btn:focus-visible {
+  background: var(--accent-glass-soft);
+  border-color: var(--text-strong);
+}
+.liquid-hamburger {
+  position: relative;
+  width: 18px;
+  height: 13px;
+  display: inline-block;
+}
+.liquid-hamburger span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 1px;
+  transition: transform 250ms cubic-bezier(0.16,1,0.3,1),
+              opacity 200ms ease,
+              top 250ms cubic-bezier(0.16,1,0.3,1);
+}
+.liquid-hamburger span:nth-child(1) { top: 0; }
+.liquid-hamburger span:nth-child(2) { top: 6px; }
+.liquid-hamburger span:nth-child(3) { top: 12px; }
+.liquid-hamburger.is-open span:nth-child(1) { top: 6px; transform: rotate(45deg); }
+.liquid-hamburger.is-open span:nth-child(2) { opacity: 0; }
+.liquid-hamburger.is-open span:nth-child(3) { top: 6px; transform: rotate(-45deg); }
+
+/* Painel do menu mobile — mesma superfície glass do padrão do sistema
+   (--glass-bg/--glass-border/--glass-blur), nunca sólido. Fechado por
+   padrão (max-height:0), abre com transição suave. */
+.liquid-mobile-menu {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  background: var(--glass-bg);
+  border: 1px solid transparent;
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  box-shadow: none;
+  transition: max-height 300ms cubic-bezier(0.16,1,0.3,1),
+              opacity 200ms ease,
+              margin-top 300ms cubic-bezier(0.16,1,0.3,1),
+              border-color 300ms cubic-bezier(0.16,1,0.3,1),
+              box-shadow 300ms cubic-bezier(0.16,1,0.3,1);
+}
+.liquid-mobile-menu.is-open {
+  max-height: 320px;
+  opacity: 1;
+  margin-top: 8px;
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+.liquid-mobile-nav-link {
+  display: block;
+  padding: 14px 2px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.liquid-mobile-nav-link:last-child {
+  border-bottom: none;
+}
+
+/* Foco — visível em todo interativo, teclado. Sempre petróleo, nunca
+   uma segunda cor. */
+.liquid-root :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Botão primário — repouso NEUTRO (vidro, sem cor). Hover/toque
+   preenche petróleo glass translúcido (nunca chapado). */
+.liquid-btn-primary {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  color: var(--text-strong);
+  font-weight: 600;
+  border-radius: 999px;
+  box-shadow: var(--glass-shadow);
+}
+.liquid-btn-primary:hover,
+.liquid-btn-primary:active {
+  background: var(--accent-glass);
+  border-color: transparent;
+  color: #FFFFFF;
+  box-shadow: var(--glass-shadow);
+}
+/* Botão secundário — vidro mais transparente em repouso. No hover, o
+   preenchimento é bem mais sutil que o primário (diferença de
+   intensidade, não de cor) e o texto permanece petróleo, não branco. */
+.liquid-btn-secondary {
+  background: rgba(255,255,255,0.28);
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  color: var(--text-strong);
+  font-weight: 500;
+  border-radius: 999px;
+}
+.liquid-btn-secondary:hover,
+.liquid-btn-secondary:active {
+  background: var(--accent-glass-soft);
+  border-color: var(--text-strong);
+  color: var(--text-strong);
+}
+
+/* Link/seta — repouso neutro, hover/foco escurece pra petróleo, com
+   underline animado (cresce da esquerda). */
+.liquid-link {
+  color: var(--text-body);
+}
+.liquid-link:hover,
+.liquid-link:active,
+.liquid-link:focus-visible {
+  color: var(--text-strong);
+}
+.liquid-link-text {
+  position: relative;
+}
+.liquid-link-text::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 250ms cubic-bezier(0.16,1,0.3,1);
+}
+.liquid-link:hover .liquid-link-text::after,
+.liquid-link:focus-visible .liquid-link-text::after {
+  transform: scaleX(1);
+}
+
+/* Nav — link em repouso neutro, hover escurece pra text-strong. A
+   seção ativa ganha peso maior + cor (classe aplicada via JS). */
+/* Node 133:382 (Figma): todos os links em #0C1A22 (var(--text-strong)),
+   sem estado "apagado"; só o peso 600 diferencia o item ativo. */
+.liquid-nav-link {
+  color: var(--text-strong);
+}
+.liquid-nav-link.is-active {
+  font-weight: 600;
+}
+
+/* Card de case — 100% neutro em repouso. Hover/toque acende borda
+   petróleo, nunca preenchimento (a borda não é "chapada"). */
+.liquid-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-lg);
+}
+.liquid-card:hover,
+.liquid-card:active {
+  border-color: var(--accent);
+  box-shadow: 0 10px 28px rgba(12,26,34,0.14);
+  transform: translateY(-2px);
+}
+.liquid-card .liquid-card-arrow {
+  color: var(--text-muted);
+}
+.liquid-card:hover .liquid-card-arrow,
+.liquid-card:active .liquid-card-arrow {
+  color: var(--accent);
+}
+
+/* Card de projeto — repouso glass claro; hover vira painel petróleo
+   (o vidro do vídeo alpha brilha sobre o escuro). Texto muda pra creme
+   no hover pra continuar legível. Imagem ocupa a largura total (quebra
+   o padding via margin negativo), texto ancorado no fim via .spacer
+   flex:1. Valores travados nos briefs "Card de case FINAL" e "Novo
+   Hero + ajuste do card", grid de 8. */
+.liquid-project-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  background: #FFFFFF;
+  border: 1px solid #EAE9E7;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  overflow: hidden;
+  padding: 24px;
+  transition: box-shadow 250ms cubic-bezier(0.16,1,0.3,1),
+              transform 250ms cubic-bezier(0.16,1,0.3,1);
+}
+.liquid-project-card:hover .liquid-project-frame,
+.liquid-project-card:active .liquid-project-frame {
+  background: #14252E;
+  box-shadow: 0 16px 48px rgba(20,20,30,0.22);
+  transform: translateY(-2px);
+}
+.liquid-project-media {
+  position: relative;
+  margin: -24px -24px 0 -24px;
+  width: calc(100% + 48px);
+  height: 300px;
+  overflow: hidden;
+  border-radius: 16px 16px 0 0;
+  background: linear-gradient(135deg, #FFFFFF, #F0EFEC);
+  flex-shrink: 0;
+}
+.liquid-project-media img,
+.liquid-project-media video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: opacity 300ms cubic-bezier(0.16,1,0.3,1);
+}
+.liquid-project-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-top: 32px;
+}
+.liquid-project-tags {
+  margin-bottom: 24px;
+}
+.liquid-project-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 2.16px;
+  border-radius: 16px;
+  background: transparent;
+  border: 1px solid #BFBAB8;
+  color: #625F5D;
+  transition: border-color 250ms ease, color 250ms ease;
+}
+.liquid-project-card:hover .liquid-project-tag,
+.liquid-project-card:active .liquid-project-tag {
+  border-color: rgba(255,255,255,0.2);
+  color: rgba(242,237,227,0.85);
+}
+.liquid-project-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  color: #0C1A22;
+  margin-bottom: 16px;
+  transition: color 250ms ease;
+}
+.liquid-project-card:hover .liquid-project-title,
+.liquid-project-card:active .liquid-project-title {
+  color: #F2EEEB;
+}
+.liquid-project-desc {
+  font-family: 'Outfit', sans-serif;
+  color: #5F5E5A;
+  margin-bottom: 16px;
+  transition: color 250ms ease;
+}
+.liquid-project-card:hover .liquid-project-desc,
+.liquid-project-card:active .liquid-project-desc {
+  color: rgba(242,237,227,0.75);
+}
+.liquid-project-spacer {
+  flex: 1;
+}
+.liquid-project-footer {
+  border-top: 1px solid rgba(12,26,34,0.12);
+  padding-top: 24px;
+  transition: border-color 250ms ease;
+}
+.liquid-project-card:hover .liquid-project-footer,
+.liquid-project-card:active .liquid-project-footer {
+  border-top-color: rgba(255,255,255,0.14);
+}
+.liquid-project-category {
+  color: #5F5E5A;
+  transition: color 250ms ease;
+}
+.liquid-project-card:hover .liquid-project-category,
+.liquid-project-card:active .liquid-project-category {
+  color: rgba(242,237,227,0.6);
+}
+.liquid-project-cta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.12px;
+  font-weight: 400;
+  color: #625F5D;
+  background: transparent;
+  border: 1px solid #BFBAB8;
+  border-radius: 16px;
+  padding: 10px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+/* No hover, o card inteiro vira petróleo — o CTA precisa continuar se
+   destacando sobre esse fundo escuro, então inverte pra sólido creme
+   (em vez do petróleo sólido usado quando o repouso era claro). */
+.liquid-project-card:hover .liquid-project-cta,
+.liquid-project-card:active .liquid-project-cta {
+  background: #EFEFEE;
+  border-color: #EFEFEE;
+  color: #0C1A22;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.liquid-project-cta svg {
+  transition: transform 200ms ease;
+}
+.liquid-project-card:hover .liquid-project-cta svg,
+.liquid-project-card:active .liquid-project-cta svg {
+  transform: translateX(2px);
+}
+
+/* Botões do hero — caso à parte do LiquidButton compartilhado. O fundo
+   do hero é branco fixo, então o texto/botões são sempre em tons de
+   petróleo, sem scrim — contraste natural sobre o branco. */
+/* Valores travados no node 48:368 do Figma — bg petróleo, borda creme,
+   texto quase-branco, padding 12px 16px, radius total, largura 186px. */
+.liquid-hero-btn-primary {
+  background: #0C1A22;
+  border: 1px solid #F2EEEB;
+  color: #FAFAFA;
+  border-radius: 999px;
+  transition: opacity 250ms cubic-bezier(0.16,1,0.3,1), transform 250ms cubic-bezier(0.16,1,0.3,1);
+}
+.liquid-hero-btn-primary:hover,
+.liquid-hero-btn-primary:active {
+  opacity: 0.85;
+}
+
+/* Node 48:370 — mesma borda creme do primário, fundo transparente,
+   texto petróleo. Largura ao conteúdo (sem valor fixo no Figma). */
+.liquid-hero-btn-secondary {
+  background: transparent;
+  border: 1px solid #F2EEEB;
+  color: #0C1A22;
+  border-radius: 999px;
+  transition: background-color 250ms cubic-bezier(0.16,1,0.3,1), border-color 250ms cubic-bezier(0.16,1,0.3,1);
+}
+.liquid-hero-btn-secondary:hover,
+.liquid-hero-btn-secondary:active {
+  background: rgba(12,26,34,0.06);
+  border-color: rgba(12,26,34,0.4);
+}
+
+/* "Como eu penso" — RECONFERIDO via MCP em 2026-07-31: o arquivo Figma
+   mudou desde a última leitura (a onda agora é uma faixa horizontal
+   lisa, não o círculo rotacionado antigo; cards passaram a 300×234).
+   Composição real (node 235:299): 3 FAIXAS EMPILHADAS sem sobreposição
+   — fileira 01+03 (y 311–545) → onda (y 540–957, praticamente
+   encostando) → fileira 02+04 (y ~945/957–1179/1191). Cada fileira,
+   como par, mede ~76% do container (912/1202) — fileira de cima
+   encostada à ESQUERDA, fileira de baixo encostada à DIREITA (mesmo
+   gap interno de ~312px entre os 2 cards nas duas fileiras, então
+   justify-content:space-between dentro de cada fileira já reproduz os
+   X exatos). Isso é o "paralelogramo": preservar, não centralizar. */
+.liquid-thesis-grid {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.liquid-thesis-row {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+@media (min-width: 768px) {
+  .liquid-thesis-grid {
+    gap: 0;
+  }
+  .liquid-thesis-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .liquid-thesis-row-top {
+    width: 76%;
+    margin-right: auto;
+  }
+  .liquid-thesis-row-bottom {
+    width: 76%;
+    margin-left: auto;
+  }
+}
+/* Fundo da seção (não conteúdo do container) — MESMA arquitetura da
+   Trajetória (.liquid-trajectory-glass-zone/-bg, ver mais abaixo):
+   .liquid-thesis-bg-zone reserva o espaço vertical real entre as duas
+   fileiras (isso preserva o "sem sobreposição" — os cards continuam
+   com o mesmo respiro de antes); .liquid-thesis-bg é a imagem em si,
+   position:absolute + width:100vw SEM max-width, então ultrapassa a
+   grid de 1440 e continua crescendo com a viewport, igual à
+   Trajetória. Altura em vw (não % de uma largura estreita) porque a
+   zona não tem largura própria de conteúdo pra derivar a proporção —
+   25vw ≈ a proporção real da imagem (1998×501) na largura cheia da
+   viewport. SEM teto: a largura da imagem (100vw) já não tem
+   max-width, então travar a altura num valor fixo faz o cover cortar
+   cada vez mais conforme a viewport cresce (o "corte" visível em telas
+   largas). max() só garante um piso pra mobile/telas estreitas. */
+.liquid-thesis-bg-zone {
+  position: relative;
+  isolation: isolate;
+  height: max(160px, 25vw);
+}
+.liquid-thesis-bg {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+/* Mobile: zoom sutil pra sumir só as pontas da onda. width:100vw sozinho
+   não resolve aqui — a altura da zona é fixa (max(160px,25vw)) e a
+   img usa object-fit:cover, então alargar SÓ a largura da caixa é
+   absorvido pelo próprio cover (o corte da imagem-fonte não muda,
+   ela só teria mais/menos sobra fora da viewport pra recortar de
+   volta — resultado idêntico ao original). Scale no elemento já
+   clicado por overflow:hidden amplia o recorte final de verdade, sem
+   mexer no layout/altura (transform não afeta a caixa nem a seção,
+   que já tem overflow-hidden pra conter o excesso). Só < md; desktop
+   intocado. */
+@media (max-width: 767px) {
+  .liquid-thesis-bg {
+    transform: translateX(-50%) scale(1.15);
+  }
+}
+.liquid-thesis-bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+/* Node 133:369 etc. (Figma): bg transparente, sem borda, sem sombra —
+   as duas fileiras de cards ficam sobre branco liso (a onda é uma faixa
+   separada, sem overlap), então não existe problema de legibilidade a
+   resolver com glass. O "card" aqui é só o container de texto. */
+.liquid-thesis-card {
+  position: relative;
+  max-width: 300px;
+  padding: 16px 24px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.liquid-thesis-number {
+  display: block;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.64px;
+  color: #2C2C2A;
+  margin-bottom: 24px;
+}
+.liquid-thesis-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.liquid-thesis-title {
+  color: #0C1A22;
+  font-size: 20px;
+  line-height: 1.1;
+  letter-spacing: -0.6px;
+}
+.liquid-thesis-desc {
+  font-family: 'Outfit', sans-serif;
+  color: #2C2C2A;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Escala tipográfica travada — Brief MESTRE §0, valores extraídos do
+   Figma. clamp() com o valor do Figma como teto (desktop exato),
+   reduzindo em telas estreitas para não estourar. Usar só nestes casos
+   nomeados; não criar tamanhos fora desta lista. */
+.liquid-type-hero-title {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: clamp(38px, 7.5vw, 64px);
+  line-height: 1.1;
+  letter-spacing: -1.92px;
+}
+.liquid-type-section-title {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: clamp(32px, 6vw, 56px);
+  line-height: 1.1;
+  letter-spacing: -1.68px;
+}
+.liquid-type-manifesto {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 400;
+  font-size: clamp(26px, 4.8vw, 48px);
+  line-height: 1.1;
+  letter-spacing: -0.96px;
+}
+.liquid-type-manifesto strong {
+  font-weight: 600;
+}
+.liquid-type-stat {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 400;
+  font-size: clamp(56px, 12vw, 104px);
+  line-height: 1.1;
+  letter-spacing: -3.12px;
+}
+.liquid-type-hero-sub {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.liquid-type-body {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.6;
+}
+/* Corpo menor (Figma "body/body", 16px) — usado só na seção Sobre; o
+   restante do site usa .liquid-type-body (18px, "body/large"). */
+.liquid-type-body-sm {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.liquid-type-btn {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+}
+/* Botão da NAV (Contato) — Figma usa Inter, distinto do Outfit dos
+   CTAs do hero. */
+.liquid-type-nav {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+}
+/* Links da NAV (Projetos/Trajetória/Sobre) — Figma Node 133:382 usa
+   Hanken Grotesk, diferente do Inter do botão Contato ao lado. */
+.liquid-type-nav-link {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+}
+/* Display do Contato ("Vamos conversar?") — único uso deste tamanho no
+   site (Brief MESTRE §6, node do Figma: 72/-2.16), maior que o
+   hero-title (64) de propósito. */
+.liquid-type-display-lg {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: clamp(40px, 9vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -2.16px;
+}
+
+/* Trajetória — stats grandes com divisor central. */
+.liquid-trajectory-stats {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+@media (min-width: 640px) {
+  .liquid-trajectory-stats { gap: 56px; }
+}
+.liquid-trajectory-stat {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.liquid-trajectory-stat-value {
+  color: #0C1A22;
+}
+/* Legibilidade sobre a imagem de fundo: texto ligeiramente mais escuro
+   + text-shadow claro (halo sutil, não uma sombra visível) já resolve
+   na maior parte da imagem. .liquid-trajectory-stat-desc (abaixo)
+   adiciona um verniz translúcido/blur MÍNIMO só quando isso não basta
+   (ex.: a bolha de vidro mais clara atrás de "20 mil+") — mesmo
+   tratamento nos dois blocos, pra não tratar só um dos dois. */
+.liquid-trajectory-stat-unit {
+  font-family: 'Outfit', sans-serif;
+  color: #1A1917;
+  font-weight: 600;
+  font-size: 16px;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.6);
+}
+.liquid-trajectory-stat-label {
+  font-family: 'Outfit', sans-serif;
+  color: #45433F;
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 15ch;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.6);
+}
+.liquid-trajectory-stat-desc {
+  position: relative;
+  padding: 2px 8px;
+  margin: -2px -8px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.35);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.liquid-trajectory-divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--surface-2);
+  flex-shrink: 0;
+}
+
+/* Trajetória — imagem de vidro (fundo-trajetoria.png), com um véu
+   petróleo sutil por baixo ("preenchimento linear 20%" do Brief
+   MESTRE). Superfícies glass que ficam POR CIMA da imagem
+   (timeline-panel, education-card) usam o tratamento
+   tint+dessaturação — não o glass claro padrão — pra manter
+   legibilidade sobre o fundo movimentado. */
+/* Ancora e isola o z-index:-1 do fundo (abaixo) — sem isolation:isolate
+   aqui, o z-index:-1 escaparia pra um stacking context muito mais alto
+   na árvore (a página toda), em vez de ficar só atrás do cabeçalho/
+   stats/timeline/formação/certificações desta seção. */
+.liquid-trajectory-content {
+  position: relative;
+  isolation: isolate;
+}
+.liquid-trajectory-glass-zone {
+  position: relative;
+}
+/* Node 133:276 do Figma: x=1,y=2532 dentro da seção (x=1,y=2298) ⇒
+   relativo ao topo do CONTEÚDO (.liquid-trajectory-content, cujo topo =
+   topo da seção): top=234px (16.25vw), bottom ultrapassa o fim do
+   conteúdo real em 98.6px (6.85vw) — o node do Figma termina DEPOIS do
+   último card (Cursos & Certificações), não junto com ele. top/bottom
+   (em vez de height fixo) fazem a caixa esticar com a altura REAL do
+   conteúdo (textos de verdade podem quebrar diferente do Figma) — sem
+   isso, uma altura fixa deixava a imagem curta e cortava antes dos
+   cursos. Sem max-height/overflow limitando o wrapper: só o
+   overflow:hidden abaixo, do tamanho exato dessa caixa, recorta a
+   imagem — não há nenhum corte extra vindo de fora. */
+.liquid-trajectory-bg {
+  position: absolute;
+  left: 50%;
+  top: 16.25vw; /* 234/1440 */
+  bottom: -6.85vw; /* 98.6/1440 */
+  transform: translateX(-50%);
+  width: 100vw;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+/* Node 133:276 no Figma: mesma imagem, cortada (~133%/135%, deslocada)
+   dentro de uma caixa ~quadrada (1440×1421) — com um véu BRANCO (não
+   escuro) de 20% por cima ("preenchimento Linear, opacidade 20%" no
+   Figma == fill sólido, não gradiente). Aqui a caixa NÃO é quadrada
+   (a altura acompanha o conteúdo real, ver comentário acima), então em
+   vez dos w/h/left/top em % do Figma (que pressupõem a caixa 1440×1421
+   e distorceriam nesta proporção diferente), usamos object-fit:cover —
+   preserva a proporção da imagem (não deforma/estica) e aproxima o
+   mesmo enquadramento vertical do Figma via object-position. */
+.liquid-trajectory-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(254,254,254,0.2);
+  z-index: 1;
+}
+.liquid-trajectory-bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+}
+
+/* Trajetória — linha do tempo horizontal, painel de vidro com
+   tint+dessaturação (sobre a imagem de fundo). Empilha em coluna no
+   mobile. */
+.liquid-timeline-panel {
+  background: rgba(255,255,255,0.62);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  -webkit-backdrop-filter: blur(20px) saturate(0.7) brightness(1.05);
+  backdrop-filter: blur(20px) saturate(0.7) brightness(1.05);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), inset 0 -1px 1px rgba(0,0,0,0.04), 0 8px 32px rgba(20,20,30,0.10);
+  padding: 32px 24px; /* 8pt grid */
+}
+.liquid-timeline-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px; /* 8pt grid — respiro vertical entre eventos empilhados no mobile */
+}
+@media (min-width: 900px) {
+  /* Gap fixo de 48px (8pt grid) entre as 5 colunas — a proporção
+     literal do Figma (gap ~3% da largura) deixava os eventos colados;
+     48px dá respiro horizontal real e consistente em qualquer largura
+     de tela, sem nunca sair do grid de 8pt. */
+  .liquid-timeline-row {
+    grid-template-columns: repeat(5, 1fr);
+    column-gap: 48px;
+  }
+}
+.liquid-timeline-item {
+  position: relative;
+  min-width: 0; /* evita que texto longo force a coluna a passar do seu track na grid */
+}
+.liquid-timeline-icon {
+  width: 61px;
+  height: 61px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0C1A22;
+}
+.liquid-timeline-track {
+  display: none;
+}
+@media (min-width: 900px) {
+  /* top = altura do ícone (61) + gap ícone→marcador (16) + raio do
+     marcador (10) = 87px — a linha passa pelo CENTRO do marcador, não
+     pelo ícone. left = 61/2 = 30.5px: o marcador (.liquid-timeline-marker,
+     abaixo) tem a MESMA largura do ícone e centraliza o dot nela, então
+     30.5px é também o centro horizontal do dot — não o centro da coluna
+     inteira (ícone/dot ficam alinhados à ESQUERDA da coluna, junto com o
+     texto, não centralizados nela). width: calc(100% + 48px) alcança o
+     centro do PRÓXIMO marcador (100% = largura própria da coluna atual +
+     48px do gap fixo entre colunas) — cada item desenha só o segmento até
+     o próximo, e os 4 segmentos encaixam num eixo único e contínuo. */
+  .liquid-timeline-track {
+    display: block;
+    position: absolute;
+    top: 87px;
+    left: 30.5px;
+    width: calc(100% + 48px);
+    height: 1px;
+    background: rgba(12,26,34,0.18);
+    z-index: 0;
+  }
+  .liquid-timeline-item:last-child .liquid-timeline-track {
+    display: none;
+  }
+  /* Divisória vertical entre colunas — fica no meio do gap fixo (metade
+     de 48px = 24px), longe do texto dos dois lados. */
+  .liquid-timeline-item:not(:first-child)::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 97px;
+    bottom: 0;
+    width: 1px;
+    background: rgba(12,26,34,0.12);
+  }
+}
+/* Largura igual à do ícone acima (61px) — centraliza o dot exatamente
+   sob o ícone via flex, em vez de um cálculo manual de margin-left, e
+   garante que dot/linha caem no mesmo eixo (ver .liquid-timeline-track
+   acima) sem depender de nenhum valor "mágico" recalculado à mão. */
+.liquid-timeline-marker {
+  position: relative;
+  width: 61px;
+  height: 20px;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Todos os 5 dots com o MESMO diâmetro (20px) — "Hoje" se destaca só
+   pela cor/preenchimento (sólido ink vs. contorno neutro dos demais),
+   nunca pelo tamanho. */
+.liquid-timeline-dot {
+  position: relative;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(12,26,34,0.35);
+  flex-shrink: 0;
+}
+.liquid-timeline-item.is-current .liquid-timeline-dot {
+  background: #0C1A22;
+  border-color: #0C1A22;
+}
+.liquid-timeline-year {
+  font-family: 'Hanken Grotesk', sans-serif;
+  color: #0C1A22;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.4px;
+  line-height: 1.1;
+}
+.liquid-timeline-role {
+  font-family: 'Hanken Grotesk', sans-serif;
+  color: #0C1A22;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.4px;
+  line-height: 1.1;
+}
+.liquid-timeline-desc {
+  font-family: 'Outfit', sans-serif;
+  color: #5F5E5A;
+  font-size: 16px;
+  letter-spacing: -0.32px;
+  line-height: 1.6;
+}
+
+/* Trajetória — Formação (2 cards) + Cursos & Certificações (linha com
+   divisores), mesmo painel de vidro sutil da timeline. */
+.liquid-education-card {
+  background: rgba(255,255,255,0.62);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  -webkit-backdrop-filter: blur(20px) saturate(0.7) brightness(1.05);
+  backdrop-filter: blur(20px) saturate(0.7) brightness(1.05);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), inset 0 -1px 1px rgba(0,0,0,0.04), 0 8px 32px rgba(20,20,30,0.10);
+  padding: 24px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.liquid-education-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 999px;
+  background: rgba(234,233,231,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0C1A22;
+  flex-shrink: 0;
+}
+.liquid-education-pill {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 8px 24px;
+  border-radius: 16px;
+  background: transparent;
+  border: 1px solid rgba(12,26,34,0.2);
+  color: #0C1A22;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  letter-spacing: -0.24px;
+}
+.liquid-cert-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 768px) {
+  .liquid-cert-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+/* Mesmo sistema de card da Formação (.liquid-education-card, acima) —
+   branco translúcido, borda, blur, sombra e radius idênticos, para os
+   dois grupos da seção lerem como um único componente. */
+.liquid-cert-item {
+  background: rgba(255,255,255,0.62);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  -webkit-backdrop-filter: blur(20px) saturate(0.7) brightness(1.05);
+  backdrop-filter: blur(20px) saturate(0.7) brightness(1.05);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), inset 0 -1px 1px rgba(0,0,0,0.04), 0 8px 32px rgba(20,20,30,0.10);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.liquid-cert-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: rgba(234,233,231,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0C1A22;
+  flex-shrink: 0;
+}
+.liquid-cert-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.liquid-cert-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.4px;
+  color: #0C1A22;
+  line-height: 1.1;
+}
+.liquid-cert-source {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: -0.32px;
+  color: #0C1A22;
+}
+
+/* Sobre — três princípios (Node 133:257), distribuídos com
+   space-between + 2 divisórias finas entre os itens. Larguras/gaps
+   exatos do Figma. */
+.liquid-about-principles {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+}
+.liquid-about-principle {
+  display: flex;
+  flex-direction: column;
+  width: 163px;
+}
+.liquid-about-principle svg {
+  margin-bottom: 11px;
+}
+.liquid-about-principle h3 {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.1;
+  letter-spacing: -0.6px;
+  color: #0C1A22;
+  margin: 0 0 12px;
+}
+.liquid-about-principle p {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #5F5E5A;
+  margin: 0;
+}
+.liquid-about-divider {
+  width: 1px;
+  align-self: stretch;
+  background: rgba(12,26,34,0.12);
+}
+
+/* Sobre — coluna direita: aspa decorativa serifada (ABeeZee) colada
+   sobre o destaque via margin negativa, valores exatos do Figma. */
+.liquid-about-quote-mark {
+  display: block;
+  font-family: 'ABeeZee', serif;
+  font-size: 128px;
+  line-height: 1;
+  color: #355972;
+  margin-bottom: -52px;
+}
+.liquid-about-highlight {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+/* Sobre — grupo foto+líquido. O líquido é full-bleed (width:100vw,
+   toca as duas bordas da tela, conforme Figma aprovado) — sem teto de
+   largura em px/vw.
+
+   O PNG de origem é quadrado (1536×1536) com bastante respiro
+   transparente acima/abaixo do desenho (o traço em si ocupa só a faixa
+   central, ~48% da altura do quadrado). Mostrar o quadrado inteiro sem
+   nenhum limite de altura faz essa margem transparente virar uma caixa
+   enorme (~1441px de altura no teto) que vaza pra cima/baixo da foto e
+   invade o respiro das seções vizinhas — essa foi a causa real do "sem
+   respiro" com a Trajetória e da sobra antes do Contato.
+   .liquid-about-bg por isso tem um teto de ALTURA próprio
+   (aspect-ratio 1441/830, a proporção do node 133:272 no Figma) com
+   overflow:hidden — 830/1441 ≈ 58% da altura, folgado o bastante pra
+   nunca cortar o traço visível (que usa ~48%), cortando só a margem
+   transparente que sobra. A <img> dentro fica centralizada verticalmente
+   e mantém width:100%/height:auto (proporção intrínseca, sem distorção).
+
+   .liquid-about-bg fica fora do fluxo (position:absolute, como
+   antes) pra nunca influenciar o dimensionamento da foto — um teste
+   com display:grid + célula compartilhada mudou o resultado do
+   width:94% da foto (o track do grid é dimensionado considerando os
+   dois filhos, então o líquido acabava alterando quanto era 94% da
+   foto — regressão indireta na "escala aprovada" que o brief pede pra
+   não tocar).
+
+   width:100vw (full-bleed, sem teto de 1441px/92vw) pra o líquido tocar
+   as duas bordas da tela, como no Figma aprovado. .liquid-about-composition
+   NÃO tem min-height: a altura do wrapper vem só da foto (única filha em
+   fluxo, position:relative); o líquido é absolute + centralizado por cima
+   dela e pode transbordar verticalmente sem reservar espaço extra — é
+   isso que elimina a sobra em branco antes do Contato. overflow continua
+   visível na composition (não hidden) pra esse transbordo não cortar o
+   líquido.
+
+   A composição é filha direta de <section> (fora do grid de
+   texto max-w-[1199px]) — width:100%/sem max-width garante que ela
+   ocupe a largura inteira da seção, não a largura do conteúdo. */
+.liquid-about-composition {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.liquid-about-bg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  aspect-ratio: 1441 / 830;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+/* Mobile: o líquido escala ALÉM da viewport (proporção preservada, sem
+   esticar) e é cortado nas laterais pelo overflow-x:hidden que já existe
+   na <section id="sobre"> — sensação de fluxo contínuo saindo pelas
+   bordas, em vez da imagem inteira encolhida. Só < md; desktop (100vw)
+   intocado. */
+@media (max-width: 767px) {
+  .liquid-about-bg {
+    width: 180vw;
+  }
+}
+.liquid-about-bg img {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  height: auto;
+}
+.liquid-about-photo {
+  position: relative;
+  z-index: 1;
+  width: min(1358px, 94%);
+  aspect-ratio: 1358 / 752;
+  max-height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* Contato — faixa de onda decorativa no rodapé da seção, mesma imagem
+   da tese, sutil e recortada pela seção (overflow-hidden no wrapper). */
+/* Causa raiz do vazio antes do footer: aspect-ratio:1440/907 em
+   width:100vw reservava ~907px de altura em telas largas só pra faixa
+   (a onda desenhada ocupa só uma tira fina do meio da composição,
+   sobrando branco vazio). Trocado por altura FIXA e compacta — o
+   wrapper já não deriva altura da largura, então o "vazio" desaparece
+   em qualquer viewport, mobile ou desktop. */
+.liquid-contact-wave-wrap {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: clamp(320px, 34vw, 480px);
+  overflow: hidden;
+  margin-top: 48px;
+}
+/* A onda (mesmo asset 1441×776 do Figma, "Recortar conteúdo" ligado)
+   fica maior que o wrapper e centralizada nos dois eixos — o
+   overflow:hidden do wrap recorta só a faixa central fina, nunca o
+   topo/base do desenho. Rotação leve (Figma: leve, não reta) + scale
+   pra cobrir os cantos que a rotação deixaria vazios. */
+.liquid-contact-wave {
+  position: absolute;
+  left: 50%;
+  top: auto;
+  bottom: 0;
+  transform: translateX(-50%) rotate(-2deg) scale(1.08);
+  width: 118%;
+  max-width: none;
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-root *,
+  .liquid-card,
+  .liquid-btn-primary,
+  .liquid-btn-secondary {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
