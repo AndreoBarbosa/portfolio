@@ -1226,7 +1226,7 @@
   left: 50%;
   transform: translateX(-50%);
   width: 100vw;
-  height: clamp(320px, 34vw, 480px);
+  height: clamp(380px, 34vw, 480px);
   overflow: hidden;
   margin-top: 48px;
 }
