@@ -24,7 +24,7 @@ const principles = [
 export default function AboutSection() {
   return (
     <section id="sobre" className="pt-20 md:pt-32 overflow-x-hidden">
-      <div className="max-w-[1199px] mx-auto px-4 md:px-8">
+      <div className="liquid-about-text max-w-[1199px] mx-auto px-4 md:px-8">
         <LiquidReveal blur>
           <LiquidSectionHeading id="sobre-title" number="/03" label="Sobre mim" />
         </LiquidReveal>
