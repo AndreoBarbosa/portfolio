@@ -1123,6 +1123,18 @@
   align-self: stretch;
   background: rgba(12,26,34,0.12);
 }
+@media (max-width: 767px) {
+  .liquid-about-principles {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .liquid-about-principle {
+    width: 100%;
+  }
+  .liquid-about-divider {
+    display: none;
+  }
+}
 
 /* Sobre — coluna direita: aspa decorativa serifada (ABeeZee) colada
    sobre o destaque via margin negativa, valores exatos do Figma. */

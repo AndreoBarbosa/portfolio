@@ -51,7 +51,8 @@
       "PowerShell($conn = Get-NetTCPConnection -LocalPort 5183 -ErrorAction SilentlyContinue; if \\($conn\\) { $procId = $conn[0].OwningProcess; Stop-Process -Id $procId -Force; \"killed $procId\" } else { \"no listener\" })",
       "Bash(git add *)",
       "Bash(git commit *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(npx --yes postcss-cli --version)"
     ]
   }
 }
