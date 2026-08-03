@@ -545,6 +545,23 @@
     margin-left: auto;
   }
 }
+/* Mobile: ordem de leitura correta (01,02,03,04) em vez da ordem do DOM
+   (01,03,onda,02,04, que reflete as duas fileiras do desktop). As rows
+   viram display:contents — saem da árvore de layout e promovem os
+   LiquidReveal filhos pro fluxo flex direto do .liquid-thesis-grid
+   (já flex-column no mobile) — daí dá pra reordenar com order. Onda
+   posicionada entre o card 02 e o 03. Só < md; desktop (2x2) intocado. */
+@media (max-width: 767px) {
+  .liquid-thesis-row-top,
+  .liquid-thesis-row-bottom {
+    display: contents;
+  }
+  .liquid-thesis-row-top > *:first-child    { order: 1; } /* 01 */
+  .liquid-thesis-row-bottom > *:first-child { order: 2; } /* 02 */
+  .liquid-thesis-bg-zone                    { order: 3; } /* onda */
+  .liquid-thesis-row-top > *:last-child     { order: 4; } /* 03 */
+  .liquid-thesis-row-bottom > *:last-child  { order: 5; } /* 04 */
+}
 /* Fundo da seção (não conteúdo do container) — MESMA arquitetura da
    Trajetória (.liquid-trajectory-glass-zone/-bg, ver mais abaixo):
    .liquid-thesis-bg-zone reserva o espaço vertical real entre as duas

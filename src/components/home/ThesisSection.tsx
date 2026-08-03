@@ -34,8 +34,9 @@ export default function ThesisSection() {
 
         {/* Node 235:299 (Figma, reconferido): 3 FAIXAS empilhadas, sem
             sobreposição — fileira 01+03, depois a onda (full-bleed, largura
-            do frame), depois fileira 02+04. Mesma ordem no mobile (01,03,
-            onda,02,04), sem nenhum truque de order/display:contents. */}
+            do frame), depois fileira 02+04. No mobile a ordem de leitura é
+            corrigida via CSS (display:contents + order) pra 01,02,onda,03,04
+            — ver .liquid-thesis-row-top/-bottom em liquid-glass.css. */}
         <div className="liquid-thesis-grid mt-16 md:mt-24">
           <div className="liquid-thesis-row liquid-thesis-row-top">
             <LiquidReveal blur delay={0}>
