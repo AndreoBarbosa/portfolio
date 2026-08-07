@@ -10,12 +10,17 @@ const defaultNavLinks = [
 type Props = {
   activeSection: string | null
   navItems?: { id: string; label: string }[]
+  /** Fora da Home (ex.: páginas de case), os links precisam apontar de
+      volta pra Home antes da âncora ("/#projetos"), não só "#projetos"
+      (que tentaria rolar dentro da própria página de case). Default ''
+      preserva 100% o comportamento atual na Home. */
+  basePath?: string
 }
 
 const logoSrc = '/logo/svg/logo-icon.svg'
 const contatoColor = '#0C1A22'
 
-export default function LiquidHeader({ activeSection, navItems = defaultNavLinks }: Props) {
+export default function LiquidHeader({ activeSection, navItems = defaultNavLinks, basePath = '' }: Props) {
   const scrolled = useScrolled()
   const [menuOpen, setMenuOpen] = useState(false)
   const mobileNavItems = [...navItems, { id: 'contato', label: 'Contato' }]
@@ -36,7 +41,7 @@ export default function LiquidHeader({ activeSection, navItems = defaultNavLinks
           {/* Node 133:383: marca sozinha (sem wordmark) — caixa 38×24 no
               Figma; a arte mantém a proporção própria dentro dela (não
               preenche a largura toda), então só a altura é forçada. */}
-          <a href="#" aria-label="Andreo Barbosa" className="flex items-center justify-self-start w-[38px] h-6">
+          <a href={basePath || '#'} aria-label="Andreo Barbosa" className="flex items-center justify-self-start w-[38px] h-6">
             <img src={logoSrc} alt="Andreo Barbosa" className="h-full w-auto" />
           </a>
           <button
@@ -58,7 +63,7 @@ export default function LiquidHeader({ activeSection, navItems = defaultNavLinks
           {navItems.map((item) => (
             <li key={item.id}>
               <a
-                href={`#${item.id}`}
+                href={`${basePath}#${item.id}`}
                 className={`liquid-type-nav-link liquid-nav-link ${activeSection === item.id ? 'is-active' : ''}`}
               >
                 {item.label}
@@ -68,7 +73,7 @@ export default function LiquidHeader({ activeSection, navItems = defaultNavLinks
         </ul>
         <div className="flex items-center gap-3 justify-self-end">
           <a
-            href="#contato"
+            href={`${basePath}#contato`}
             className="inline-flex liquid-navbar-cta liquid-type-nav items-center justify-center px-4 py-3 rounded-full"
             style={{ color: contatoColor }}
           >
@@ -87,7 +92,7 @@ export default function LiquidHeader({ activeSection, navItems = defaultNavLinks
           {mobileNavItems.map((item) => (
             <li key={item.id}>
               <a
-                href={`#${item.id}`}
+                href={`${basePath}#${item.id}`}
                 onClick={() => setMenuOpen(false)}
                 className={`liquid-type-nav-link liquid-nav-link liquid-mobile-nav-link ${activeSection === item.id ? 'is-active' : ''}`}
               >
