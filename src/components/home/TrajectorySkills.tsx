@@ -59,7 +59,8 @@ export default function TrajectorySkills() {
           <h2 className="liquid-type-section-title text-balance mt-6 max-w-[560px]" style={{ color: '#0C1A22' }}>
             Da tecnologia ao Product Design
           </h2>
-          <p className="liquid-type-body mt-6 max-w-[358px]" style={{ color: 'var(--text-muted)' }}>
+          {/* D9 (correção 02): gap-[16px] confirmado via MCP (nó 133:283) — era mt-6 (24px). */}
+          <p className="liquid-type-body mt-4 max-w-[358px]" style={{ color: 'var(--text-muted)' }}>
             Cinco anos em sistemas críticos me ensinaram que bons produtos reduzem esforço, não erros.
           </p>
         </LiquidReveal>
@@ -86,7 +87,12 @@ export default function TrajectorySkills() {
             legibilidade quebra sem o tint+dessaturação, por isso
             timeline-panel/education-card usam esse tratamento em vez do
             glass claro padrão (Brief MESTRE §4). */}
-        <div className="liquid-trajectory-glass-zone mt-16 md:mt-20">
+        {/* D9 (correção 02): gap-[193px] confirmado via MCP (nó 133:277,
+            raiz — entre o bloco de cabeçalho+stats e a zona da timeline)
+            — era mt-16/mt-20 (64/80px), bem mais comprimido que o
+            Figma. Mantido um valor menor no mobile (não é o alvo do
+            Figma, que é desktop-only) e o real a partir de lg. */}
+        <div className="liquid-trajectory-glass-zone mt-16 lg:mt-[193px]">
           {/* Linha do tempo horizontal (texto real, node 64:526). */}
           <LiquidReveal stagger>
             <div className="liquid-timeline-panel">

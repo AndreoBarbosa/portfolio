@@ -180,7 +180,9 @@ export default function CaseSona() {
           </LiquidReveal>
         </SonaSection>
 
-        {/* S04 — O Desafio */}
+        {/* S04 — O Desafio. D3 (correção 02): sem override — as 18
+            eyebrows do Sona usam o default (secundaria-500), sem
+            exceção. */}
         <SonaSection id="desafio" eyebrow={challenge.eyebrow}>
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
             <LiquidReveal>
@@ -322,7 +324,8 @@ export default function CaseSona() {
                 {evidence.titleLine1}
                 <br />
                 {evidence.titleLine2}
-                <span style={{ color: '#355972' }}>{evidence.titleHighlight}</span>
+                {/* C2 (correção): "critério." confirmado #3B6EA5 via MCP (nó 577:2159). */}
+                <span style={{ color: 'var(--secundaria-500)' }}>{evidence.titleHighlight}</span>
               </SonaHeading>
               <p className="mt-6 max-w-[68ch] font-outfit text-base leading-[1.5]" style={{ color: 'var(--text-body)' }}>
                 {evidence.body}
@@ -418,7 +421,13 @@ export default function CaseSona() {
             com qualidade", mesma seção Figma, sem régua própria entre os
             dois). */}
         <SonaSection id="design-system" eyebrow={designSystem.eyebrow}>
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          {/* F1 (correção 06): essa coluna NÃO é 50/50 como as outras
+              seções do Sona — confirmado via MCP (nó 577:2363): esquerda
+              504px flexível, direita 632px fixa (é o par de cards
+              ANTES/DEPOIS que precisa desses 632px pra não transbordar).
+              Só esta seção usa esse split; as outras 5 com grid-cols-2
+              continuam 50/50, não toquei nelas. */}
+          <div className="grid lg:grid-cols-[1fr_632px] gap-10 lg:gap-16 items-start">
             <LiquidReveal>
               <SonaHeading>{designSystem.title}</SonaHeading>
               <div className="mt-6 flex flex-col gap-4">
@@ -566,10 +575,21 @@ export default function CaseSona() {
                     icon={realityIcons[item.icon as keyof typeof realityIcons]}
                     title={item.title}
                     body={item.body}
+                    // C2 (correção): os 4 ícones desta lista confirmados
+                    // #3B6EA5 via MCP (stroke real, baixado e checado nó
+                    // a nó — não é o mesmo azul do IconRow do Aprendizado
+                    // mais abaixo, que continua sem essa cor no Figma).
+                    iconColor="var(--secundaria-500)"
                   />
                 ))}
               </LiquidReveal>
-              <LiquidReveal delay={0.1} className="mt-6 max-w-[395px]">
+              {/* D2 (correção 02): w-[395px] fixo a partir do desktop (não
+                  max-w) — confirmado via get_metadata (nó 577:2591) que
+                  o card tem 395px reais, com bloco de texto 299×48 (2
+                  linhas de 24px). max-w permitia encolher abaixo disso
+                  dentro da coluna de 473px e quebrava em 3 linhas. Sem
+                  fixar no mobile — 3 linhas ali é aceitável. */}
+              <LiquidReveal delay={0.1} className="mt-6 w-full lg:w-[395px]">
                 <IconCallout>{conceptToReality.closing}</IconCallout>
               </LiquidReveal>
             </div>
@@ -667,6 +687,8 @@ export default function CaseSona() {
           {/* R5 (Ajustes 03): mt-10 (40px) → mt-8 (32px). Itens → callout
               de fechamento no Figma (nó 577:2682) = 32px. */}
           <LiquidReveal delay={0.1} className="mt-8">
+            {/* D1 (correção 02): sem override — todos os 5 IconCallout do
+              Sona, incluindo este, usam o badge secundaria-500 default. */}
             <IconCallout>{learning.closing}</IconCallout>
           </LiquidReveal>
         </SonaSection>

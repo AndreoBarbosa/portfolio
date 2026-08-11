@@ -1,12 +1,18 @@
 import type { ReactNode } from 'react'
 import LiquidReveal from '../liquid/LiquidReveal'
-import { sonaAccent } from '../../data/sona'
 
 type Props = {
   id: string
   eyebrow: string
   children: ReactNode
   className?: string
+  /** C2 (correção secundaria-500, commit Sona): default é o token novo
+      — confirmado via MCP em 8 das 9 seções que usam este componente.
+      "O Desafio" (nó 577:2056) é a única exceção real: o Figma ainda
+      mostra #355972 (a cor antiga) nesse eyebrow específico, não foi
+      migrado. Só esse call site passa override; os demais usam o
+      default. */
+  eyebrowColor?: string
 }
 
 // Container 1200px — exceção explícita ao max-w-6xl (1152px) da Home,
@@ -28,7 +34,7 @@ type Props = {
 // no desktop. md:mt-10 (40px) estava 8px acima disso — não é um desvio
 // isolado por seção, era um valor uniformemente errado no componente
 // compartilhado.
-export default function SonaSection({ id, eyebrow, children, className = '' }: Props) {
+export default function SonaSection({ id, eyebrow, children, className = '', eyebrowColor = 'var(--secundaria-500)' }: Props) {
   return (
     <section id={id} className={`scroll-mt-24 py-20 md:py-32 ${className}`}>
       <div className="max-w-[1200px] mx-auto px-4 md:px-8">
@@ -36,7 +42,7 @@ export default function SonaSection({ id, eyebrow, children, className = '' }: P
           <div className="border-t pt-6 md:pt-8" style={{ borderColor: 'var(--surface-2)' }}>
             <span
               className="block font-outfit font-semibold text-xs uppercase"
-              style={{ color: sonaAccent.blue, letterSpacing: '0.36px' }}
+              style={{ color: eyebrowColor, letterSpacing: '0.36px' }}
             >
               {eyebrow}
             </span>

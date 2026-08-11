@@ -1,739 +1,688 @@
-import { Fragment } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowLeft, ArrowUpRight, ArrowRight, ArrowDown, ChevronDown } from 'lucide-react'
-import { motion } from 'framer-motion'
-import Header from '../components/layout/Header'
-import Footer from '../components/layout/Footer'
-import SectionLabel from '../components/ui/SectionLabel'
-import AnimateOnScroll from '../components/ui/AnimateOnScroll'
-import Callout from '../components/ui/Callout'
-import ProjectImage from '../components/ui/ProjectImage'
-import { DashList, DashItem } from '../components/ui/DashList'
-import GabrielSection from '../components/ui/GabrielSection'
-import { LinkedInIcon } from '../components/icons/LinkedInIcon'
+import { motion, useReducedMotion } from 'framer-motion'
+import {
+  Users, Route, Smartphone, MessageCircle, ShieldCheck, Sparkles, Sprout,
+  Flag, Target, UserCog, Layers,
+} from 'lucide-react'
+import '../styles/liquid-glass.css'
+import LiquidHeader from '../components/liquid/LiquidHeader'
+import LiquidFooter from '../components/liquid/LiquidFooter'
+import LiquidReveal from '../components/liquid/LiquidReveal'
+import CaseSection from '../components/case-gabriel/CaseSection'
+import FeatureCard from '../components/case-gabriel/FeatureCard'
+import QuoteLine from '../components/case-gabriel/QuoteLine'
+import NoteBox from '../components/case-gabriel/NoteBox'
+import PrincipleList from '../components/case-gabriel/PrincipleList'
+import DarkGradientCard from '../components/case-gabriel/DarkGradientCard'
+import DarkCardItem from '../components/case-gabriel/DarkCardItem'
+import SequenceRow from '../components/case-gabriel/SequenceRow'
+import DecisionChapter from '../components/case-gabriel/DecisionChapter'
+import IdentityColumn from '../components/case-gabriel/IdentityColumn'
+import CalloutDot from '../components/case-gabriel/CalloutDot'
+import AttributeItem from '../components/case-gabriel/AttributeItem'
 import usePageMeta from '../hooks/usePageMeta'
+import {
+  hero, overview, challengeDiscovery, briefing, mainChange, projectDecisions,
+  identity, strategyToInterface, figmaToBrowser, result, nextStep, learning, gabrielAccent,
+} from '../data/gabriel'
 
 const IMG = '/projects/gabriel'
-const TEXT_COL = 'max-w-[70ch]'
 
-const eyebrowLine = 'UX RESEARCH · PRODUCT DESIGN · BRANDING · FRONT-END'
+const overviewIcons = { Users, Route, Smartphone, MessageCircle }
+const principleIcons = { ShieldCheck, Sparkles, Sprout }
+const briefingIcons = { Flag, Users, Target, UserCog, Layers }
 
-const quickInfo = [
-  { label: 'Cliente', value: 'Gabriel Alves — Psicólogo Clínico' },
-  { label: 'Duração', value: '1 mês' },
-  { label: 'Meu papel', value: 'UX Research · Product Design · Branding · Front-end' },
-]
-
-// Doc §10 "A descoberta" — três comportamentos que mudaram a hierarquia da página.
-const findings = [
-  {
-    n: '01',
-    label: 'As pessoas não sabem como começar',
-    body: 'Para quem nunca fez terapia, a dúvida principal não era escolher um profissional. Era entender o que aconteceria depois do primeiro contato.',
-  },
-  {
-    n: '02',
-    label: 'A decisão acontece no celular',
-    body: 'Grande parte das pessoas pesquisa profissionais em momentos de vulnerabilidade, quase sempre pelo smartphone. Isso tornou mobile-first uma decisão de produto, não apenas técnica.',
-  },
-  {
-    n: '03',
-    label: 'Segurança vem antes da credibilidade',
-    body: 'Antes de avaliar formação, currículo ou metodologia, as pessoas precisavam sentir que encontrariam um ambiente seguro. Essa descoberta redefiniu a ordem das informações.',
-  },
-]
-
-const infoOrderSteps = [
-  'Esse profissional atende pessoas como eu?',
-  'Posso confiar nele?',
-  'Como funciona?',
-  'Quanto custa?',
-  'Como entro em contato?',
-]
-
-// Duas camadas: performance (o que a decisão de HTML/CSS puro comprou) tem
-// mais peso visual que qualidade (bom, mas não é a tese do case). "1 CTA
-// único" saiu daqui — não é métrica de performance, é apoio qualitativo.
-const performanceMetrics = [
-  { value: '0', label: 'de layout shift' },
-  { value: '0ms', label: 'de bloqueio de interação' },
-]
-
-const qualityMetrics = [
-  { value: '90', label: 'em acessibilidade' },
-  { value: '92', label: 'em SEO' },
-]
-
-// Swatches do style tile — hex reais, mapeados para os tokens `gabriel-*`
-// já existentes quando batem; valores sem token viram classe arbitrária.
-// Borda 1px na própria cor do swatch em todos — os claros (Off-white acima
-// de tudo) quase somem contra o contêiner off-white do tile sem ela.
-const colorSwatches = [
-  { name: 'Sage', hex: '#8FAF9A', className: 'bg-gabriel-sage', borderClassName: 'border-gabriel-sage', dark: false },
-  { name: 'Moss', hex: '#4F6B58', className: 'bg-gabriel-moss', borderClassName: 'border-gabriel-moss', dark: true },
-  { name: 'Moss Dark', hex: '#3A5142', className: 'bg-gabriel-mossDark', borderClassName: 'border-gabriel-mossDark', dark: true },
-  { name: 'Sage Light', hex: '#B5CCB9', className: 'bg-[#B5CCB9]', borderClassName: 'border-[#B5CCB9]', dark: false },
-  { name: 'Light Green', hex: '#DDE9E1', className: 'bg-[#DDE9E1]', borderClassName: 'border-[#DDE9E1]', dark: false },
-  { name: 'Off-white', hex: '#F8F8F5', className: 'bg-gabriel-offwhite', borderClassName: 'border-gabriel-mossDark/25', dark: false },
-  { name: 'Beige', hex: '#EFEAE3', className: 'bg-gabriel-beige', borderClassName: 'border-[#EFEAE3]', dark: false },
-  { name: 'Sand', hex: '#E5DDD2', className: 'bg-gabriel-sand', borderClassName: 'border-[#E5DDD2]', dark: false },
-  { name: 'Dark', hex: '#2E2E2E', className: 'bg-gabriel-dark', borderClassName: 'border-gabriel-dark', dark: true },
-  { name: 'Text Muted', hex: '#7A7A72', className: 'bg-[#7A7A72]', borderClassName: 'border-[#7A7A72]', dark: true },
-]
+const EASE = [0.16, 1, 0.3, 1] as const
 
 export default function CaseGabriel() {
   usePageMeta({
-    title: 'Landing page para psicólogo clínico: Case | Andreo Barbosa',
-    description:
-      'Como transformar a primeira impressão digital em uma decisão mais fácil: confiança antes da primeira sessão.',
-    ogImage: `${IMG}/desktop-hero.png`,
+    title: 'Gabriel Alves — Landing page para psicólogo clínico · Andreo Barbosa',
+    description: hero.body,
+    ogImage: `${IMG}/cover.png`,
   })
 
+  const shouldReduceMotion = useReducedMotion()
+
   return (
-    <>
-      <Header />
-      <main>
+    <div className="liquid-root min-h-screen">
+      {/* D7 (correção 02): CTA da navbar troca "Contato" por "Ver todos
+          os projetos" → volta pro grid de projetos da Home. Só o
+          Gabriel — Home e Sona mantêm o default do componente. */}
+      <LiquidHeader activeSection={null} basePath="/" ctaLabel="Ver todos os projetos" ctaHref="/#projetos" ctaArrow />
 
-        {/* ── HERO ── */}
-        <GabrielSection tone="dark" className="pt-32 md:pt-40">
-          <div className="max-w-6xl mx-auto px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, x: -12 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Link
-                to="/#projetos"
-                className="inline-flex items-center gap-2 font-mono text-xs text-gabriel-offwhite/60 hover:text-gabriel-offwhite transition-colors duration-200 mb-16 group"
-              >
-                <ArrowLeft size={12} className="transition-transform duration-200 group-hover:-translate-x-1" />
-                Voltar aos projetos
-              </Link>
-            </motion.div>
-
-            <div className="grid md:grid-cols-2 gap-16 md:items-center">
-              <div className={TEXT_COL}>
-                {/* Eyebrow de disciplinas — páginas de case não têm número, o índice
-                    /0X só existe nos cards de projeto da home. */}
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.05 }}
-                  className="flex items-center gap-3 mb-6"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-gabriel-sage shrink-0" aria-hidden="true" />
-                  <div className="h-px flex-1 max-w-[48px] bg-gabriel-sage/40" aria-hidden="true" />
-                  <span className="font-mono text-case-xs text-gabriel-sage tracking-widest uppercase">
-                    {eyebrowLine}
-                  </span>
-                </motion.div>
-
-                <motion.h1
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                  className="font-outfit font-light text-gabriel-offwhite text-case-3xl md:text-case-5xl leading-[1.1] mb-6 max-w-[20ch] text-balance"
-                  style={{ letterSpacing: '-0.01em' }}
-                >
-                  Quando a confiança começa antes da primeira sessão
-                </motion.h1>
-
-                <motion.p
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  className="text-gabriel-offwhite/70 text-case-lg leading-[1.6] max-w-[45ch] mb-8 text-pretty"
-                >
-                  Como transformei a primeira impressão em uma decisão mais fácil.
-                </motion.p>
-
-                {/* Botões logo após o subtítulo — texto → ação é a maior
-                    mudança de categoria, vem antes da régua e dos metadados,
-                    não depois (ordem alinhada com os heros de Sona e IA). */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.25 }}
-                  className="flex flex-wrap gap-6 action-gap"
-                >
-                  <a
-                    href="https://psicologogabrielalves.com.br"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 font-mono text-xs text-gabriel-sage hover:text-gabriel-sage/70 bg-gabriel-sage/[0.06] backdrop-blur-sm border border-gabriel-sage/30 hover:border-gabriel-sage/50 hover:bg-gabriel-sage/[0.1] px-4 py-2 rounded-full transition-all duration-150"
-                  >
-                    Ver projeto no ar
-                    <ArrowUpRight size={12} />
-                  </a>
-                  <a
-                    href="#hipotese"
-                    className="inline-flex items-center gap-2 font-mono text-xs text-gabriel-offwhite/60 hover:text-gabriel-offwhite transition-colors duration-200"
-                  >
-                    Ler o case
-                    <ChevronDown size={12} />
-                  </a>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="max-w-[560px] border-t border-gabriel-offwhite/10 pt-6 mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6"
-                >
-                  {quickInfo.map((item) => (
-                    <div key={item.label}>
-                      <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-gabriel-offwhite/50">
-                        {item.label}
-                      </p>
-                      <p className="font-outfit font-normal text-[14px] text-gabriel-offwhite mt-4 leading-[1.4]">
-                        {item.value}
-                      </p>
-                    </div>
-                  ))}
-                </motion.div>
-              </div>
-
+      <main id="conteudo">
+        {/* Hero — LCP: imagem sem lazy, entrada no load (não no scroll),
+            eyebrow → título → corpo → CTAs em sequência curta, mockup em
+            paralelo. Sem linha de metadados — removida de propósito no
+            Figma (nó 669:3801), não reintroduzir a partir da V1. Fundo:
+            wash branco quase horizontal (linear-gradient) confirmado via
+            MCP. */}
+        <section
+          id="hero"
+          className="pt-32 md:pt-40 pb-16 md:pb-20"
+          style={{ backgroundImage: 'linear-gradient(-89.8deg, rgba(255,255,255,0) 0.76%, rgba(255,255,255,1) 62.48%)' }}
+        >
+          <div className="max-w-[1200px] mx-auto px-4 md:px-8 grid lg:grid-cols-2 gap-12 lg:gap-14 items-center">
+            <div>
               <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                className="relative"
+                className="mb-6"
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 16 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: EASE }}
               >
-                <div className="absolute inset-0 md:-m-8 rounded-full bg-gabriel-sage/10 blur-[100px]" aria-hidden="true" />
-                <div className="relative rounded-card overflow-hidden border border-gabriel-offwhite/15 shadow-[0_24px_64px_rgba(0,0,0,0.35)]">
-                  <div className="flex items-center gap-2 px-4 py-4 bg-gabriel-dark border-b border-gabriel-offwhite/10">
-                    <span className="w-2 h-2 rounded-full bg-gabriel-offwhite/15" aria-hidden="true" />
-                    <span className="w-2 h-2 rounded-full bg-gabriel-offwhite/15" aria-hidden="true" />
-                    <span className="w-2 h-2 rounded-full bg-gabriel-offwhite/15" aria-hidden="true" />
-                  </div>
-                  <img
-                    src={`${IMG}/desktop-hero.png`}
-                    alt="Hero da landing page do Psicólogo Gabriel Alves, visão desktop"
-                    loading="lazy"
-                    className="w-full h-auto block"
-                  />
-                </div>
+                <p
+                  className="font-outfit text-xs uppercase whitespace-nowrap"
+                  style={{ color: 'var(--secundaria-500)', letterSpacing: '0.96px' }}
+                >
+                  {hero.eyebrow}
+                </p>
+              </motion.div>
+              <motion.h1
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 24 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, ease: EASE, delay: 0.08 }}
+                className="font-newsreader text-[clamp(34px,4.4vw,48px)] leading-[1.125]"
+                style={{ color: 'var(--text-strong)' }}
+              >
+                {hero.titleBefore}
+                <em className="italic" style={{ color: 'var(--secundaria-500)', fontStyle: 'italic' }}>
+                  {hero.titleHighlight}
+                </em>
+                {hero.titleAfter}
+              </motion.h1>
+              <motion.p
+                className="mt-6 font-outfit text-base leading-[1.5] max-w-[46ch]"
+                style={{ color: gabrielAccent.textMuted }}
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 16 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: EASE, delay: 0.16 }}
+              >
+                {hero.body}
+              </motion.p>
+              <motion.div
+                className="mt-8 flex flex-wrap gap-4"
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: 16 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: EASE, delay: 0.24 }}
+              >
+                <a
+                  href={hero.primaryCta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-outfit font-semibold text-[15px] rounded-full px-7 py-4"
+                  style={{ background: 'var(--text-strong)', color: '#E5E7EB' }}
+                >
+                  {hero.primaryCta.label} <span aria-hidden="true">↗</span>
+                </a>
+                <a
+                  href={hero.secondaryCta.href}
+                  className="inline-flex items-center gap-2 font-outfit font-semibold text-[15px] rounded-full px-7 py-4 border"
+                  style={{ borderColor: '#D9DEE3', color: 'var(--text-strong)' }}
+                >
+                  {hero.secondaryCta.label} <span aria-hidden="true" style={{ color: gabrielAccent.textMuted }}>↓</span>
+                </a>
               </motion.div>
             </div>
-          </div>
-        </GabrielSection>
 
-        {/* ── /01 A HIPÓTESE ── */}
-        <GabrielSection tone="light" id="hipotese">
-          <div className="max-w-6xl mx-auto px-6 lg:px-8">
-            <AnimateOnScroll>
-              <div className={TEXT_COL}>
-                <div className="mb-6">
-                  <SectionLabel index="/01" label="A Hipótese" tone="gabriel-light" />
-                </div>
-
-                <div className="relative pl-6 border-l-2 border-gabriel-moss/40 mb-8">
-                  <p className="text-gabriel-mossDark/80 italic text-case-base leading-[1.6] mb-3">
-                    Buscar terapia raramente começa pela escolha de um profissional. Antes disso
-                    existe uma decisão muito mais difícil: pedir ajuda.
-                  </p>
-                  <p className="text-gabriel-mossDark/80 italic text-case-base leading-[1.6]">
-                    O desafio não era redesenhar uma landing page. Era criar uma experiência capaz
-                    de reduzir a ansiedade do primeiro contato e transmitir confiança suficiente
-                    para alguém dar o primeiro passo.
-                  </p>
-                </div>
-
-                <div className="space-y-6 text-gabriel-mossDark text-case-base leading-[1.6]">
-                  <p>
-                    Gabriel já oferecia atendimento qualificado e tinha posicionamento claro como
-                    psicólogo afirmativo para pessoas LGBTQIA+. Mas sua presença digital transmitia
-                    outra impressão: o site apresentava informações importantes sem comunicar
-                    acolhimento, clareza ou segurança — justamente os fatores que influenciam quem
-                    está considerando iniciar terapia.
-                  </p>
-                  <p>
-                    A pergunta deixou de ser &ldquo;como criar uma landing page melhor?&rdquo;.
-                  </p>
-                </div>
-
-                <Callout label="A pergunta que guiou o projeto" tone="gabriel-light">
-                  Como reduzir a ansiedade do primeiro contato antes mesmo da primeira conversa?
-                </Callout>
+            <motion.div
+              initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 1.03 }}
+              animate={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
+              className="relative rounded-2xl overflow-hidden"
+              style={{ boxShadow: '0px 24px 60px 0px rgba(26,51,77,0.18)' }}
+            >
+              <div className="flex items-center gap-1.5 px-4 py-3" style={{ background: '#F4F6F8' }}>
+                <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#D9DEE3' }} aria-hidden="true" />
+                <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#D9DEE3' }} aria-hidden="true" />
+                <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#D9DEE3' }} aria-hidden="true" />
               </div>
-            </AnimateOnScroll>
+              <img
+                src={`${IMG}/cover.png`}
+                alt="Landing page do psicólogo Gabriel Alves, visão desktop: hero com a mensagem 'Um espaço seguro para você ser quem é'"
+                width={611}
+                height={386}
+                fetchPriority="high"
+                className="w-full h-auto block object-cover"
+              />
+            </motion.div>
           </div>
-        </GabrielSection>
+        </section>
 
-        {/* ── /02 A DESCOBERTA ── */}
-        <GabrielSection tone="dark">
-          <div className="max-w-6xl mx-auto px-6 lg:px-8">
-            <AnimateOnScroll>
-              <div className={TEXT_COL}>
-                <div className="mb-6">
-                  <SectionLabel index="/02" label="A Descoberta" tone="gabriel-dark" />
-                </div>
-                <p className="text-gabriel-offwhite/80 text-case-base leading-[1.6] mb-10">
-                  Antes de abrir o Figma, conduzi uma entrevista em profundidade para entender como
-                  Gabriel conduzia seus atendimentos e quais sentimentos gostaria de despertar. A
-                  pesquisa revelou três comportamentos que mudaram a hierarquia da página.
-                </p>
-              </div>
-            </AnimateOnScroll>
+        {/* 01 — Visão Geral */}
+        <CaseSection id="visao-geral" eyebrow={overview.eyebrow}>
+          <LiquidReveal className="grid lg:grid-cols-2 gap-8 lg:gap-16">
+            <h2
+              className="font-hanken font-semibold leading-[1.1] text-[clamp(24px,3.4vw,32px)]"
+              style={{ color: 'var(--text-strong)', letterSpacing: '-0.64px' }}
+            >
+              {overview.titleBefore}
+              <span style={{ color: 'var(--secundaria-500)' }}>{overview.titleHighlight}</span>
+            </h2>
+            <p className="font-outfit text-base leading-[1.5] self-start" style={{ color: gabrielAccent.textMuted }}>
+              {overview.body}
+            </p>
+          </LiquidReveal>
+          <LiquidReveal stagger className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {overview.features.map((f) => (
+              <FeatureCard
+                key={f.title}
+                icon={overviewIcons[f.icon as keyof typeof overviewIcons]}
+                title={f.title}
+                body={f.body}
+              />
+            ))}
+          </LiquidReveal>
+        </CaseSection>
 
-            <AnimateOnScroll stagger className="grid gap-4">
-              {findings.map(({ n, label, body }) => (
-                <div
-                  key={n}
-                  className="rounded-card border border-gabriel-offwhite/10 bg-gabriel-offwhite/[0.04] px-6 py-6 flex gap-6 items-start"
+        {/* 02-03 — Desafio e Descoberta (nó 595:1160, uma única seção
+            Figma — sem eyebrow de topo própria; cada coluna carrega o
+            seu, "O DESAFIO" / "A DESCOBERTA"). */}
+        <section className="py-16">
+          <div className="max-w-[1200px] mx-auto px-4 md:px-8">
+            <LiquidReveal>
+              <div className="border-t" style={{ borderColor: gabrielAccent.divider }} />
+            </LiquidReveal>
+
+            <div className="mt-8 grid lg:grid-cols-2 gap-10 lg:gap-16">
+              {/* O Desafio */}
+              <LiquidReveal className="flex flex-col h-full justify-between gap-8">
+                <span
+                  className="font-outfit font-semibold text-xs uppercase"
+                  style={{ color: 'var(--secundaria-500)', letterSpacing: '0.24px' }}
                 >
-                  <span
-                    className="font-mono text-gabriel-sage/40 font-bold leading-none shrink-0 select-none text-case-2xl"
-                    style={{ letterSpacing: '-0.02em' }}
-                    aria-hidden="true"
+                  {challengeDiscovery.challenge.eyebrow}
+                </span>
+
+                <div className="flex flex-col gap-6">
+                  <h2
+                    className="font-hanken font-semibold leading-[1.1] text-2xl max-w-[473px]"
+                    style={{ color: 'var(--text-strong)' }}
                   >
-                    {n}
-                  </span>
-                  <div className={TEXT_COL}>
-                    <p className="font-mono text-case-sm text-gabriel-sage tracking-widest uppercase mb-2">
-                      {label}
-                    </p>
-                    <p className="text-gabriel-offwhite/70 leading-[1.6] text-case-base">{body}</p>
-                  </div>
-                </div>
-              ))}
-            </AnimateOnScroll>
-          </div>
-        </GabrielSection>
-
-        {/* ── /03 AS DECISÕES ── */}
-        <GabrielSection tone="light">
-          <div className="max-w-6xl mx-auto px-6 lg:px-8">
-            <AnimateOnScroll>
-              <div className={`${TEXT_COL} mb-4`}>
-                <SectionLabel index="/03" label="As Decisões" tone="gabriel-light" />
-              </div>
-            </AnimateOnScroll>
-
-            <div className="block-gap space-y-11 md:space-y-14 lg:space-y-18">
-              {/* Decisão 1 — Construir confiança antes de credenciais */}
-              <AnimateOnScroll>
-                <div className={TEXT_COL}>
-                  <h3 className="font-outfit font-medium text-gabriel-mossDark text-case-lg mb-3">
-                    Construir confiança antes de apresentar credenciais
-                  </h3>
-                  <p className="text-gabriel-mossDark/70 text-case-sm leading-[1.6] mb-4">
-                    <strong className="text-gabriel-mossDark font-medium">Descoberta</strong> — As
-                    pessoas buscavam acolhimento antes de buscar informação.
+                    {challengeDiscovery.challenge.title}
+                  </h2>
+                  <p className="font-outfit font-semibold text-base leading-[1.5]" style={{ color: gabrielAccent.textMuted }}>
+                    {challengeDiscovery.challenge.leadSemibold}
                   </p>
-                  <p className="text-gabriel-mossDark text-case-base leading-[1.6]">
-                    <strong className="text-gabriel-mossDark font-medium">Decisão</strong> — Inverti
-                    a lógica tradicional das landing pages. A primeira mensagem passou a comunicar
-                    pertencimento e segurança; formação, experiência e modalidades de atendimento
-                    vêm depois.
-                  </p>
-                </div>
-              </AnimateOnScroll>
-
-              <AnimateOnScroll>
-                <ProjectImage
-                  src={`${IMG}/desktop-hero.png`}
-                  alt="Hero da landing page: primeira mensagem comunica pertencimento e segurança"
-                  caption="Hero da landing: a primeira mensagem é de acolhimento, não de credencial"
-                  size="wide"
-                  tone="gabriel-light"
-                />
-              </AnimateOnScroll>
-
-              {/* Decisão 2 — Tornar o processo previsível */}
-              <AnimateOnScroll>
-                <div className={TEXT_COL}>
-                  <h3 className="font-outfit font-medium text-gabriel-mossDark text-case-lg mb-3">
-                    Tornar o processo previsível
-                  </h3>
-                  <p className="text-gabriel-mossDark/70 text-case-sm leading-[1.6] mb-4">
-                    <strong className="text-gabriel-mossDark font-medium">Descoberta</strong> — A
-                    incerteza sobre o que acontece depois da primeira mensagem aumentava a ansiedade.
-                  </p>
-                  <p className="text-gabriel-mossDark text-case-base leading-[1.6]">
-                    <strong className="text-gabriel-mossDark font-medium">Decisão</strong> — Criei
-                    uma seção dedicada a explicar todo o processo até a primeira sessão. Quando as
-                    pessoas entendem o caminho, a decisão deixa de parecer um salto no escuro.
-                  </p>
-                </div>
-              </AnimateOnScroll>
-
-              <AnimateOnScroll>
-                <ProjectImage
-                  src={`${IMG}/desktop-como-funciona.png`}
-                  alt="Seção 'Como funciona', com as etapas do processo até a primeira sessão"
-                  caption="Seção 'Como funciona': elimina a incerteza sobre o processo"
-                  size="wide"
-                  tone="gabriel-light"
-                />
-              </AnimateOnScroll>
-
-              {/* Decisão 3 — Organizar o conteúdo na ordem das dúvidas.
-                  Sequência conectada, não grid 2×2 — reforça que é uma ordem
-                  de raciocínio, não um conjunto de itens paralelos. */}
-              <AnimateOnScroll>
-                <div>
-                  <div className={`${TEXT_COL} mb-8`}>
-                    <h3 className="font-outfit font-medium text-gabriel-mossDark text-case-lg mb-3">
-                      Organizar o conteúdo na ordem das dúvidas
-                    </h3>
-                    <p className="text-gabriel-mossDark text-case-base leading-[1.6]">
-                      <strong className="text-gabriel-mossDark font-medium">Decisão</strong> — A
-                      arquitetura da informação seguiu o raciocínio natural de quem chega ao site,
-                      respondendo cada pergunta antes da próxima surgir:
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row sm:items-stretch gap-2 sm:gap-0 max-w-5xl">
-                    {infoOrderSteps.map((step, i) => (
-                      <Fragment key={step}>
-                        <div className="flex-1 sm:basis-0 min-w-0 rounded-card border border-gabriel-mossDark/15 bg-white/60 px-6 py-6 flex flex-col gap-3">
-                          <span
-                            className="font-outfit font-light text-gabriel-moss/45 text-case-3xl leading-none"
-                            aria-hidden="true"
-                          >
-                            {String(i + 1).padStart(2, '0')}
-                          </span>
-                          <p className="text-gabriel-mossDark text-case-sm leading-[1.4] text-balance">{step}</p>
-                        </div>
-                        {i < infoOrderSteps.length - 1 && (
-                          <div
-                            className="shrink-0 flex items-center justify-center text-gabriel-moss/40 py-1 sm:py-0 sm:px-2"
-                            aria-hidden="true"
-                          >
-                            <ArrowRight size={16} className="hidden sm:block" />
-                            <ArrowDown size={16} className="sm:hidden" />
-                          </div>
-                        )}
-                      </Fragment>
+                  <div className="flex flex-col gap-4">
+                    {challengeDiscovery.challenge.paragraphs.map((p) => (
+                      <p key={p} className="font-outfit text-base leading-[1.5]" style={{ color: gabrielAccent.textMuted }}>
+                        {p}
+                      </p>
                     ))}
                   </div>
                 </div>
-              </AnimateOnScroll>
 
-              {/* Decisão 4 — Um único objetivo */}
-              <AnimateOnScroll>
-                <div className={TEXT_COL}>
-                  <h3 className="font-outfit font-medium text-gabriel-mossDark text-case-lg mb-3">
-                    Um único objetivo
-                  </h3>
-                  <p className="text-gabriel-mossDark text-case-base leading-[1.6]">
-                    <strong className="text-gabriel-mossDark font-medium">Decisão</strong> — Todo
-                    elemento conduz a uma única ação: iniciar conversa pelo WhatsApp. Eliminei
-                    distrações, reduzi caminhos concorrentes e distribuí CTAs apenas quando o
-                    usuário já tinha informação suficiente para decidir.
-                  </p>
+                <div className="flex flex-col gap-4">
+                  {challengeDiscovery.challenge.quotes.map((q) => (
+                    <QuoteLine key={q}>{q}</QuoteLine>
+                  ))}
                 </div>
-              </AnimateOnScroll>
 
-              {/* Decisão 5 — A identidade visual também comunica confiança */}
-              <AnimateOnScroll>
-                <div className={TEXT_COL}>
-                  <h3 className="font-outfit font-medium text-gabriel-mossDark text-case-lg mb-3">
-                    A identidade visual também comunica confiança
-                  </h3>
-                  <p className="text-gabriel-mossDark text-case-base leading-[1.6]">
-                    <strong className="text-gabriel-mossDark font-medium">Decisão</strong> — Construí
-                    a linguagem visual para transmitir calma sem recorrer aos clichês de produtos de
-                    saúde. A combinação entre serifada e sans-serif equilibra acolhimento e
-                    legibilidade; as imagens foram geradas especificamente para o projeto.
-                  </p>
-                </div>
-              </AnimateOnScroll>
+                <p className="font-outfit text-base leading-[1.5]" style={{ color: gabrielAccent.textMuted }}>
+                  {challengeDiscovery.challenge.transitionLine}
+                </p>
 
-              {/* Style tile nativo — cores e tipografia reais, não um print.
-                  Título ("Sentient") ainda não verificado contra a landing
-                  publicada (fetch automatizado bloqueado pelo site); usa
-                  fallback sans-serif caso o CDN falhe ou a fonte mude depois. */}
-              <AnimateOnScroll>
-                <div className="rounded-card border border-gabriel-mossDark/15 bg-white/40 p-6 lg:p-8">
-                  <p className="font-mono text-case-xs text-gabriel-mossDark/50 uppercase tracking-widest mb-8">
-                    Identidade visual — cores e tipografia
-                  </p>
+                <NoteBox variant="blue" fontSize="18px">
+                  {challengeDiscovery.challenge.designQuestion}
+                </NoteBox>
+              </LiquidReveal>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                    {/* Cores */}
-                    <div>
-                      <p className="font-mono text-case-xs text-gabriel-moss tracking-widest uppercase mb-4">
-                        Cores
+              {/* A Descoberta */}
+              <LiquidReveal delay={0.1} className="flex flex-col gap-8">
+                <span
+                  className="font-outfit font-semibold text-xs uppercase"
+                  style={{ color: 'var(--secundaria-500)', letterSpacing: '0.24px' }}
+                >
+                  {challengeDiscovery.discovery.eyebrow}
+                </span>
+
+                <div className="flex flex-col gap-6">
+                  <h2 className="font-hanken font-semibold leading-[1.1] text-2xl" style={{ color: 'var(--text-strong)' }}>
+                    {challengeDiscovery.discovery.title}
+                  </h2>
+                  <div className="flex flex-col gap-4">
+                    {challengeDiscovery.discovery.paragraphs.map((p) => (
+                      <p key={p} className="font-outfit text-base leading-[1.5]" style={{ color: gabrielAccent.textMuted }}>
+                        {p}
                       </p>
-                      <div className="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-2 gap-2">
-                        {colorSwatches.map((swatch) => (
-                          <div
-                            key={swatch.hex}
-                            className={`${swatch.className} ${swatch.borderClassName} border rounded-badge px-3 py-4 flex flex-col justify-end min-h-[76px]`}
-                          >
-                            <p
-                              className={`font-mono text-[11px] leading-[1.3] ${
-                                swatch.dark ? 'text-gabriel-offwhite/90' : 'text-gabriel-mossDark/90'
-                              }`}
-                            >
-                              {swatch.name}
-                              <br />
-                              {swatch.hex}
+                    ))}
+                  </div>
+                </div>
+
+                <PrincipleList
+                  items={challengeDiscovery.discovery.principles.map((p) => ({
+                    ...p,
+                    icon: principleIcons[p.icon as keyof typeof principleIcons],
+                  }))}
+                />
+
+                <NoteBox variant="white" fontSize="16px">
+                  {challengeDiscovery.discovery.closingNote}
+                </NoteBox>
+              </LiquidReveal>
+            </div>
+          </div>
+        </section>
+
+        {/* 04 — Briefing (nó 659:996). Card escuro em gradiente, sem
+            divisor/eyebrow de seção externo — o card é a própria quebra
+            visual (confirmado via MCP, igual ao Sona/Briefing). */}
+        <section id="briefing" className="py-16">
+          <div className="max-w-[1200px] mx-auto px-4 md:px-8">
+            <LiquidReveal>
+              <DarkGradientCard>
+                <p
+                  className="font-outfit font-semibold text-xs uppercase mb-8"
+                  style={{ color: gabrielAccent.darkCardEyebrow, letterSpacing: '0.24px' }}
+                >
+                  {briefing.eyebrow}
+                </p>
+                <LiquidReveal stagger className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-8">
+                  {briefing.items.map((item) => (
+                    <DarkCardItem
+                      key={item.title}
+                      icon={briefingIcons[item.icon as keyof typeof briefingIcons]}
+                      title={item.title}
+                      body={item.body}
+                      bodyColor={item.bodyColor === 'darkCardBodyFirst' ? gabrielAccent.darkCardBodyFirst : undefined}
+                    />
+                  ))}
+                </LiquidReveal>
+              </DarkGradientCard>
+            </LiquidReveal>
+          </div>
+        </section>
+
+        {/* 05 — A Principal Mudança (nó 595:1222). Card claro
+            ANTES→DEPOIS + card de resultado, depois o mapa de 6 dúvidas.
+            Gap interno 48px (exceção confirmada via MCP). */}
+        <section id="mudanca" className="py-16">
+          <div className="max-w-[1200px] mx-auto px-4 md:px-8 flex flex-col gap-12">
+            <LiquidReveal>
+              <div className="rounded-[20px] p-6 md:p-12 flex flex-col gap-8" style={{ background: gabrielAccent.subtleBg }}>
+                <span className="font-outfit font-semibold text-xs uppercase" style={{ color: 'var(--secundaria-500)', letterSpacing: '0.24px' }}>
+                  {mainChange.eyebrow}
+                </span>
+                <h2 className="font-outfit font-semibold text-2xl leading-8" style={{ color: 'var(--text-strong)' }}>
+                  {mainChange.titleLine1}{' '}
+                  <span style={{ color: 'var(--secundaria-500)' }}>{mainChange.titleLine2}</span>
+                </h2>
+
+                <div className="flex flex-wrap items-center justify-between gap-8">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex items-center">
+                      <div
+                        className="bg-white rounded-2xl p-8 flex flex-col gap-3 items-center mr-[-8px]"
+                        style={{ border: `1px solid ${gabrielAccent.cardBorderSoft}` }}
+                      >
+                        <p className="font-outfit font-semibold text-xs self-start" style={{ color: gabrielAccent.textMuted, letterSpacing: '0.24px' }}>
+                          {mainChange.before.label}
+                        </p>
+                        {mainChange.before.steps.map((step, i) => (
+                          <div key={step} className="flex flex-col items-center gap-2.5">
+                            <p className="font-outfit font-medium text-sm whitespace-nowrap" style={{ color: gabrielAccent.textMuted }}>
+                              {step}
                             </p>
+                            {i < mainChange.before.steps.length - 1 && (
+                              <span aria-hidden="true" className="text-sm" style={{ color: gabrielAccent.textMuted }}>↓</span>
+                            )}
                           </div>
                         ))}
                       </div>
-                    </div>
-
-                    {/* Tipografia — amostras vivas, não descrição em prosa */}
-                    <div>
-                      <p className="font-mono text-case-xs text-gabriel-moss tracking-widest uppercase mb-4">
-                        Tipografia
-                      </p>
-                      <div className="space-y-5">
-                        <div>
-                          <p className="font-mono text-[10px] text-gabriel-mossDark/40 tracking-widest uppercase mb-2">
-                            Títulos
-                          </p>
-                          <div className="flex items-baseline gap-3 mb-2">
-                            <p
-                              className="text-gabriel-mossDark leading-none break-words"
-                              style={{ fontFamily: "'Sentient', Outfit, serif", fontWeight: 700, fontSize: 'clamp(40px, 6vw, 64px)' }}
-                            >
-                              Aa
-                            </p>
-                            <span className="font-mono text-[10px] text-gabriel-mossDark/40 tracking-wide">H1 · 64/Bold</span>
-                          </div>
-                          <div className="flex items-baseline gap-3 mb-2">
-                            <p
-                              className="text-gabriel-mossDark leading-none"
-                              style={{ fontFamily: "'Sentient', Outfit, serif", fontWeight: 700, fontSize: 'clamp(32px, 4.5vw, 48px)' }}
-                            >
-                              Aa
-                            </p>
-                            <span className="font-mono text-[10px] text-gabriel-mossDark/40 tracking-wide">H2 · 48/Bold</span>
-                          </div>
-                          <div className="flex items-baseline gap-3">
-                            <p
-                              className="text-gabriel-mossDark leading-none"
-                              style={{ fontFamily: "'Sentient', Outfit, serif", fontWeight: 600, fontSize: '32px' }}
-                            >
-                              Aa
-                            </p>
-                            <span className="font-mono text-[10px] text-gabriel-mossDark/40 tracking-wide">H3 · 32/SemiBold</span>
-                          </div>
-                        </div>
-                        <div className="pt-4 border-t border-gabriel-mossDark/10">
-                          <p className="font-mono text-[10px] text-gabriel-mossDark/40 tracking-widest uppercase mb-2">
-                            Corpo
-                          </p>
-                          <p className="font-outfit font-normal text-gabriel-mossDark/80 text-[18px] leading-[1.4] mb-1">
-                            Body Large 18/Regular
-                          </p>
-                          <p className="font-outfit font-normal text-gabriel-mossDark/80 text-[16px] leading-[1.4] mb-1">
-                            Body Base 16/Regular
-                          </p>
-                          <p className="font-outfit font-medium text-gabriel-mossDark/60 text-[13px] leading-[1.4]">
-                            Caption 13/Medium
-                          </p>
-                        </div>
+                      <div
+                        className="rounded-full flex items-center justify-center shrink-0 bg-white"
+                        style={{ width: 64, height: 64, border: '1.5px solid var(--secundaria-500)' }}
+                        aria-hidden="true"
+                      >
+                        <span className="text-[22px]" style={{ color: 'var(--secundaria-500)' }}>→</span>
                       </div>
                     </div>
+                    <div className="bg-white rounded-2xl p-8 flex flex-col gap-3" style={{ border: `1px solid ${gabrielAccent.cardBorderSoft}` }}>
+                      <p className="font-outfit font-semibold text-xs" style={{ color: 'var(--secundaria-500)', letterSpacing: '0.24px' }}>
+                        {mainChange.after.label}
+                      </p>
+                      {mainChange.after.steps.map((step) => (
+                        <div key={step.n} className="flex items-center gap-4 rounded-[10px] px-5 py-3.5">
+                          <p className="font-outfit font-semibold text-sm" style={{ color: 'var(--secundaria-500)' }}>{step.n}</p>
+                          <p className="font-outfit font-medium text-sm whitespace-nowrap" style={{ color: 'var(--text-strong)' }}>{step.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl pt-8 px-8 pb-16 flex flex-col gap-8" style={{ background: gabrielAccent.resultBg }}>
+                    <p className="font-mono text-xs uppercase" style={{ color: gabrielAccent.resultLabel }}>
+                      {mainChange.result.label}
+                    </p>
+                    <div className="flex flex-col gap-1">
+                      <p className="font-hanken font-semibold text-5xl leading-none" style={{ color: 'rgba(0,100,140,0.1)' }} aria-hidden="true">
+                        &ldquo;
+                      </p>
+                      <p className="font-hanken font-semibold text-2xl leading-[1.1] max-w-[314px]" style={{ color: 'var(--text-strong)' }}>
+                        {mainChange.result.quoteBefore}
+                        <span style={{ color: 'var(--secundaria-500)' }}>{mainChange.result.quoteHighlight}</span>
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </AnimateOnScroll>
+              </div>
+            </LiquidReveal>
 
-              {/* Decisão 6 — Simplicidade também é uma decisão */}
-              <AnimateOnScroll>
-                <div className={TEXT_COL}>
-                  <h3 className="font-outfit font-medium text-gabriel-mossDark text-case-lg mb-3">
-                    Simplicidade também é uma decisão
-                  </h3>
-                  <p className="text-gabriel-mossDark text-case-base leading-[1.6]">
-                    <strong className="text-gabriel-mossDark font-medium">Decisão</strong> —
-                    Desenvolvi a landing em HTML e CSS puros. Além de reduzir dependências, a
-                    escolha melhorou desempenho, facilitou manutenção e deu mais controle sobre a
-                    experiência.
-                  </p>
+            <LiquidReveal stagger className="flex flex-col gap-6">
+              <p className="font-outfit font-semibold text-lg" style={{ color: 'var(--text-strong)' }}>
+                {mainChange.sequenceTitle}
+              </p>
+              <div className="flex flex-col w-full">
+                {mainChange.sequence.map((row, i) => (
+                  <SequenceRow key={row.n} n={row.n} question={row.question} section={row.section} first={i === 0} />
+                ))}
+              </div>
+            </LiquidReveal>
+          </div>
+        </section>
+
+        {/* 06 — Decisões de Projeto (nó 595:1261). 2 capítulos com
+            layouts diferentes — Decisão 02 inverte imagem/texto e usa
+            object-fit:cover real. Gap interno 40px (exceção do briefing). */}
+        <CaseSection id="decisoes" eyebrow={projectDecisions.eyebrow} contentClassName="mt-10">
+          <LiquidReveal>
+            <h2 className="font-hanken font-semibold leading-[1.1] text-2xl mb-10" style={{ color: 'var(--text-strong)' }}>
+              {projectDecisions.intro}
+            </h2>
+          </LiquidReveal>
+
+          <DecisionChapter
+            eyebrow={projectDecisions.decision01.eyebrow}
+            title={projectDecisions.decision01.title}
+            subtitle={projectDecisions.decision01.subtitle}
+            body={[
+              { label: 'Problema', text: projectDecisions.decision01.problem },
+              { label: 'Decisão', text: projectDecisions.decision01.decision },
+            ]}
+            image={projectDecisions.decision01.image}
+            imageAlt={projectDecisions.decision01.imageAlt}
+            imageAspect="640 / 440"
+            imageWidth={640}
+            imageHeight={440}
+          />
+          <DecisionChapter
+            eyebrow={projectDecisions.decision02.eyebrow}
+            title={projectDecisions.decision02.title}
+            subtitle={projectDecisions.decision02.subtitle}
+            body={[{ text: projectDecisions.decision02.problem }]}
+            image={projectDecisions.decision02.image}
+            imageAlt={projectDecisions.decision02.imageAlt}
+            imageAspect="640 / 338"
+            imageWidth={640}
+            imageHeight={338}
+            reverse
+            bordered
+            note={projectDecisions.decision02.note}
+          />
+        </CaseSection>
+
+        {/* 07 — Identidade Visual (nó 653:982). 3 colunas: amostra +
+            título + justificativa. */}
+        <CaseSection id="identidade" eyebrow={identity.eyebrow}>
+          <LiquidReveal className="flex flex-col gap-6 w-full lg:w-[760px]">
+            <h2 className="font-hanken font-semibold leading-[1.1] text-[clamp(24px,3.4vw,32px)]" style={{ color: 'var(--text-strong)', letterSpacing: '-0.64px' }}>
+              {identity.title}
+            </h2>
+            <p className="font-outfit text-base leading-[1.5] max-w-[620px]" style={{ color: gabrielAccent.textMuted }}>
+              {identity.body}
+            </p>
+          </LiquidReveal>
+          <LiquidReveal stagger className="mt-8 flex flex-col sm:flex-row gap-8">
+            {identity.columns.map((col) => (
+              <IdentityColumn key={col.title} title={col.title} body={col.body} swatches={col.swatches} typePair={col.typePair} />
+            ))}
+          </LiquidReveal>
+        </CaseSection>
+
+        {/* 08 — Da Estratégia à Interface (nó 648:982). Screenshot
+            flutuante + 5 callouts, onda de liquid glass ao fundo
+            (opacidade 70%, overflow:hidden na seção). padding-bottom
+            96px (exceção confirmada via MCP).
+
+            D10 (correção 02): a onda NÃO é mais ancorada no topo da
+            seção — isso só reproduzia o Figma quando a seção tinha
+            exatamente 865px (a altura do arquivo); qualquer variação de
+            altura (quebra de título, padding responsivo, breakpoint)
+            escorregava a onda pra baixo até sumir. Confirmado via MCP
+            (nó 648:989, metadata): o card do screenshot vive em y=249
+            dentro da seção, a onda em y=0 — deslocamento fixo de
+            -249px/-120px entre os dois. Reancorada dentro do container
+            "Composição" (que embrulha o card), não da seção: onde quer
+            que esse container caia verticalmente (independente da
+            altura do título acima), a onda cai junto, sempre no mesmo
+            deslocamento relativo ao card. Largura em vw (não % do
+            container) pra continuar proporcional à seção/viewport, não
+            ao card de 800px.
+
+            D11 (correção 02): abaixo de lg a onda some (escolhi ocultar,
+            não reposicionar em fluxo — um elemento decorativo bleeding
+            de 1610px não fecha bem em nenhuma largura de mobile/tablet
+            sem arriscar encostar nos callouts; a regra do projeto é
+            vidro nunca sobre texto, perder o enfeite é a opção mais
+            segura). Confirmado que a composição da seção 12 não tem o
+            mesmo risco — ela já é um item de fluxo, nunca absolute,
+            sempre depois do texto no mobile. */}
+        {/* E2 (correção 03): eyebrow/título lavados — causa era stacking
+            implícito (position sem z-index explícito + motion.div do
+            LiquidReveal, que pode isolar seu próprio contexto de
+            empilhamento via transform/opacity do Framer Motion,
+            deixando a ordem final ambígua). isolate no container cria
+            UM contexto de empilhamento comum pra tudo dentro dele
+            (inclusive a onda, aninhada mais fundo, dentro de
+            "Composição"), e -z-10 explícito na onda garante que ela
+            pinta abaixo de qualquer outro conteúdo desse contexto,
+            sem depender de ordem de DOM. */}
+        <section className="relative overflow-hidden pt-16 pb-24">
+          <div className="relative isolate max-w-[1200px] mx-auto px-4 md:px-8">
+            <LiquidReveal>
+              <div className="border-t pt-6 md:pt-8" style={{ borderColor: gabrielAccent.divider }}>
+                <span className="block font-outfit font-semibold text-xs uppercase" style={{ color: 'var(--secundaria-500)', letterSpacing: '0.24px' }}>
+                  {strategyToInterface.eyebrow}
+                </span>
+              </div>
+            </LiquidReveal>
+            <LiquidReveal delay={0.05}>
+              <h2 className="mt-8 font-hanken font-semibold leading-[1.1] text-[clamp(24px,3.4vw,32px)] max-w-[760px]" style={{ color: 'var(--text-strong)', letterSpacing: '-0.64px' }}>
+                {strategyToInterface.title}
+              </h2>
+            </LiquidReveal>
+            {/* Mobile empilha texto antes de imagem (regra do briefing) —
+                no Figma a imagem vem antes visualmente (desktop, lg:), a
+                ordem no DOM é invertida via order-* pra achar as duas
+                coisas ao mesmo tempo. */}
+            <div className="relative mt-8 flex flex-col lg:flex-row gap-8 items-start">
+              <img
+                src="/gabriel-liquid-wave.png"
+                alt=""
+                width={1610}
+                height={1610}
+                loading="lazy"
+                aria-hidden="true"
+                className="hidden lg:block pointer-events-none absolute -z-10 opacity-70"
+                style={{ left: -120, top: -249, width: '111.8vw', height: 'auto', aspectRatio: '1 / 1', maxWidth: 'none' }}
+              />
+              {/* relative: garante que o card pinte acima da onda (irmãs
+                  absolute/relative pintam por ordem de DOM; sem isso um
+                  item de flex não-posicionado pintaria por baixo dela
+                  mesmo vindo depois no DOM). */}
+              <LiquidReveal delay={0.1} className="relative order-2 lg:order-1 w-full lg:w-[800px] shrink-0">
+                <div
+                  className="rounded-[20px] overflow-hidden border"
+                  style={{ borderColor: gabrielAccent.cardBorder, boxShadow: '0px 24px 30px 0px rgba(12,26,34,0.1)', aspectRatio: '800 / 520' }}
+                >
+                  <img
+                    src={strategyToInterface.image}
+                    alt={strategyToInterface.imageAlt}
+                    width={800}
+                    height={520}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-              </AnimateOnScroll>
+              </LiquidReveal>
+              <LiquidReveal stagger delay={0.15} className="relative order-1 lg:order-2 flex flex-col gap-6 w-full lg:w-[368px]">
+                {strategyToInterface.callouts.map((c) => (
+                  <CalloutDot key={c}>{c}</CalloutDot>
+                ))}
+              </LiquidReveal>
             </div>
           </div>
-        </GabrielSection>
+        </section>
 
-        {/* ── PRINTS: ÁREAS · FAQ · RESPONSIVO ── */}
-        <GabrielSection tone="dark">
-          <div className="max-w-6xl mx-auto px-6 lg:px-8">
-            <AnimateOnScroll>
-              <ProjectImage
-                src={`${IMG}/desktop-areas.png`}
-                alt="Seção de áreas de atuação da landing page, com 6 cards de especialidades"
-                caption="Áreas de atuação: 6 cards, escaneáveis, com linguagem direta"
-                size="wide"
-                tone="gabriel-dark"
-              />
-            </AnimateOnScroll>
-            <AnimateOnScroll>
-              <ProjectImage
-                src={`${IMG}/desktop-faq.png`}
-                alt="Seção de FAQ, com perguntas frequentes em formato acordeão"
-                caption="FAQ: responde as dúvidas antes que virem objeções"
-                size="wide"
-                tone="gabriel-dark"
-              />
-            </AnimateOnScroll>
-            <AnimateOnScroll>
-              <ProjectImage
-                src={`${IMG}/responsive-desktop-mobile.png`}
-                alt="Comparativo desktop e mobile: responsividade da landing page"
-                caption="Mobile-first: a maior parte do tráfego por terapia vem do celular"
-                size="wide"
-                tone="gabriel-dark"
-              />
-            </AnimateOnScroll>
+        {/* 09 — Do Figma ao Navegador (nó 649:982). Texto + grade 2×2 de
+            atributos, gap de 80px entre colunas (exceção confirmada via
+            MCP). */}
+        <CaseSection id="implementacao" eyebrow={figmaToBrowser.eyebrow}>
+          <div className="flex flex-col lg:flex-row gap-10 lg:gap-20">
+            <LiquidReveal className="flex flex-col gap-6 w-full lg:w-[540px] shrink-0">
+              <h2 className="font-hanken font-semibold leading-[1.1] text-[clamp(24px,3.4vw,32px)]" style={{ color: 'var(--text-strong)', letterSpacing: '-0.64px' }}>
+                {figmaToBrowser.title}
+              </h2>
+              <p className="font-outfit text-base leading-[1.5]" style={{ color: gabrielAccent.textMuted }}>
+                {figmaToBrowser.body}
+              </p>
+            </LiquidReveal>
+            <LiquidReveal stagger className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-8">
+              {figmaToBrowser.attributes.map((a) => (
+                <AttributeItem key={a.title} title={a.title} body={a.body} />
+              ))}
+            </LiquidReveal>
           </div>
-        </GabrielSection>
+        </CaseSection>
 
-        {/* ── /04 O RESULTADO ── */}
-        <GabrielSection tone="light">
-          <div className="max-w-6xl mx-auto px-6 lg:px-8">
-            <AnimateOnScroll>
-              <div className={TEXT_COL}>
-                <div className="mb-6">
-                  <SectionLabel index="/04" label="O Resultado" tone="gabriel-light" />
-                </div>
-                <p className="text-gabriel-mossDark text-case-base leading-[1.6] mb-10">
-                  Mais do que apresentar um profissional, a landing passou a apoiar uma decisão
-                  emocional.
-                </p>
-              </div>
-            </AnimateOnScroll>
-
-            {/* Métricas em duas camadas: performance (a tese do "HTML/CSS puro")
-                domina; qualidade é secundária, cards menores. "1 CTA único" não
-                é métrica de performance — vive na lista qualitativa abaixo. */}
-            <AnimateOnScroll>
-              <div className="grid grid-cols-2 gap-4 max-w-md mb-4">
-                {performanceMetrics.map((metric) => (
-                  <div
-                    key={metric.label}
-                    className="rounded-card border border-gabriel-mossDark/15 bg-white/60 px-6 py-6"
-                  >
-                    <p className="font-satoshi font-bold text-gabriel-mossDark text-4xl leading-none mb-2">
-                      {metric.value}
+        {/* 10 — Resultado (nó 649:1011). Dois painéis de mesma largura —
+            "rebaixado" (fundo plano) × "elevado" (borda + sombra). */}
+        <CaseSection id="resultado" eyebrow={result.eyebrow}>
+          <LiquidReveal>
+            <h2 className="font-hanken font-semibold leading-[1.1] text-[clamp(24px,3.4vw,32px)] max-w-[760px]" style={{ color: 'var(--text-strong)', letterSpacing: '-0.64px' }}>
+              {result.title}
+            </h2>
+          </LiquidReveal>
+          <LiquidReveal stagger className="mt-8 flex flex-col md:flex-row gap-8">
+            <div className="flex-1 rounded-2xl p-8 flex flex-col gap-8" style={{ background: gabrielAccent.subtleBg }}>
+              <p className="font-outfit font-semibold text-xs leading-none uppercase" style={{ color: gabrielAccent.textSubtle, letterSpacing: '0.26px' }}>
+                {result.technical.label}
+              </p>
+              <div className="flex gap-6">
+                {result.technical.stats.map((s) => (
+                  <div key={s.label} className="flex-1 flex flex-col gap-2">
+                    <p className="font-hanken font-semibold leading-[1.1] text-6xl" style={{ color: 'var(--secundaria-500)', letterSpacing: '-1.92px' }}>
+                      {s.value}
                     </p>
-                    <p className="font-mono text-[11px] text-gabriel-mossDark/60 tracking-wide uppercase leading-[1.4]">
-                      {metric.label}
-                    </p>
+                    <p className="font-outfit text-sm" style={{ color: gabrielAccent.textMuted }}>{s.label}</p>
                   </div>
                 ))}
               </div>
-            </AnimateOnScroll>
-
-            <AnimateOnScroll>
-              <div className="grid grid-cols-2 gap-3 max-w-xs mb-10">
-                {qualityMetrics.map((metric) => (
-                  <div
-                    key={metric.label}
-                    className="rounded-badge border border-gabriel-mossDark/10 px-4 py-3"
-                  >
-                    <p className="font-satoshi font-semibold text-gabriel-mossDark/80 text-xl leading-none mb-1">
-                      {metric.value}
-                    </p>
-                    <p className="font-mono text-[10px] text-gabriel-mossDark/50 tracking-wide uppercase leading-[1.3]">
-                      {metric.label}
-                    </p>
-                  </div>
+            </div>
+            <div
+              className="flex-1 rounded-2xl p-8 flex flex-col gap-6 bg-white"
+              style={{ border: `1px solid ${gabrielAccent.cardBorder}`, boxShadow: '0px 16px 40px 0px rgba(12,26,34,0.08)' }}
+            >
+              <p className="font-outfit font-semibold text-xs" style={{ color: 'var(--secundaria-500)', letterSpacing: '0.24px' }}>
+                {result.design.label}
+              </p>
+              <ul className="flex flex-col gap-6">
+                {result.design.items.map((item) => (
+                  <li key={item} className="font-outfit text-base leading-[1.5]" style={{ color: 'var(--text-strong)' }}>
+                    {item}
+                  </li>
                 ))}
-              </div>
-            </AnimateOnScroll>
+              </ul>
+            </div>
+          </LiquidReveal>
+        </CaseSection>
 
-            <AnimateOnScroll>
-              <div className={TEXT_COL}>
-                <DashList>
-                  {[
-                    'Comunica acolhimento e profissionalismo desde o primeiro scroll',
-                    'Caminho de conversão direto e sem distrações, com CTA único de WhatsApp',
-                    'Custo de manutenção mínimo, sem dependências de CMS',
-                  ].map((item) => (
-                    <DashItem key={item} markerClassName="text-gabriel-moss">{item}</DashItem>
-                  ))}
-                </DashList>
+        {/* 11 — Próximo Passo (nó 650:982). Explicitamente prospectivo —
+            "métricas que seriam acompanhadas", não resultado obtido. */}
+        <CaseSection id="proximo-passo" eyebrow={nextStep.eyebrow}>
+          <LiquidReveal className="flex flex-col gap-4 max-w-[760px]">
+            <h2 className="font-hanken font-semibold leading-[1.1] text-[clamp(24px,3.4vw,32px)]" style={{ color: 'var(--text-strong)', letterSpacing: '-0.64px' }}>
+              {nextStep.title}
+            </h2>
+            <p className="font-outfit text-base leading-[1.5]" style={{ color: gabrielAccent.textMuted }}>
+              {nextStep.lead}
+            </p>
+          </LiquidReveal>
+          <LiquidReveal stagger className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {nextStep.metrics.map((m) => (
+              <div key={m.n} className="flex flex-col gap-3">
+                <p className="font-outfit font-semibold text-xs" style={{ color: 'var(--secundaria-500)', letterSpacing: '0.24px' }}>{m.n}</p>
+                <p className="font-outfit font-semibold text-base" style={{ color: 'var(--text-strong)' }}>{m.title}</p>
+                <p className="font-outfit text-sm leading-[1.5]" style={{ color: gabrielAccent.textMuted }}>{m.body}</p>
               </div>
-            </AnimateOnScroll>
-          </div>
-        </GabrielSection>
+            ))}
+          </LiquidReveal>
+          <LiquidReveal delay={0.1} className="mt-8">
+            <NoteBox variant="blue" textColor={gabrielAccent.noteBlueAlt} fontSize="14px" className="inline-block w-auto px-5 py-4">
+              {nextStep.note}
+            </NoteBox>
+          </LiquidReveal>
+        </CaseSection>
 
-        {/* ── /05 O APRENDIZADO ── */}
-        <GabrielSection tone="dark" className="pb-24 md:pb-32">
-          <div className="max-w-6xl mx-auto px-6 lg:px-8">
-            <AnimateOnScroll>
-              <div className={TEXT_COL}>
-                <div className="mb-6">
-                  <SectionLabel index="/05" label="O Aprendizado" tone="gabriel-dark" />
-                </div>
-                <div className="space-y-6 text-gabriel-offwhite/80 text-case-base leading-[1.6] mb-8">
-                  <p>
-                    Este projeto mudou minha forma de enxergar produtos digitais para saúde. Percebi
-                    que interfaces não conquistam confiança — elas apenas criam as condições para
-                    que ela aconteça.
+        {/* 12 — Aprendizado (nó 650:1010). Última seção — nada depois
+            além do footer. Composição de vidro (assests 7 → renomeado
+            gabriel-liquid-composition.png) implementada via flex, não
+            pixel absoluto do Figma — os dois extratores MCP discordavam
+            na posição vertical (ver B0); ajustado visualmente. */}
+        <section id="aprendizado" className="relative overflow-hidden pt-24 pb-32">
+          <div className="max-w-[1200px] mx-auto px-4 md:px-8">
+            <LiquidReveal>
+              <div className="border-t pt-6 md:pt-8" style={{ borderColor: gabrielAccent.divider }}>
+                <span className="block font-outfit font-semibold text-xs uppercase" style={{ color: 'var(--secundaria-500)', letterSpacing: '0.24px' }}>
+                  {learning.eyebrow}
+                </span>
+              </div>
+            </LiquidReveal>
+
+            <div className="mt-12 flex flex-col lg:flex-row gap-12 items-center">
+              <div className="flex flex-col gap-12 w-full lg:w-[720px] shrink-0">
+                <LiquidReveal className="flex flex-col gap-8">
+                  <h2 className="font-hanken font-semibold leading-[1.1] text-[clamp(32px,4.4vw,48px)]" style={{ color: 'var(--text-strong)', letterSpacing: '-0.96px' }}>
+                    {learning.title}
+                  </h2>
+                  <p className="font-outfit text-lg leading-[1.5] max-w-[680px]" style={{ color: gabrielAccent.textMuted }}>
+                    {learning.body}
                   </p>
-                  <p>
-                    Quando alguém chega a um produto em momento de vulnerabilidade, a primeira
-                    necessidade não é encontrar funcionalidades. É sentir segurança para seguir em
-                    frente.
+                </LiquidReveal>
+                <LiquidReveal delay={0.1} className="flex flex-col gap-5 pt-10">
+                  <span className="block h-0.5 w-16" style={{ background: 'var(--secundaria-500)' }} aria-hidden="true" />
+                  <p className="font-outfit text-base leading-[1.5]" style={{ color: gabrielAccent.textMuted }}>
+                    {learning.leadIn}
                   </p>
-                </div>
-                <p className="text-gabriel-offwhite/90 text-[17px] italic border-l-2 border-gabriel-sage/60 pl-6">
-                  Desde então, olho para cada interface com uma pergunta diferente: o que essa
-                  pessoa precisa sentir antes de conseguir decidir?
-                </p>
+                  <p className="font-hanken font-semibold leading-[1.1] text-[clamp(24px,3vw,32px)]" style={{ color: gabrielAccent.noteBlueAlt, letterSpacing: '-0.64px' }}>
+                    {learning.question}
+                  </p>
+                </LiquidReveal>
               </div>
-            </AnimateOnScroll>
 
-            {/* Closing */}
-            <AnimateOnScroll>
-              <div className="pt-4 mt-12 border-t border-gabriel-offwhite/10">
-                <div className="mt-12 flex flex-col gap-8">
-                  {/* Linha 1: CTAs */}
-                  <div className="flex items-center gap-4">
-                    <a
-                      href="https://psicologogabrielalves.com.br"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 font-mono text-xs text-gabriel-sage hover:text-gabriel-sage/70 bg-gabriel-sage/[0.06] backdrop-blur-sm border border-gabriel-sage/30 hover:border-gabriel-sage/50 hover:bg-gabriel-sage/[0.1] px-4 py-2 rounded-full transition-all duration-150"
-                    >
-                      Ver projeto no ar
-                      <ArrowUpRight size={12} />
-                    </a>
-                    <a
-                      href="https://linkedin.com/in/andreo-barbosa/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="LinkedIn de Andreo Barbosa"
-                      className="text-gabriel-offwhite/60 hover:text-gabriel-sage transition-colors duration-200"
-                    >
-                      <LinkedInIcon className="w-[18px] h-[18px]" />
-                    </a>
-                  </div>
-
-                  {/* Linha 2: navegação entre cases */}
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
-                    <Link
-                      to="/#projetos"
-                      className="inline-flex items-center gap-2 font-mono text-xs text-gabriel-offwhite/60 hover:text-gabriel-offwhite transition-colors duration-200"
-                    >
-                      <ArrowLeft size={12} />
-                      Voltar aos projetos
-                    </Link>
-
-                    <Link
-                      to="/case/sona"
-                      className="font-mono text-xs text-gabriel-offwhite/60 hover:text-gabriel-offwhite transition-colors duration-200 whitespace-nowrap"
-                    >
-                      Próximo case → Sona
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </AnimateOnScroll>
+              <motion.div
+                className="flex-1 flex justify-center lg:justify-end w-full"
+                initial={shouldReduceMotion ? undefined : { opacity: 0 }}
+                whileInView={shouldReduceMotion ? undefined : { opacity: 1 }}
+                viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
+                transition={{ duration: 0.6, ease: EASE }}
+              >
+                <img
+                  src="/gabriel-liquid-composition.png"
+                  alt=""
+                  width={620}
+                  height={620}
+                  loading="lazy"
+                  aria-hidden="true"
+                  className="w-full max-w-[420px] lg:max-w-[500px] h-auto"
+                  style={{ opacity: 0.9, transform: 'rotate(-24.7deg)' }}
+                />
+              </motion.div>
+            </div>
           </div>
-        </GabrielSection>
-
+        </section>
       </main>
-      <Footer />
-    </>
+
+      <LiquidFooter />
+    </div>
   )
 }

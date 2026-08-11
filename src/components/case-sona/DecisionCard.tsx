@@ -33,8 +33,11 @@ export default function DecisionCard({ icon: Icon, title, problem, decision, imp
     >
       <div className="flex flex-col gap-4 flex-1 min-w-0">
         <div className="flex items-center gap-3">
+          {/* C2 (correção): os 3 ícones desta lista (Automatizar/Construir
+              confiança/Sugerir sem decidir) confirmados #3B6EA5 via MCP —
+              baixei e chequei o stroke dos 3 SVGs, sem exceção aqui. */}
           <span className="flex items-center justify-center w-7 h-7 rounded-lg shrink-0" style={{ background: sonaAccent.hypothesisBg }} aria-hidden="true">
-            <Icon size={15} style={{ color: sonaAccent.blue }} strokeWidth={2} />
+            <Icon size={15} style={{ color: 'var(--secundaria-500)' }} strokeWidth={2} />
           </span>
           <p className="font-outfit font-semibold text-base flex-1" style={{ color: 'var(--text-strong)' }}>
             {title}

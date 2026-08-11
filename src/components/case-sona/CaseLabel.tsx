@@ -10,7 +10,7 @@ import type { ElementType, ReactNode } from 'react'
 // A variante "on-dark" (criada no Ajustes 02 pra "BRIEFING" e "Como
 // investigaria") foi removida: os dois usos que a motivavam voltaram pra
 // tipografia original nesta rodada, então ficaria morta no componente.
-type Variant = 'section' | 'column' | 'column-on-tint' | 'muted' | 'state-in' | 'state-out'
+type Variant = 'section' | 'column' | 'column-accent' | 'column-on-tint' | 'muted' | 'state-in' | 'state-out'
 
 type Props = {
   as?: ElementType
@@ -37,8 +37,19 @@ export function caseLabelStyle(variant: Variant) {
 }
 
 const styles: Record<Variant, { fontSize: string; letterSpacing: string; color: string }> = {
-  section: { fontSize: '12px', letterSpacing: '0.14em', color: '#00648C' },
+  // C2 (correção secundaria-500, commit Sona): confirmado via MCP (nó
+  // 577:2019) que o eyebrow do hero é #3B6EA5 no Figma — não mais o
+  // #00648C antigo. Única consumidora da variante 'section' (grep
+  // confirmado), então seguro trocar aqui em vez de fazer override
+  // pontual no call site.
+  section: { fontSize: '12px', letterSpacing: '0.14em', color: 'var(--secundaria-500)' },
   column: { fontSize: '11px', letterSpacing: '0.12em', color: '#00648C' },
+  // Variante nova, só para os 3 cabeçalhos da tabela de evidências (nó
+  // 585:3451 — confirmado #3B6EA5 via MCP). NÃO alterei a variante
+  // 'column' original: ela também é usada pelo label "Hipótese de
+  // design" (HypothesisCard), que no Figma continua #3B3F46, não azul —
+  // mudar 'column' direto teria azulado esse label por engano.
+  'column-accent': { fontSize: '11px', letterSpacing: '0.12em', color: 'var(--secundaria-500)' },
   'column-on-tint': { fontSize: '11px', letterSpacing: '0.12em', color: '#0A4E6E' },
   muted: { fontSize: '11px', letterSpacing: '0.12em', color: '#6E7F86' },
   'state-in': { fontSize: '11px', letterSpacing: '0.12em', color: '#3F6B4D' },

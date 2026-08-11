@@ -50,7 +50,9 @@ export default function LiquidHero() {
           )}
         </motion.div>
 
-        <div className="flex flex-col items-center gap-10 mt-8 md:mt-12">
+        {/* D9 (correção 02): gap-[40px] confirmado via MCP (nó 133:248) —
+            era mt-8/mt-12 (32/48px), nenhum dos dois batia. */}
+        <div className="flex flex-col items-center gap-10 mt-10">
           <div className="flex flex-col gap-6 items-center text-center w-full">
             <motion.h1
               className="liquid-type-hero-title text-balance"

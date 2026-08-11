@@ -34,13 +34,13 @@ export default function EvidenceTable({ columns, rows }: Props) {
       {/* Cabeçalho — só a partir de 860px */}
       <div role="row" className={`hidden min-[860px]:grid min-[860px]:grid-cols-[minmax(0,26fr)_minmax(0,34fr)_minmax(0,32fr)]`}>
         <div role="columnheader" className="px-6 py-4 bg-white" style={{ borderBottom: '1px solid #CFD8DD' }}>
-          <CaseLabel variant="column">{columns[0]}</CaseLabel>
+          <CaseLabel variant="column-accent">{columns[0]}</CaseLabel>
         </div>
         <div role="columnheader" className="px-6 py-4 bg-white" style={{ borderBottom: '1px solid #CFD8DD' }}>
-          <CaseLabel variant="column">{columns[1]}</CaseLabel>
+          <CaseLabel variant="column-accent">{columns[1]}</CaseLabel>
         </div>
         <div role="columnheader" className="px-6 py-4" style={{ background: '#DDE9F0', borderBottom: '1px solid #BFD3DF' }}>
-          <CaseLabel variant="column-on-tint">{columns[2]}</CaseLabel>
+          <CaseLabel variant="column-accent">{columns[2]}</CaseLabel>
         </div>
       </div>
 

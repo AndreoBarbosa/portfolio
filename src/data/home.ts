@@ -84,7 +84,10 @@ export const projects: Project[] = [
     context: 'Pesquisa aplicada · IA',
     badge: 'NOVO',
     caseRoute: '/case/ia-hospitalar',
-    media: { static: '/projects/sysmed/static.png', hover: '/projects/sysmed/hover.mp4' },
+    // D8 (correção 02): era '.mp4', mas o arquivo real em
+    // public/projects/sysmed/ é hover.webm — o <video> nunca tinha uma
+    // fonte válida (404 silencioso), por isso não disparava no hover.
+    media: { static: '/projects/sysmed/static.png', hover: '/projects/sysmed/hover.webm' },
   },
   {
     id: 'gabriel-alves',

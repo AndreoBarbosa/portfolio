@@ -33,12 +33,12 @@ export default function AboutSection() {
           {/* Coluna esquerda — 586px no Figma */}
           <LiquidReveal delay={0.1} className="flex flex-col gap-14 lg:w-[586px] lg:flex-none">
             <div>
-              <h2 className="liquid-type-section-title" style={{ color: '#0C1A22' }}>
+              <h2 className="liquid-type-section-title" style={{ color: 'var(--text-strong)' }}>
                 Cheguei ao
                 <br />
                 Product Design
                 <br />
-                pelo <span style={{ color: '#355972' }}>suporte técnico.</span>
+                pelo <span style={{ color: 'var(--secundaria-500)' }}>suporte técnico.</span>
               </h2>
               <div className="mt-8 flex flex-col gap-4 max-w-[385px]">
                 <p className="liquid-type-body-sm" style={{ color: '#0C1A22' }}>
@@ -58,7 +58,8 @@ export default function AboutSection() {
                 <Fragment key={item.title}>
                   {i > 0 && <span className="liquid-about-divider" aria-hidden="true" />}
                   <div role="listitem" className="liquid-about-principle">
-                    <item.icon size={40} strokeWidth={1.5} color="#0C1A22" aria-hidden="true" />
+                    {/* D6 (correção 02): stroke migrado pra secundaria-500. */}
+                    <item.icon size={40} strokeWidth={1.5} color="var(--secundaria-500)" aria-hidden="true" />
                     <h3>{item.title}</h3>
                     <p>{item.description}</p>
                   </div>
@@ -85,20 +86,27 @@ export default function AboutSection() {
         </div>
       </div>
 
-      {/* Composição do líquido fora do grid de texto (max-w-[1199px]) de
-          propósito — ela precisa ocupar 100% da largura da seção, não a
-          largura do conteúdo. A foto ganha seu próprio frame com o MESMO
-          max-w-[1199px] px-4 md:px-8 do grid de texto, só pra preservar
-          exatamente o cálculo de largura (min(1358px,94%)) que ela já
-          tinha — sem isso, 94% passaria a ser relativo à seção inteira
-          (quase a viewport), e a foto cresceria além do aprovado. */}
-      <LiquidReveal delay={0.2} className="mt-16 md:mt-20 liquid-about-composition">
+      {/* Fundo (onda + foto) — correção 09 (G2). A correção 07 prendeu o
+          bloco de imagem dentro do container max-w-[1199px] do grid de
+          texto, o que travava a onda na borda da grid em vez de sangrar
+          — regressão. Volta pra MESMA arquitetura já validada em
+          .liquid-thesis-bg-zone/.liquid-thesis-bg e .liquid-trajectory-bg
+          (ver liquid-glass.css): uma ZONA em fluxo normal (reserva o
+          espaço vertical, preserva o respiro de 96px desktop/64px tablet
+          e mobile aprovado na correção 07 — sem position:absolute na
+          zona, sem deslocamento negativo) + a imagem em position:absolute,
+          width:100vw SEM max-width, centralizada por left:50%+translateX,
+          ultrapassando a grid de 1199px igual à Tese/Trajetória. A foto
+          acompanha a onda (não a grid): também centralizada e dimensionada
+          em vw dentro da zona, escala junto com o fundo em qualquer
+          viewport — ver nota em .liquid-about-photo sobre abandonar o
+          deslocamento assimétrico do Figma (calculado pra uma onda
+          contida em 1441px, sem sentido com a onda em 100vw). */}
+      <LiquidReveal delay={0.2} className="mt-16 lg:mt-24 liquid-about-image-zone">
         <div className="liquid-about-bg" aria-hidden="true">
-          <img src="/fundo-sobre.png" alt="" />
+          <img src="/fundo-sobre.png" alt="" loading="lazy" />
         </div>
-        <div className="w-full max-w-[1199px] mx-auto px-4 md:px-8 flex justify-center">
-          <img src="/perfil.png" alt="Foto de Andreo Barbosa" className="liquid-about-photo" loading="lazy" />
-        </div>
+        <img src="/perfil.png" alt="Foto de Andreo Barbosa" className="liquid-about-photo" loading="lazy" />
       </LiquidReveal>
     </section>
   )

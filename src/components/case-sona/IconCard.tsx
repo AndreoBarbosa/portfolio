@@ -14,7 +14,9 @@ type Props = {
 export default function IconCard({ icon: Icon, title, body, className = '' }: Props) {
   return (
     <div className={`bg-white flex flex-col gap-4 p-6 ${className}`}>
-      <Icon size={24} strokeWidth={1.75} style={{ color: 'var(--text-strong)' }} aria-hidden="true" />
+      {/* D4 (correção 02): os 4 ícones da Visão Geral confirmados stroke
+          #3B6EA5 via MCP (baixei os 4 SVGs, cor real no traço). */}
+      <Icon size={24} strokeWidth={1.75} style={{ color: 'var(--secundaria-500)' }} aria-hidden="true" />
       <div className="flex flex-col gap-2">
         <p className="font-outfit font-semibold text-base" style={{ color: 'var(--text-strong)' }}>
           {title}

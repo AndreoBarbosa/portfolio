@@ -35,6 +35,8 @@ const config: Config = {
         mono: ['"JetBrains Mono"', 'monospace'],
         outfit: ['Outfit', 'system-ui', 'sans-serif'],
         hanken: ['"Hanken Grotesk"', 'sans-serif'],
+        newsreader: ['Newsreader', 'Georgia', 'serif'],
+        'source-serif': ['"Source Serif 4"', 'Georgia', 'serif'],
       },
       fontSize: {
         // Escala par reutilizável nas páginas de case (Sona, Gabriel, ...)

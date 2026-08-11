@@ -117,7 +117,7 @@ function ProjectCard({ project }: { project: Project }) {
                   muted
                   loop
                   playsInline
-                  preload="none"
+                  preload="metadata"
                   poster={project.media.static}
                   style={{ opacity: hovering ? 1 : 0 }}
                   aria-hidden="true"

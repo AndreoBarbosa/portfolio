@@ -51,6 +51,15 @@
   --radius:    16px;
   --radius-lg: 24px;
 
+  /* segundária-500 — NÃO é um acento de chrome (navbar/footer/botão
+     global continuam monocromáticos, ver filosofia acima). É a cor de
+     destaque de CONTEÚDO dos cases (eyebrow de seção, palavra/frase
+     destacada em título, badges numerados) — hoje usada por Gabriel e,
+     em commit separado, pelo Sona (que ainda hardcoda #355972 em
+     data/sona.ts; ver briefing de migração antes de trocar). Token único
+     pra parar de espalhar o hex em JSX. */
+  --secundaria-500: #3B6EA5;
+
   background: var(--bg);
   color: var(--text-body);
   font-family: 'Outfit', system-ui, sans-serif;
@@ -1154,13 +1163,15 @@
 }
 
 /* Sobre — coluna direita: aspa decorativa serifada (ABeeZee) colada
-   sobre o destaque via margin negativa, valores exatos do Figma. */
+   sobre o destaque via margin negativa, valores exatos do Figma.
+   D6 (correção 02): cor migrada pra secundaria-500 — exceção à Home
+   intocada, autorizada explicitamente pelo Andreo (mesma cor no Figma). */
 .liquid-about-quote-mark {
   display: block;
   font-family: 'ABeeZee', serif;
   font-size: 128px;
   line-height: 1;
-  color: #355972;
+  color: var(--secundaria-500);
   margin-bottom: -52px;
 }
 .liquid-about-highlight {
@@ -1170,52 +1181,46 @@
   line-height: 1.1;
 }
 
-/* Sobre — grupo foto+líquido. O líquido é full-bleed (width:100vw,
-   toca as duas bordas da tela, conforme Figma aprovado) — sem teto de
-   largura em px/vw.
+/* Sobre — bloco de imagem (onda + foto), correção 10. MESMA arquitetura
+   já validada em .liquid-thesis-bg-zone/.liquid-thesis-bg e
+   .liquid-trajectory-bg (ver mais abaixo/acima neste arquivo) — não um
+   terceiro padrão. A correção 07 (F2) tinha posto esse bloco dentro do
+   max-w-[1199px] do grid de texto, travando a onda na borda da grid; a
+   correção 09 (G2) tirou a onda pra 100vw sangrando, mas deixou a ALTURA
+   do bloco presa à proporção da onda (830/1441) — como a foto (1136/752)
+   é proporcionalmente mais baixa, sobrava uma faixa clara da onda entre
+   o fim da foto e o fim do bloco. Corrigido aqui invertendo quem manda
+   na altura.
 
-   O PNG de origem é quadrado (1536×1536) com bastante respiro
-   transparente acima/abaixo do desenho (o traço em si ocupa só a faixa
-   central, ~48% da altura do quadrado). Mostrar o quadrado inteiro sem
-   nenhum limite de altura faz essa margem transparente virar uma caixa
-   enorme (~1441px de altura no teto) que vaza pra cima/baixo da foto e
-   invade o respiro das seções vizinhas — essa foi a causa real do "sem
-   respiro" com a Trajetória e da sobra antes do Contato.
-   .liquid-about-bg por isso tem um teto de ALTURA próprio
-   (aspect-ratio 1441/830, a proporção do node 133:272 no Figma) com
-   overflow:hidden — 830/1441 ≈ 58% da altura, folgado o bastante pra
-   nunca cortar o traço visível (que usa ~48%), cortando só a margem
-   transparente que sobra. A <img> dentro fica centralizada verticalmente
-   e mantém width:100%/height:auto (proporção intrínseca, sem distorção).
+   Antes: onda definia a altura da zona (height fixo em vw), foto
+   absoluta centralizada dentro dela. Agora: FOTO em fluxo normal
+   (position:relative) — é ela que dá a altura ao bloco; onda atrás,
+   absoluta, centralizada no eixo dela (top:50%/translate), com sua
+   PRÓPRIA altura (mesma proporção 830/1441 de antes) — então continua
+   podendo ser mais alta que a foto e sobrar pros dois lados, igual
+   sempre foi. O que muda é o corte: clip-path: inset(-100vh 0 0 0) no
+   bloco recorta só a base (inset 0) e o dois lados (inset 0, mas como
+   onda e bloco têm a mesma largura ~100vw, na prática não corta nada
+   ali) — o topo fica com inset NEGATIVO (-100vh), ou seja, sem limite
+   nenhum, deixando a sobra de onda ACIMA da foto aparecer livremente
+   (mesmo efeito visual de sempre). overflow:hidden cortaria os quatro
+   lados por igual e sumiria com a onda que hoje aparece acima da foto —
+   por isso clip-path, não overflow.
 
-   .liquid-about-bg fica fora do fluxo (position:absolute, como
-   antes) pra nunca influenciar o dimensionamento da foto — um teste
-   com display:grid + célula compartilhada mudou o resultado do
-   width:94% da foto (o track do grid é dimensionado considerando os
-   dois filhos, então o líquido acabava alterando quanto era 94% da
-   foto — regressão indireta na "escala aprovada" que o brief pede pra
-   não tocar).
-
-   width:100vw (full-bleed, sem teto de 1441px/92vw) pra o líquido tocar
-   as duas bordas da tela, como no Figma aprovado. .liquid-about-composition
-   NÃO tem min-height: a altura do wrapper vem só da foto (única filha em
-   fluxo, position:relative); o líquido é absolute + centralizado por cima
-   dela e pode transbordar verticalmente sem reservar espaço extra — é
-   isso que elimina a sobra em branco antes do Contato. overflow continua
-   visível na composition (não hidden) pra esse transbordo não cortar o
-   líquido.
-
-   A composição é filha direta de <section> (fora do grid de
-   texto max-w-[1199px]) — width:100%/sem max-width garante que ela
-   ocupe a largura inteira da seção, não a largura do conteúdo. */
-.liquid-about-composition {
+   .liquid-about-bg segue sem object-fit:cover — a <img> dentro dela
+   ainda usa a técnica de recorte só da margem transparente do PNG de
+   origem (quadrado 1536×1536, ver nota abaixo), nunca o traço visível.
+   .liquid-about-photo segue acompanhando a ONDA em vw (não a grid),
+   centralizada — decisão do Andreo de abandonar o deslocamento
+   assimétrico do Figma (calculado pra uma onda contida em 1441px, sem
+   sentido com a onda em 100vw). */
+.liquid-about-image-zone {
   position: relative;
   isolation: isolate;
-  width: 100%;
-  max-width: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* Corta SÓ a base (inset 0) e os lados (inset 0, sem efeito prático —
+     onda e bloco têm a mesma largura ~100vw). Inset negativo no topo:
+     sem limite, a onda continua livre pra aparecer acima da foto. */
+  clip-path: inset(-100vh 0 0 0);
 }
 .liquid-about-bg {
   position: absolute;
@@ -1223,36 +1228,17 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: 100vw;
-  aspect-ratio: 1441 / 830;
+  height: max(220px, 57.6vw); /* 830/1441 — proporção do node 133:272 */
   overflow: hidden;
-  z-index: -1;
   pointer-events: none;
+  z-index: 0;
 }
-/* Mobile: o líquido escala ALÉM da viewport (proporção preservada, sem
-   esticar) e é cortado nas laterais pelo overflow-x:hidden que já existe
-   na <section id="sobre"> — sensação de fluxo contínuo saindo pelas
-   bordas, em vez da imagem inteira encolhida. Só < md; desktop (100vw)
-   intocado. */
-@media (max-width: 767px) {
-  .liquid-about-composition {
-    margin-top: 120px;
-    overflow: visible;
-    position: relative;
-  }
-  .liquid-about-bg {
-    width: 120vw;
-    aspect-ratio: 1441 / 830;
-    height: auto;
-    top: 50%;
-    bottom: auto;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .liquid-about-text {
-    position: relative;
-    z-index: 1;
-  }
-}
+/* O PNG de origem da onda é quadrado (1536×1536) com bastante respiro
+   transparente acima/abaixo do desenho (o traço em si ocupa só a faixa
+   central, ~48% da altura do quadrado). A <img> por isso fica maior que
+   o wrapper (width:100%/height:auto, proporção intrínseca preservada) e
+   centralizada verticalmente — o overflow:hidden do wrapper corta só a
+   margem transparente que sobra, nunca o traço visível. */
 .liquid-about-bg img {
   position: absolute;
   left: 0;
@@ -1262,59 +1248,73 @@
   height: auto;
 }
 .liquid-about-photo {
+  /* Em fluxo normal — é ela quem agora dá altura ao .liquid-about-image-zone
+     (a onda, atrás, é que se ajusta a ela, não o contrário). */
   position: relative;
   z-index: 1;
-  width: min(1358px, 94%);
-  aspect-ratio: 1358 / 752;
-  max-height: 100%;
-  object-fit: cover;
-  object-position: top center;
+  display: block;
+  margin-inline: auto;
+  width: min(1200px, 78vw);
+  aspect-ratio: 1136 / 752;
+  height: auto;
+  object-fit: contain;
 }
 
-/* Contato — faixa de onda decorativa no rodapé da seção, mesma imagem
-   da tese, sutil e recortada pela seção (overflow-hidden no wrapper). */
-/* Causa raiz do vazio antes do footer: aspect-ratio:1440/907 em
-   width:100vw reservava ~907px de altura em telas largas só pra faixa
-   (a onda desenhada ocupa só uma tira fina do meio da composição,
-   sobrando branco vazio). Trocado por altura FIXA e compacta — o
-   wrapper já não deriva altura da largura, então o "vazio" desaparece
-   em qualquer viewport, mobile ou desktop. */
+/* Contato — onda decorativa de fundo, correção 09 (G1). Mesmo asset
+   (/onda-faixa-horizontal.png) usado na Tese, que funciona lá (fundo
+   #FFFFFF da seção) mas mostrava uma aresta retangular aqui: o PNG tem
+   fundo branco opaco (comprovado comparando as duas seções — mesma
+   imagem, única variável que muda é a cor de fundo). Sobre #FFFFFF ele
+   desaparece; sobre #F7F7F7 (fundo desta seção) a caixa aparecia.
+   mix-blend-mode:multiply resolve sem tocar no asset — pixels brancos
+   deixam de alterar o fundo por baixo. Só funciona porque NENHUM
+   ancestral (.liquid-root, a <section>, este wrapper) tem
+   isolation:isolate nem filter — confirmado, nenhuma dessas regras
+   existe na cadeia do #contato.
+
+   Onda agora INTEIRA (era recortada bem mais agressivamente antes) e
+   rotacionada — a altura do wrapper cresce bastante (era
+   clamp(320px,34vw,480px), compacta e sem espaço pra rotação) pra
+   acomodar a caixa de bounding da onda rotacionada sem cortar a crista
+   central; só as pontas finas do retângulo original (que a rotação
+   empurra pra fora) seguem recortadas pelo overflow:hidden, igual antes.
+   width:100vw + left:50%/translateX(-50%) no wrapper (em vez do
+   width:100% do briefing) porque é o padrão já usado em toda a página
+   pra full-bleed (thesis-bg/trajectory-bg) — evita depender da largura
+   real do pai. */
 .liquid-contact-wave-wrap {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
   width: 100vw;
-  height: clamp(320px, 34vw, 480px);
+  height: clamp(340px, 50vw, 760px);
   overflow: hidden;
   margin-top: 56px;
 }
-/* A onda (mesmo asset 1441×776 do Figma, "Recortar conteúdo" ligado)
-   fica maior que o wrapper e centralizada nos dois eixos — o
-   overflow:hidden do wrap recorta só a faixa central fina, nunca o
-   topo/base do desenho. Rotação leve (Figma: leve, não reta) + scale
-   pra cobrir os cantos que a rotação deixaria vazios. */
 .liquid-contact-wave {
+  display: block;
   position: absolute;
   left: 50%;
-  top: auto;
-  bottom: 0;
-  transform: translateX(-50%) rotate(-2deg) scale(1.08);
-  width: 118%;
+  top: 50%;
+  width: 140vw;
   max-width: none;
-  opacity: 0.9;
+  height: auto;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  transform-origin: center center;
+  mix-blend-mode: multiply;
+  pointer-events: none;
 }
 
-/* Mobile: clamp(320px,34vw,480px) resolve pro mínimo (320px) numa faixa
-   fina — a onda fica colada no bottom:0 e sobra ~250px de branco acima
-   (buraco). Altura fixa e menor elimina o vazio sem tocar no desktop. */
+/* Mobile: rotação de 15° em tela estreita corta demais a onda —
+   reduzida pra 8°, com mais folga de largura (180vw) pra compensar. */
 @media (max-width: 639px) {
   .liquid-contact-wave-wrap {
-    height: 200px;
+    height: clamp(220px, 62vw, 420px);
     margin-top: 40px;
   }
   .liquid-contact-wave {
-    width: 140%;
-    transform: translateX(-50%) rotate(-2deg) scale(1.05);
+    width: 180vw;
+    transform: translate(-50%, -50%) rotate(-8deg);
   }
 }
 

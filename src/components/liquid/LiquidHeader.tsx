@@ -15,12 +15,23 @@ type Props = {
       (que tentaria rolar dentro da própria página de case). Default ''
       preserva 100% o comportamento atual na Home. */
   basePath?: string
+  /** D7 (correção 02): o CTA da navbar é "Contato" na Home, mas no case
+      Gabriel o Figma pede "Ver todos os projetos" + seta, apontando de
+      volta pro grid de projetos da Home. Prop em vez de hardcode pra não
+      afetar a Home nem o Sona — só o Gabriel passa override. Default
+      preserva 100% o comportamento atual. */
+  ctaLabel?: string
+  ctaHref?: string
+  ctaArrow?: boolean
 }
 
 const logoSrc = '/logo/svg/logo-icon.svg'
 const contatoColor = '#0C1A22'
 
-export default function LiquidHeader({ activeSection, navItems = defaultNavLinks, basePath = '' }: Props) {
+export default function LiquidHeader({
+  activeSection, navItems = defaultNavLinks, basePath = '',
+  ctaLabel = 'Contato', ctaHref, ctaArrow = false,
+}: Props) {
   const scrolled = useScrolled()
   const [menuOpen, setMenuOpen] = useState(false)
   const mobileNavItems = [...navItems, { id: 'contato', label: 'Contato' }]
@@ -38,11 +49,12 @@ export default function LiquidHeader({ activeSection, navItems = defaultNavLinks
             grid de 3 colunas do desktop (o hamburger é md:hidden, então
             não consome coluna). */}
         <div className="flex items-center gap-3 md:contents">
-          {/* Node 133:383: marca sozinha (sem wordmark) — caixa 38×24 no
-              Figma; a arte mantém a proporção própria dentro dela (não
-              preenche a largura toda), então só a altura é forçada. */}
+          {/* E3 (correção 03): 38×24 real. O SVG tem viewBox 107×120
+              (mais alto que largo) — h-full+w-auto deixava a proporção
+              intrínseca ditar a largura (~21px), bem menor que os 38px
+              do wrapper. w-full+h-full preenche a caixa inteira. */}
           <a href={basePath || '#'} aria-label="Andreo Barbosa" className="flex items-center justify-self-start w-[38px] h-6">
-            <img src={logoSrc} alt="Andreo Barbosa" className="h-full w-auto" />
+            <img src={logoSrc} alt="Andreo Barbosa" className="w-full h-full" />
           </a>
           <button
             type="button"
@@ -73,11 +85,12 @@ export default function LiquidHeader({ activeSection, navItems = defaultNavLinks
         </ul>
         <div className="flex items-center gap-3 justify-self-end">
           <a
-            href={`${basePath}#contato`}
-            className="inline-flex liquid-navbar-cta liquid-type-nav items-center justify-center px-4 py-3 rounded-full"
+            href={ctaHref ?? `${basePath}#contato`}
+            className="inline-flex items-center gap-2 liquid-navbar-cta liquid-type-nav justify-center px-4 py-3 rounded-full"
             style={{ color: contatoColor }}
           >
-            Contato
+            {ctaLabel}
+            {ctaArrow && <span aria-hidden="true">→</span>}
           </a>
         </div>
       </nav>
