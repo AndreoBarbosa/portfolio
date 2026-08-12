@@ -496,11 +496,12 @@ export default function CaseGabriel() {
                 coisas ao mesmo tempo. */}
             <div className="relative mt-8 flex flex-col lg:flex-row gap-8 items-start">
               <img
-                src="/gabriel-liquid-wave.png"
+                src="/gabriel-liquid-wave.webp"
                 alt=""
                 width={1610}
                 height={1610}
                 loading="lazy"
+                decoding="async"
                 aria-hidden="true"
                 className="hidden lg:block pointer-events-none absolute -z-10 opacity-70"
                 style={{ left: -120, top: -249, width: '111.8vw', height: 'auto', aspectRatio: '1 / 1', maxWidth: 'none' }}
@@ -625,7 +626,7 @@ export default function CaseGabriel() {
 
         {/* 12 — Aprendizado (nó 650:1010). Última seção — nada depois
             além do footer. Composição de vidro (assests 7 → renomeado
-            gabriel-liquid-composition.png) implementada via flex, não
+            gabriel-liquid-composition.webp) implementada via flex, não
             pixel absoluto do Figma — os dois extratores MCP discordavam
             na posição vertical (ver B0); ajustado visualmente. */}
         <section id="aprendizado" className="relative overflow-hidden pt-24 pb-32">
@@ -667,11 +668,12 @@ export default function CaseGabriel() {
                 transition={{ duration: 0.6, ease: EASE }}
               >
                 <img
-                  src="/gabriel-liquid-composition.png"
+                  src="/gabriel-liquid-composition.webp"
                   alt=""
                   width={620}
                   height={620}
                   loading="lazy"
+                  decoding="async"
                   aria-hidden="true"
                   className="w-full max-w-[420px] lg:max-w-[500px] h-auto"
                   style={{ opacity: 0.9, transform: 'rotate(-24.7deg)' }}

@@ -1181,31 +1181,33 @@
   line-height: 1.1;
 }
 
-/* Sobre — bloco de imagem (onda + foto), correção 10. MESMA arquitetura
-   já validada em .liquid-thesis-bg-zone/.liquid-thesis-bg e
-   .liquid-trajectory-bg (ver mais abaixo/acima neste arquivo) — não um
-   terceiro padrão. A correção 07 (F2) tinha posto esse bloco dentro do
-   max-w-[1199px] do grid de texto, travando a onda na borda da grid; a
-   correção 09 (G2) tirou a onda pra 100vw sangrando, mas deixou a ALTURA
-   do bloco presa à proporção da onda (830/1441) — como a foto (1136/752)
-   é proporcionalmente mais baixa, sobrava uma faixa clara da onda entre
-   o fim da foto e o fim do bloco. Corrigido aqui invertendo quem manda
-   na altura.
+/* Sobre — bloco de imagem (onda + foto), correção 10, revertida na I1
+   (correção 12). MESMA arquitetura já validada em
+   .liquid-thesis-bg-zone/.liquid-thesis-bg e .liquid-trajectory-bg (ver
+   mais abaixo/acima neste arquivo) — não um terceiro padrão. A correção
+   07 (F2) tinha posto esse bloco dentro do max-w-[1199px] do grid de
+   texto, travando a onda na borda da grid; a correção 09 (G2) tirou a
+   onda pra 100vw sangrando, mas deixou a ALTURA do bloco presa à
+   proporção da onda (830/1441) — como a foto (1136/752) é
+   proporcionalmente mais baixa, sobrava uma faixa clara da onda entre o
+   fim da foto e o fim do bloco. A correção 10 tentou resolver isso com
+   `clip-path: inset(-100vh 0 0 0)` pra deixar a onda sangrar livre pra
+   cima da foto.
 
-   Antes: onda definia a altura da zona (height fixo em vw), foto
-   absoluta centralizada dentro dela. Agora: FOTO em fluxo normal
-   (position:relative) — é ela que dá a altura ao bloco; onda atrás,
-   absoluta, centralizada no eixo dela (top:50%/translate), com sua
-   PRÓPRIA altura (mesma proporção 830/1441 de antes) — então continua
-   podendo ser mais alta que a foto e sobrar pros dois lados, igual
-   sempre foi. O que muda é o corte: clip-path: inset(-100vh 0 0 0) no
-   bloco recorta só a base (inset 0) e o dois lados (inset 0, mas como
-   onda e bloco têm a mesma largura ~100vw, na prática não corta nada
-   ali) — o topo fica com inset NEGATIVO (-100vh), ou seja, sem limite
-   nenhum, deixando a sobra de onda ACIMA da foto aparecer livremente
-   (mesmo efeito visual de sempre). overflow:hidden cortaria os quatro
-   lados por igual e sumiria com a onda que hoje aparece acima da foto —
-   por isso clip-path, não overflow.
+   I1 (correção 12): esse clip-path era o bug, não a solução. inset
+   negativo no topo não é "sem corte" — é uma REGIÃO DE PINTURA expandida
+   100vh pra cima do bloco. Com a onda em position:absolute e top
+   negativo (translate -50%), ela passava a pintar por cima de QUALQUER
+   coisa acima do bloco na página, incluindo os três blocos de princípio,
+   quanto maior a tela mais alto o vazamento subia. Trocado por um
+   modelo sem overflow nenhum: o espaço que a onda tinha pra sangrar pra
+   cima da foto vira PADDING do próprio bloco (calculado pra ser
+   idêntico ao respiro de antes — metade da diferença entre a altura da
+   onda e a altura da foto, nas mesmas fórmulas de vw/px já usadas por
+   cada uma) + overflow:hidden real, que contém tudo nas 4 direções. A
+   onda começa em top:0 (não mais top:50%+translate), dentro desse
+   padding — mesmo enquadramento visual de sempre, sem vazar pra fora do
+   bloco em nenhuma direção.
 
    .liquid-about-bg segue sem object-fit:cover — a <img> dentro dela
    ainda usa a técnica de recorte só da margem transparente do PNG de
@@ -1217,17 +1219,22 @@
 .liquid-about-image-zone {
   position: relative;
   isolation: isolate;
-  /* Corta SÓ a base (inset 0) e os lados (inset 0, sem efeito prático —
-     onda e bloco têm a mesma largura ~100vw). Inset negativo no topo:
-     sem limite, a onda continua livre pra aparecer acima da foto. */
-  clip-path: inset(-100vh 0 0 0);
+  overflow: hidden;
+  /* X = (altura da onda − altura da foto) / 2 — o mesmo respiro que a
+     onda já tinha acima da foto antes (centralizada verticalmente sobre
+     um bloco do tamanho da foto), só que agora como padding real do
+     bloco em vez de sangria por cima dele. Mesmas fórmulas de
+     .liquid-about-bg (height) e .liquid-about-photo (width × 1152/2048)
+     abaixo — se uma mudar, esta conta precisa mudar junto. */
+  padding-top: calc((max(220px, 57.6vw) - min(1200px, 78vw) * 0.5625) / 2);
 }
 .liquid-about-bg {
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  transform: translateX(-50%);
   width: 100vw;
+  max-width: none;
   height: max(220px, 57.6vw); /* 830/1441 — proporção do node 133:272 */
   overflow: hidden;
   pointer-events: none;
@@ -1255,22 +1262,59 @@
   display: block;
   margin-inline: auto;
   width: min(1200px, 78vw);
-  aspect-ratio: 1136 / 752;
+  /* H2 (correção 11): 1136/752 era a proporção do node do Figma, mas o
+     arquivo /perfil.png real é 2048×1152 (16:9) — sem espaço transparente
+     na base (checado pixel a pixel). O aspect-ratio errado deixava a caixa
+     mais alta que a foto renderizada (object-fit:contain letterboxing),
+     sobrando uma faixa em branco entre o fim da foto e o clip-path do
+     .liquid-about-image-zone. Corrigido pra bater com o arquivo real —
+     sem gap, sem letterbox, object-fit:contain vira no-op. */
+  aspect-ratio: 2048 / 1152;
   height: auto;
   object-fit: contain;
 }
 
+/* Contato — botões com rótulo, I2 (correção 12). Figma pede dois
+   círculos de 40×40 só com ícone (nó já implementado como 44×44,
+   ligeiramente maior que o arquivo); decisão do Andreo de divergir do
+   Figma pra dar mais destaque ao fecho da página — ícone sozinho não
+   comunica a ação. Cor/tratamento não são novos: primário reaproveita
+   .liquid-hero-btn-primary (sólido petróleo) e secundário reaproveita
+   .liquid-btn-secondary (vidro) — só o tamanho e o rótulo são deste
+   ajuste. Espaçamento entre os dois botões é o gap-4 (16px) do Tailwind
+   no wrapper em ContactSection.tsx, não uma regra daqui. */
+.liquid-contact-btn {
+  height: 56px;
+  padding: 0 28px;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 999px;
+}
+.liquid-contact-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 /* Contato — onda decorativa de fundo, correção 09 (G1). Mesmo asset
-   (/onda-faixa-horizontal.png) usado na Tese, que funciona lá (fundo
-   #FFFFFF da seção) mas mostrava uma aresta retangular aqui: o PNG tem
-   fundo branco opaco (comprovado comparando as duas seções — mesma
-   imagem, única variável que muda é a cor de fundo). Sobre #FFFFFF ele
-   desaparece; sobre #F7F7F7 (fundo desta seção) a caixa aparecia.
-   mix-blend-mode:multiply resolve sem tocar no asset — pixels brancos
-   deixam de alterar o fundo por baixo. Só funciona porque NENHUM
-   ancestral (.liquid-root, a <section>, este wrapper) tem
-   isolation:isolate nem filter — confirmado, nenhuma dessas regras
-   existe na cadeia do #contato.
+   (/onda-faixa-horizontal, hoje .webp) usado na Tese, que funciona lá
+   (fundo #FFFFFF da seção) mas mostrava uma aresta retangular aqui: o
+   PNG antigo tinha fundo branco opaco (comprovado comparando as duas
+   seções — mesma imagem, única variável que muda é a cor de fundo).
+   Sobre #FFFFFF ele desaparecia; sobre #F7F7F7 (fundo desta seção) a
+   caixa aparecia. mix-blend-mode:multiply resolvia sem tocar no asset —
+   pixels brancos deixavam de alterar o fundo por baixo.
+
+   J5 (correção 13): REMOVIDO. O .webp da migração preserva transparência
+   real (checado por canal alfa: valores de 0 a 255, ~60% dos pixels
+   amostrados com alfa < 250 — o PNG antigo não tinha isso, por isso
+   precisava do truque). Testado visualmente sobre #F7F7F7 sem multiply:
+   nenhuma aresta retangular. mix-blend-mode cria camada de composição
+   própria (um dos suspeitos do I4 pra travada de scroll) — como não é
+   mais necessário, sai. Se a aresta voltar a aparecer depois de alguma
+   troca futura de asset, o motivo é o mesmo de antes (arquivo sem
+   transparência) e o multiply pode voltar.
 
    Onda agora INTEIRA (era recortada bem mais agressivamente antes) e
    rotacionada — a altura do wrapper cresce bastante (era
@@ -1301,7 +1345,6 @@
   height: auto;
   transform: translate(-50%, -50%) rotate(-15deg);
   transform-origin: center center;
-  mix-blend-mode: multiply;
   pointer-events: none;
 }
 

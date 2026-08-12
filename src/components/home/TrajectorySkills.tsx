@@ -51,7 +51,7 @@ export default function TrajectorySkills() {
             (mesmo enquadramento do Figma: começa ANTES da timeline,
             termina DEPOIS dos cards), não apenas a zona da timeline. */}
         <div className="liquid-trajectory-bg" aria-hidden="true">
-          <img src="/fundo-trajetoria.png" alt="" />
+          <img src="/fundo-trajetoria.webp" alt="" loading="lazy" decoding="async" />
         </div>
 
         <LiquidReveal blur>
@@ -65,8 +65,10 @@ export default function TrajectorySkills() {
           </p>
         </LiquidReveal>
 
-        {/* Stats-âncora — números grandes com divisor central. */}
-        <LiquidReveal blur className="mt-16">
+        {/* Stats-âncora — números grandes com divisor central. Sem blur
+            (I4, correção 12): é um bloco largo, não um título pequeno —
+            opacity+y bastam pra entrada. */}
+        <LiquidReveal className="mt-16">
           <div className="liquid-trajectory-stats">
             {trajectoryStats.map((stat, i) => (
               <Fragment key={stat.value}>

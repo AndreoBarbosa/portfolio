@@ -66,7 +66,10 @@ export default function CaseSona() {
 
   return (
     <div className="liquid-root min-h-screen">
-      <LiquidHeader activeSection={null} basePath="/" />
+      {/* H4 (correção 11): CTA da navbar troca "Contato" por "Ver todos
+          os projetos" → volta pro grid de projetos da Home, igual ao
+          Gabriel. Home mantém o default do componente. */}
+      <LiquidHeader activeSection={null} basePath="/" ctaLabel="Ver todos os projetos" ctaHref="/#projetos" ctaArrow />
 
       <main id="conteudo">
         {/* S02 — Hero. LCP: imagem sem lazy, entrada no load (não no

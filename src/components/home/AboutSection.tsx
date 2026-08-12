@@ -104,9 +104,17 @@ export default function AboutSection() {
           contida em 1441px, sem sentido com a onda em 100vw). */}
       <LiquidReveal delay={0.2} className="mt-16 lg:mt-24 liquid-about-image-zone">
         <div className="liquid-about-bg" aria-hidden="true">
-          <img src="/fundo-sobre.png" alt="" loading="lazy" />
+          <img src="/fundo-sobre.webp" alt="" loading="lazy" decoding="async" />
         </div>
-        <img src="/perfil.png" alt="Foto de Andreo Barbosa" className="liquid-about-photo" loading="lazy" />
+        <img
+          src="/perfil.webp"
+          alt="Foto de Andreo Barbosa"
+          className="liquid-about-photo"
+          loading="lazy"
+          decoding="async"
+          width={2048}
+          height={1152}
+        />
       </LiquidReveal>
     </section>
   )

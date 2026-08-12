@@ -109,6 +109,7 @@ function ProjectCard({ project }: { project: Project }) {
               <img
                 src={project.media.static}
                 alt=""
+                decoding="async"
                 style={{ opacity: hovering ? 0 : 1 }}
               />
               {canPlayVideo && (
@@ -122,10 +123,10 @@ function ProjectCard({ project }: { project: Project }) {
                   style={{ opacity: hovering ? 1 : 0 }}
                   aria-hidden="true"
                 >
-                  <source
-                    src={project.media.hover}
-                    type={project.media.hover.endsWith('.mp4') ? 'video/mp4' : 'video/webm'}
-                  />
+                  {/* J2 (correção 13): não sobrou nenhum .mp4 em
+                      media.hover (sona/sysmed/gabriel são todos .webm) —
+                      simplificado de volta pro type fixo. */}
+                  <source src={project.media.hover} type="video/webm" />
                 </video>
               )}
             </>
@@ -165,14 +166,18 @@ export default function ProjectsGrid() {
           </p>
         </LiquidReveal>
 
+        {/* I4 (correção 12): sem blur nos cards — são grandes e têm
+            vídeo/imagem de hover, exatamente o caso que o briefing pede
+            pra tirar (filter animado é caro em GPU sobre imagem pesada).
+            opacity+y continuam. */}
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-[30px] items-stretch">
-          <LiquidReveal blur>
+          <LiquidReveal>
             <ProjectCard project={sona} />
           </LiquidReveal>
-          <LiquidReveal blur delay={0.08}>
+          <LiquidReveal delay={0.08}>
             <ProjectCard project={sysmed} />
           </LiquidReveal>
-          <LiquidReveal blur delay={0.16}>
+          <LiquidReveal delay={0.16}>
             <ProjectCard project={gabriel} />
           </LiquidReveal>
         </div>

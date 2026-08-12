@@ -39,10 +39,15 @@ export default function ThesisSection() {
             — ver .liquid-thesis-row-top/-bottom em liquid-glass.css. */}
         <div className="liquid-thesis-grid mt-16 md:mt-24">
           <div className="liquid-thesis-row liquid-thesis-row-top">
-            <LiquidReveal blur delay={0}>
+            {/* I4 (correção 12): blur tirado dos cards — filter animado é
+                caro (repaint de GPU a cada frame) e a orientação do
+                briefing é reservar blur pra títulos/elementos pequenos,
+                não pra cards de grid. opacity+y (sem blur) continuam
+                baratos e preservam a entrada. */}
+            <LiquidReveal delay={0}>
               <ThesisCard pillar={p1} />
             </LiquidReveal>
-            <LiquidReveal blur delay={0.12}>
+            <LiquidReveal delay={0.12}>
               <ThesisCard pillar={p3} />
             </LiquidReveal>
           </div>
@@ -54,15 +59,15 @@ export default function ThesisSection() {
               a grid de 1440 e continua crescendo com a viewport. */}
           <div className="liquid-thesis-bg-zone" aria-hidden="true">
             <div className="liquid-thesis-bg">
-              <img src="/onda-faixa-horizontal.png" alt="" />
+              <img src="/onda-faixa-horizontal.webp" alt="" loading="lazy" decoding="async" />
             </div>
           </div>
 
           <div className="liquid-thesis-row liquid-thesis-row-bottom">
-            <LiquidReveal blur delay={0.24}>
+            <LiquidReveal delay={0.24}>
               <ThesisCard pillar={p2} />
             </LiquidReveal>
-            <LiquidReveal blur delay={0.36}>
+            <LiquidReveal delay={0.36}>
               <ThesisCard pillar={p4} />
             </LiquidReveal>
           </div>

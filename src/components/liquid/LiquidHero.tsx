@@ -41,12 +41,21 @@ export default function LiquidHero() {
               loop
               playsInline
               preload="auto"
-              poster="/hero-poster.png"
+              poster="/hero-poster.webp"
             >
+              {/* J2 (correção 13): type precisa acompanhar o src — apontar
+                  pra .webm com type="video/mp4" faz alguns navegadores
+                  recusarem antes mesmo de tentar decodificar. WebM em VP9
+                  tem histórico irregular no Safari/iOS (não testado neste
+                  ambiente, sem acesso a Safari real) — .mp4 fica como
+                  segundo <source> de fallback, o arquivo ainda existe em
+                  public/. O navegador só baixa a fonte que efetivamente
+                  usa, então isso não pesa nada onde webm já funciona. */}
+              <source src="/hero-bg.webm" type="video/webm" />
               <source src="/hero-bg.mp4" type="video/mp4" />
             </video>
           ) : (
-            <img src="/hero-poster.png" alt="" className="w-full h-auto object-contain" />
+            <img src="/hero-poster.webp" alt="" className="w-full h-auto object-contain" decoding="async" />
           )}
         </motion.div>
 

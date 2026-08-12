@@ -24,32 +24,38 @@ export default function ContactSection() {
             Se você acredita que bons produtos nascem de boas perguntas, temos muito para conversar.
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-4">
+          {/* I2 (correção 12): círculos só com ícone trocados por botões
+              com rótulo — mais destaque e clareza no fecho da página,
+              divergência do Figma (40×40 só ícone) por decisão do
+              Andreo. Empilhados em largura total no mobile, lado a lado
+              a partir do sm, mesmo padrão responsivo dos botões do
+              hero (LiquidHero.tsx). */}
+          <div className="mt-10 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-4">
             <a
               href={contact.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="LinkedIn de Andreo Barbosa"
-              className="liquid-btn-secondary inline-flex items-center justify-center w-11 h-11 rounded-full"
+              className="liquid-hero-btn-primary liquid-contact-btn inline-flex items-center justify-center w-full sm:w-auto"
             >
               <LinkedInIcon />
+              LinkedIn
             </a>
 
             <a
               href={contact.resume}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Baixar currículo de Andreo Barbosa"
-              className="liquid-btn-secondary inline-flex items-center justify-center w-11 h-11 rounded-full"
+              className="liquid-btn-secondary liquid-contact-btn inline-flex items-center justify-center w-full sm:w-auto"
             >
-              <Download size={16} />
+              <Download size={20} />
+              Baixar currículo
             </a>
           </div>
         </LiquidReveal>
       </div>
 
       <div className="liquid-contact-wave-wrap" aria-hidden="true">
-        <img src="/onda-faixa-horizontal.png" alt="" className="liquid-contact-wave" loading="lazy" />
+        <img src="/onda-faixa-horizontal.webp" alt="" className="liquid-contact-wave" loading="lazy" decoding="async" />
       </div>
     </section>
   )

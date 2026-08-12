@@ -87,7 +87,10 @@ export const projects: Project[] = [
     // D8 (correção 02): era '.mp4', mas o arquivo real em
     // public/projects/sysmed/ é hover.webm — o <video> nunca tinha uma
     // fonte válida (404 silencioso), por isso não disparava no hover.
-    media: { static: '/projects/sysmed/static.png', hover: '/projects/sysmed/hover.webm' },
+    // J1 (correção 13): static.webp existe em public/projects/sysmed/ —
+    // atualizado. sona/gabriel NÃO têm essa correspondência (ver aviso
+    // no relatório final) e ficaram em .png por enquanto.
+    media: { static: '/projects/sysmed/static.webp', hover: '/projects/sysmed/hover.webm' },
   },
   {
     id: 'gabriel-alves',
