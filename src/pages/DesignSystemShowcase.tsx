@@ -26,7 +26,7 @@ const paletteLight = [
   { name: '--neutral-faint', hex: '#BFBAB8' },
   { name: '--text-strong', hex: '#0C1A22' },
   { name: '--text-body', hex: '#2C2C2A' },
-  { name: '--text-muted', hex: '#5F5E5A' },
+  { name: '--text-muted', hex: '#4A4946' },
   { name: '--text-faint', hex: '#625F5D' },
   { name: '--accent', hex: '#0C1A22' },
   { name: '--accent-glass', hex: 'rgba(12,26,34,0.72)' },
@@ -38,7 +38,7 @@ const typeScale = [14, 16, 18, 20, 24, 32, 40, 48, 64, 80, 96]
 const contrastPairs = [
   { label: 'text-strong sobre bg (cinza-vidro)', ratio: '12.9:1' },
   { label: 'text-body sobre bg', ratio: '10.2:1' },
-  { label: 'text-muted sobre bg', ratio: '4.7:1' },
+  { label: 'text-muted sobre bg', ratio: '9.0:1' },
   { label: 'text-faint sobre bg', ratio: '4.6:1' },
   { label: 'branco sobre preenchimento hover (petróleo glass 72%)', ratio: '8.3:1' },
   { label: 'text-strong sobre preenchimento hover secundário (10%)', ratio: '10.6:1' },

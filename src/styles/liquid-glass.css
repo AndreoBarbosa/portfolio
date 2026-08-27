@@ -26,7 +26,14 @@
   --neutral-faint: #BFBAB8;
   --text-strong:   #0C1A22;   /* petróleo: títulos, texto forte */
   --text-body:     #2C2C2A;
-  --text-muted:    #5F5E5A;   /* 4.73:1 sobre o novo --bg — ainda passa AA */
+  /* #5F5E5A (4.73:1) passava AA em teoria, mas várias instâncias reais
+     sentam sobre painel de vidro translúcido em cima de imagem (timeline,
+     "Vamos conversar?" sobre --bg secundário #F7F7F7) — a folga sobre o
+     mínimo de 4.5:1 era pequena demais pra sobreviver a isso em monitor
+     ruim/luz forte (revisão 26/08, item P2.7). Um passo mais escuro:
+     #4A4946, 9.0:1 sobre branco — ainda claramente "muted" (bem acima de
+     --text-body #2C2C2A), agora com folga real. */
+  --text-muted:    #4A4946;
   /* #8C8988 original falhava mesmo sobre o branco antigo. Sobre o novo
      --bg (mais escuro) o #6E6C6A que eu já vinha usando cai pra 3.81:1
      (< AA 4.5:1) — escurecido de novo para #625F5D (4.61:1), o mais
@@ -70,6 +77,23 @@
               border-color 250ms cubic-bezier(0.16,1,0.3,1),
               color 250ms cubic-bezier(0.16,1,0.3,1),
               box-shadow 250ms cubic-bezier(0.16,1,0.3,1);
+}
+
+/* Offset de âncora (revisão 26/08 — item P2.9): a navbar é `fixed`, fora
+   do fluxo, então o scroll nativo pro id (clique nos links do menu, ou
+   chegada direto em /#trajetoria) alinha o TOPO da seção com o topo real
+   da viewport — por baixo da lâmina flutuante. Section mais afetada:
+   #trajetoria, onde os dois primeiros números ("+5 anos" / "20 mil+")
+   ficavam cobertos. scroll-margin-top compensa com a altura medida da
+   navbar (wrapper `top` + altura real da lâmina) + ~16px de respiro,
+   nos dois breakpoints do wrapper (top-4/top-7, ver LiquidHeader). */
+#pensar, #projetos, #trajetoria, #sobre, #contato {
+  scroll-margin-top: 104px;
+}
+@media (min-width: 768px) {
+  #pensar, #projetos, #trajetoria, #sobre, #contato {
+    scroll-margin-top: 128px;
+  }
 }
 
 /* Superfície de vidro — padrão único reusado em nav/card/chip/modal. */
@@ -419,7 +443,7 @@
 }
 .liquid-project-desc {
   font-family: 'Outfit', sans-serif;
-  color: #5F5E5A;
+  color: var(--text-muted);
   margin-bottom: 16px;
   transition: color 250ms ease;
 }
@@ -440,7 +464,7 @@
   border-top-color: rgba(255,255,255,0.14);
 }
 .liquid-project-category {
-  color: #5F5E5A;
+  color: var(--text-muted);
   transition: color 250ms ease;
 }
 .liquid-project-card:hover .liquid-project-category,
@@ -1010,7 +1034,7 @@
 }
 .liquid-timeline-desc {
   font-family: 'Outfit', sans-serif;
-  color: #5F5E5A;
+  color: var(--text-muted);
   font-size: 16px;
   letter-spacing: -0.32px;
   line-height: 1.6;
@@ -1141,7 +1165,7 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 1.5;
-  color: #5F5E5A;
+  color: var(--text-muted);
   margin: 0;
 }
 .liquid-about-divider {

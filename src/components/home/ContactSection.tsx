@@ -20,7 +20,7 @@ export default function ContactSection() {
             Vamos conversar?
           </h2>
           {/* D9: gap-[16px] confirmado via MCP (nó 133:235) — era mt-6 (24px). */}
-          <p className="liquid-type-body mt-4 max-w-[42ch]" style={{ color: '#5F5E5A' }}>
+          <p className="liquid-type-body mt-4 max-w-[42ch]" style={{ color: 'var(--text-muted)' }}>
             Se você acredita que bons produtos nascem de boas perguntas, temos muito para conversar.
           </p>
 
