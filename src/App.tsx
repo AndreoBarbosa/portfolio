@@ -5,6 +5,8 @@ import CaseGabriel from './pages/CaseGabriel'
 import CaseSona from './pages/CaseSona'
 import CaseSysmed from './pages/CaseSysmed'
 import DesignSystemShowcase from './pages/DesignSystemShowcase'
+import CaseUxAiFoundations from './pages/CaseUxAiFoundations'
+import CaseUxAi from './pages/CaseUxAi'
 
 export default function App() {
   return (
@@ -17,6 +19,11 @@ export default function App() {
         <Route path="/case/ia-hospitalar" element={<CaseSysmed />} />
         <Route path="/case/sysmed" element={<CaseSysmed />} />
         <Route path="/design-system" element={<DesignSystemShowcase />} />
+        {/* Temporário — checkpoint da FASE 01 do blueprint case-ux-ai (tokens
+            e receitas de motion). Remover quando a página real substituir
+            CaseSysmed nas rotas /case/sysmed e /case/ia-hospitalar. */}
+        <Route path="/dev/case-ux-ai-foundations" element={<CaseUxAiFoundations />} />
+        <Route path="/dev/case-ux-ai" element={<CaseUxAi />} />
       </Routes>
     </BrowserRouter>
   )

@@ -1,0 +1,243 @@
+/* Case UX + AI — tokens, seção 3.2 e 14.1 do IMPLEMENTATION BLUEPRINT.
+   Escopado em .case-uxai-root, no mesmo padrão de .liquid-root
+   (src/styles/liquid-glass.css): nada aqui vaza para o resto do site,
+   que usa a paleta ink/cream/amber. Modo Escuro do guia é o único usado
+   nesta página — os fallbacks Claro que o Figma devolve não entram aqui
+   (ver blueprint §3.1).
+
+   Import só em CaseUxAi.tsx. */
+
+.case-uxai-root {
+  /* fundo e superfície */
+  --fundo-pagina:        #050B0E; /* petroleo/950 · piso, fixado pelo vídeo do hero */
+  --fundo-faixa:         #0C1A22; /* petroleo/900 */
+  --superficie-card:     #0C1A22; /* petroleo/900 */
+  --superficie-elevada:  #15252E; /* petroleo/850 */
+  --superficie-hover:    #21323B; /* petroleo/800 · nunca carrega texto de ação */
+  --superficie-midia:    #0C1A22; /* petroleo/900 */
+  --superficie-dado:     rgba(9, 18, 24, 0.5); /* card de stats do hero, nó 802:1047 */
+
+  /* gradiente de destaque · H1 e rótulos IA/Humanos do hero (BRIEF-S01-HERO
+     §5). Os dois stops ficam fora da rampa de propósito: o Figma vence,
+     decisão D2 (acao-link sólido) revogada em 24 set 2026. */
+  --gradiente-destaque-de:   #1B79D7;
+  --gradiente-destaque-para: #E7E8E9;
+
+  /* vidro */
+  --vidro-leve:   rgba(12, 26, 34, 0.42);  /* blur 14 · chip e tooltip */
+  --vidro-medio:  rgba(12, 26, 34, 0.68);  /* blur 22 · nav e card em área controlada, nunca sobre imagem */
+  --vidro-forte:  rgba(12, 26, 34, 0.88);  /* blur 30 · único permitido sobre imagem, máx. 1 por viewport */
+  --blur-leve: 14px;
+  --blur-medio: 22px;
+  --blur-forte: 30px;
+
+  /* borda */
+  --borda-sutil:  rgba(255, 255, 255, 0.06);
+  --borda-padrao: rgba(255, 255, 255, 0.10);
+  --borda-vidro:  rgba(255, 255, 255, 0.14); /* aresta de topo em médio e forte */
+  --borda-ativa:  rgba(74, 155, 245, 0.45);
+
+  /* texto · 4 degraus de luminância, nenhum quinto */
+  --texto-principal:    #F2F5F8; /* petroleo/50  · 18.09:1 no piso */
+  --texto-apoio:        #B3BCC4; /* petroleo/300 · 10.28:1 no piso */
+  --texto-metadado:     #929DA7; /* petroleo/400 · 6.41:1 no card */
+  --texto-inativo:      #374752; /* petroleo/700 · abaixo de AA de propósito, nunca carrega info exclusiva */
+  --texto-sobre-acento: #050B0E;
+
+  /* ação · um acento */
+  --acao-link:               #4A9BF5; /* azul/400 */
+  --acao-hover:               #69B1FF; /* azul/300 · eyebrow de seção em repouso é --acao-link, não este (decisão 23 set 2026, MOTION-SPEC-SYSMED.md §9.4) */
+  --acao-pressionado:         #2F82D6; /* azul/500 */
+  --acao-foco:                #69B1FF; /* azul/300 · anel 2px, offset 3px */
+  --acao-fundo-selecionado:   rgba(47, 130, 214, 0.14);
+  --acao-botao-fundo:         #F2F5F8; /* botão primário sólido */
+  --acao-botao-texto:         #050B0E;
+
+  /* dado · G4. nivel-2 (não nivel-3) é usado na diagonal da matriz por
+     decisão D10 — ver seção 07, o brilho de (4,4) precisa liderar. */
+  --dado-nivel-1: #022B49; /* azul/900 */
+  --dado-nivel-2: #10558F; /* azul/700 */
+  --dado-nivel-3: #2F82D6; /* azul/500 */
+  --dado-nivel-4: #69B1FF; /* azul/300 */
+  --dado-neutro:  #B3BCC4; /* petroleo/300 · o humano */
+
+  /* sinal (não usado nesta página, mantido disponível pelo guia) */
+  --sinal-sucesso: #82CB92;
+  --sinal-alerta:  #DDB049;
+  --sinal-erro:    #FF9286;
+
+  /* raios — 5 valores, seção 7.1 */
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-pill: 999px;
+
+  /* spacing — seção 7, base 8pt */
+  --sp-4: 4px;
+  --sp-8: 8px;
+  --sp-16: 16px;
+  --sp-24: 24px;
+  --sp-32: 32px;
+  --sp-40: 40px;
+  --sp-48: 48px;
+  --sp-64: 64px;
+  --sp-80: 80px;
+  --sp-96: 96px;
+  --sp-120: 120px;
+  --sp-160: 160px;
+
+  /* motion — seção 14.1. Espelhado em src/motion/caseUxAi.ts para uso
+     com Motion (framer-motion); os valores aqui existem para transições
+     CSS puras (glass, microinterações). */
+  --ease-enter:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-state:  cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-micro:  cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit:   cubic-bezier(0.4, 0, 1, 1);
+  --ease-scrub:  linear;
+
+  --d-micro:    160ms;
+  --d-hover:    200ms;
+  --d-state:    320ms;
+  --d-exit:     240ms;
+  --d-enter:    640ms;
+  --d-headline: 800ms;
+  --d-data:    1000ms;
+  --d-hero:    1200ms;
+
+  --st-cell:  40ms;
+  --st-item:  64ms;
+  --st-line:  80ms;
+  --st-stat: 120ms;
+
+  --mv-xs: 8px;
+  --mv-sm: 16px;
+  --mv-md: 24px;  /* teto para texto */
+  --mv-obj: 80px; /* teto para objeto CGI em parallax desktop */
+
+  background: var(--fundo-pagina);
+  color: var(--texto-principal);
+  font-family: 'Outfit', system-ui, sans-serif;
+}
+
+/* Tipografia — seção 5. Hanken Grotesk (display), Outfit (corpo/UI),
+   JetBrains Mono (metadado/índice) já são carregadas globalmente pelo
+   index.html (link Google Fonts compartilhado pelo site inteiro — não
+   duplicar aqui). */
+.case-uxai-root .f-display {
+  font-family: 'Hanken Grotesk', sans-serif;
+}
+.case-uxai-root .f-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Texto em gradiente horizontal — BRIEF-S01-HERO §5. */
+.case-uxai-root .texto-gradiente {
+  background: linear-gradient(90deg, var(--gradiente-destaque-de) 0%, var(--gradiente-destaque-para) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Vidro — seção 8.2. A maioria dos cards do frame é fill sólido com
+   efeito GLASS por cima; nesses casos width real é --superficie-card,
+   não estas classes (ver blueprint §8.2 "Implementar esses cards como
+   sólidos"). Vidro de verdade só em nav ao rolar, pílula do briefing,
+   tooltips, painel "Etapa ativa". */
+.case-uxai-root .glass-leve {
+  background: var(--vidro-leve);
+  backdrop-filter: blur(var(--blur-leve)) saturate(120%);
+  -webkit-backdrop-filter: blur(var(--blur-leve)) saturate(120%);
+  border: 1px solid var(--borda-padrao);
+  box-shadow: inset 0 1px 0 var(--borda-vidro);
+}
+.case-uxai-root .glass-medio {
+  background: var(--vidro-medio);
+  backdrop-filter: blur(var(--blur-medio)) saturate(120%);
+  -webkit-backdrop-filter: blur(var(--blur-medio)) saturate(120%);
+  border: 1px solid var(--borda-padrao);
+  box-shadow: inset 0 1px 0 var(--borda-vidro);
+}
+.case-uxai-root .glass-forte {
+  background: var(--vidro-forte);
+  backdrop-filter: blur(var(--blur-forte)) saturate(120%);
+  -webkit-backdrop-filter: blur(var(--blur-forte)) saturate(120%);
+  border: 1px solid var(--borda-padrao);
+  box-shadow: inset 0 1px 0 var(--borda-vidro);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .case-uxai-root .glass-leve,
+  .case-uxai-root .glass-medio,
+  .case-uxai-root .glass-forte {
+    background: var(--superficie-card);
+  }
+}
+
+/* Foco — seção 8.1. Anel nunca igual ao desenho de hover. */
+.case-uxai-root :focus-visible {
+  outline: 2px solid var(--acao-foco);
+  outline-offset: 3px;
+}
+
+/* Largura de leitura — seção 5.4 */
+.case-uxai-root .paragraph {
+  max-width: 62ch;
+}
+
+/* Grão — seção 9 (A15) e 20. Único asset novo autorizado. Pseudo-elemento
+   fixo, pointer-events none, nunca filtro SVG em tempo real. */
+.case-uxai-root .grain-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url('/case-ux-ai/grain.png');
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-uxai-root * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Colunas IA e Humanos do hero — MOTION-SPEC §6 S01, CONTRATO-RESPONSIVO §6.
+   Borda desenhada por box-shadow inset: nasce e some sem mudar a geometria
+   do Figma (uma `border` de 1px deslocaria o conteúdo). Hover só onde há
+   hover; o foco acrescenta o anel e mantém o realce do hover. */
+.case-uxai-root .coluna-divergencia {
+  box-shadow: inset 0 0 0 1px transparent;
+  transition: box-shadow var(--d-hover) var(--ease-micro);
+}
+.case-uxai-root .coluna-divergencia-texto {
+  color: var(--texto-apoio);
+  transition: color var(--d-hover) var(--ease-micro);
+}
+@media (hover: hover) {
+  .case-uxai-root .coluna-divergencia:hover {
+    box-shadow: inset 0 0 0 1px var(--borda-ativa);
+  }
+  .case-uxai-root .coluna-divergencia:hover .coluna-divergencia-texto {
+    color: var(--texto-principal);
+  }
+}
+.case-uxai-root .coluna-divergencia:focus-visible {
+  box-shadow: inset 0 0 0 1px var(--borda-ativa);
+  outline: 2px solid var(--acao-foco);
+  outline-offset: 3px;
+}
+.case-uxai-root .coluna-divergencia:focus-visible .coluna-divergencia-texto {
+  color: var(--texto-principal);
+}
+@media (prefers-reduced-motion: reduce) {
+  .case-uxai-root .coluna-divergencia,
+  .case-uxai-root .coluna-divergencia-texto {
+    transition: none;
+  }
+}
