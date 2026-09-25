@@ -6,20 +6,19 @@ type Props = {
 }
 
 /**
- * Grid do case UX + AI — docs/CONTRATO-RESPONSIVO.md §2. Container de 1248
- * (largura do card de stats, o elemento mais largo do case, múltiplo de 8),
- * gutter fluido `clamp(24px, 6.67vw, 96px)`. Um container só para as 15
- * seções — os três gutters diferentes do Figma (120 na nav, 96 nos stats,
- * 160 nos blocos do hero) são drift de desenho, não intenção; a nav fica de
- * fora por ser componente compartilhado com os outros cases.
+ * Grid do case UX + AI — docs/CONTRATO-RESPONSIVO.md §2: coluna de 1200 com
+ * margem `clamp(24px, 8.33vw, 120px)`, medida em 12 das 15 seções. Única
+ * exceção é o card de stats do hero (1248), que não usa este componente.
+ *
+ * Dois elementos de propósito: com `box-sizing: border-box`, max-width e
+ * padding no mesmo elemento tiram a margem de dentro da coluna (1200 viraria
+ * 960 em 1440). A margem fica no de fora, a coluna de 1200 no de dentro, e
+ * `className` vai para a coluna.
  */
 export default function Container({ children, className = '' }: Props) {
   return (
-    <div
-      className={`mx-auto w-full max-w-[1248px] ${className}`}
-      style={{ paddingInline: 'clamp(24px, 6.67vw, 96px)' }}
-    >
-      {children}
+    <div className="w-full" style={{ paddingInline: 'clamp(24px, 8.33vw, 120px)' }}>
+      <div className={`mx-auto w-full max-w-[1200px] ${className}`}>{children}</div>
     </div>
   )
 }

@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(npm *)",
+      "Skill(run)",
+      "Bash(chromium-cli *)",
+      "Bash(node -e \"require\\('playwright'\\)\")",
+      "PowerShell(Start-Process \"http://localhost:5173\")",
+      "PowerShell(Rename-Item *)",
+      "Bash(curl -sf http://localhost:5173)",
+      "PowerShell(Start-Sleep 8; Invoke-WebRequest -Uri \"http://localhost:5173\" -UseBasicParsing -TimeoutSec 10 | Select-Object StatusCode)",
+      "PowerShell(Start-Process \"http://localhost:5173/case/gabriel\")",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\andreob\\\\Documents\\\\Portifolio\\\\Portifolio\\\\src\" -Recurse | Where-Object { !$_.PSIsContainer } | Select-Object FullName | Sort-Object FullName)"
+    ]
+  }
+}

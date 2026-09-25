@@ -7,11 +7,14 @@ type CaseMotionContextValue = {
   reduced: boolean
   /** ≥1440 com ponteiro fino — só aqui sticky, scrub e parallax rodam (docs/CONTRATO-RESPONSIVO.md §7). */
   isDesktop: boolean
+  /** Instância do Lenis quando ativo (≥1440, ponteiro fino, sem reduced motion). Só leitura: para `scrollTo`. */
+  getLenis: () => Lenis | null
 }
 
 const CaseMotionContext = createContext<CaseMotionContextValue>({
   reduced: false,
   isDesktop: false,
+  getLenis: () => null,
 })
 
 export function useCaseMotion() {
@@ -28,6 +31,7 @@ export function CaseUxAiMotionProvider({ children }: { children: ReactNode }) {
   const reduced = useReducedMotion() ?? false
   const [isDesktop, setIsDesktop] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
+  const lenisRef = useRef<Lenis | null>(null)
 
   useEffect(() => {
     const mql = window.matchMedia('(min-width: 1440px) and (pointer: fine)')
@@ -48,6 +52,7 @@ export function CaseUxAiMotionProvider({ children }: { children: ReactNode }) {
     root.style.scrollBehavior = 'auto'
 
     const lenis = new Lenis({ duration: 1.1, smoothWheel: true, lerp: 0.1 })
+    lenisRef.current = lenis
     let frameId: number
     function raf(time: number) {
       lenis.raf(time)
@@ -58,12 +63,13 @@ export function CaseUxAiMotionProvider({ children }: { children: ReactNode }) {
     return () => {
       cancelAnimationFrame(frameId)
       lenis.destroy()
+      lenisRef.current = null
       root.style.scrollBehavior = previousScrollBehavior
     }
   }, [reduced, isDesktop])
 
   return (
-    <CaseMotionContext.Provider value={{ reduced, isDesktop }}>
+    <CaseMotionContext.Provider value={{ reduced, isDesktop, getLenis: () => lenisRef.current }}>
       <div ref={rootRef}>{children}</div>
     </CaseMotionContext.Provider>
   )

@@ -31,51 +31,63 @@ qualquer tela menor, inclusive no notebook do Andreo.
 
 ## 2. Grid e container
 
-O Figma tem três gutters diferentes: 120 na nav, 96 na faixa de stats, 160 nos
-blocos laterais do hero. Isso é drift de desenho, não intenção.
-
-**Decisão: um container só, 1248 de conteúdo, gutter de 96 em 1440.**
+Medido nas 15 seções em 24 set 2026: **12 delas usam coluna de 1200 com margem de
+120.** É o grid do case.
 
 ```
-max-width: 1248px
-padding-inline: clamp(24px, 6.67vw, 96px)
+max-width: 1200px
+padding-inline: clamp(24px, 8.33vw, 120px)
 margin-inline: auto
 ```
 
-1248 é o valor do card de stats, que é o elemento mais largo do case, e é
-múltiplo de 8. O `Container.tsx` atual está em 1200 com gutter de 120, herdado do
-blueprint perdido. Atualizar para 1248/96.
+É exatamente o `Container.tsx` que já existe. **Não mudar.** Uma versão anterior
+deste contrato mandava 1248 com margem de 96: estava errada, tirada de um elemento
+só. Se o `Container.tsx` foi alterado por causa dela, volte para 1200/120.
 
-A nav fica de fora: ela é instância de um componente compartilhado com os outros
-cases e mexer nela tem alcance maior que esta página. Os 24px de diferença de
-cada lado não se notam.
+Exceções, e só estas:
+
+- **Hero, card de stats:** 1248, sobrando 24px de cada lado da coluna. Faixa de
+  dado mais larga que o texto, de propósito.
+- **S10, S12 e S13** encostam em 82, 1344 e 1348 no Figma. Drift de desenho:
+  seguem a coluna de 1200.
+
+A nav também usa margem de 120 e bate com a coluna.
 
 **Posição absoluta só existe em `case-xl`.** Abaixo de 1440 nenhuma seção usa
 `position: absolute` para layout. Se uma seção precisar, o desenho está errado,
 pare e pergunte.
 
+**Espaço vertical de seção.** 64px em cima e embaixo a partir de 768, 48px abaixo
+disso. Seção que abre com divisor de 1px (como a S02) usa o divisor na largura da
+coluna, em `--superficie-hover`, e 32px dele até o eyebrow.
+
 ---
 
 ## 3. Escala de tipo
 
-Um valor por papel, com o degrau de 1440 vindo do Figma e o degrau pequeno
-derivado. Sempre par.
+Medido nas 15 seções. **O brief de cada seção traz o tamanho medido, e o medido
+vence esta tabela.** Ela é o padrão para o que o brief não disser.
 
-| papel | < 768 | 768–1439 | ≥ 1440 |
-|---|---|---|---|
-| H1 do hero | 40 | `clamp` | 64 |
-| título de seção | 32 | `clamp` | 40 |
-| número de dado grande | 40 | 48 | 56 |
-| corpo | 16 | 16 | 18 |
-| corpo secundário | 14 | 14 | 16 |
-| rótulo, eyebrow, chip | 12 | 12 | 12 |
+| papel | < 768 | 768–1439 | ≥ 1440 | onde |
+|---|---|---|---|---|
+| H1 do hero | 40 | `clamp(40px, 4.44vw, 64px)` | 64 | S01 |
+| título de achado | 32 | `clamp(32px, 2.78vw, 40px)` | 40 | S05 a S08 |
+| título de seção | 28 | 32 | 32 | S02 a S04, S09 a S14 |
+| título do CTA | 36 | `clamp(36px, 3.33vw, 48px)` | 48 | S15 |
+| número de dado grande | 40 | 48 | 56 | |
+| corpo | 16 | 16 | 16 | |
+| corpo secundário | 14 | 14 | 14 | |
+| rótulo, eyebrow, chip, legenda | 12 | 12 | 12 | |
 
-Fórmula do `clamp` entre 768 e 1440, para não inventar valor intermediário:
+Os quatro títulos de achado são maiores de propósito: S05 a S08 são o núcleo do
+estudo, e o tamanho marca isso.
 
-```css
-font-size: clamp(40px, 4.44vw, 64px);   /* H1: 64 exatos em 1440 */
-font-size: clamp(32px, 2.78vw, 40px);   /* título de seção */
-```
+**Tamanho ímpar no Figma sobe para o par seguinte.** Regra fixa do Andreo. 11 vira
+12, 13 vira 14, 15 vira 16, 17 vira 18. Tamanho fracionado, que aparece quando
+alguém escalou um grupo no Figma, vira o par mais próximo, nunca abaixo de 12.
+
+Títulos usam `--texto-principal`. Alguns frames usam `#E7E8E9` no título, que
+seria um quinto cinza; o guia proíbe, então vale o token.
 
 Entrelinha e tracking não mudam com o breakpoint. Só o tamanho muda.
 
@@ -91,8 +103,12 @@ Valem para toda seção que tem par ou grade.
 - **Grade de 4** (stats, fatores, capacidades): 4 colunas em ≥ 1024, 2×2 entre
   768 e 1023, 2×2 também abaixo de 768. Nunca 1 coluna: quatro números em coluna
   única viram uma lista e perdem a comparação.
-- **Grade de 6** (fluxo): 6 em linha em ≥ 1440, 3+3 entre 1024 e 1439, 2+2+2
-  abaixo de 1024.
+- **Sequência** (etapas numeradas ligadas por uma linha: o fluxo da S10): em
+  linha quando cabe, lista vertical quando não cabe. Na lista, a linha passa na
+  vertical pelos nós, à esquerda, e o texto fica alinhado à esquerda.
+  **Sequência nunca vira grade 2×2**: a grade quebra a leitura da ordem. Fluxo
+  (6) em linha a partir de 1280. As capacidades da S02 deixaram de ser
+  sequência em 24 set 2026: viraram explorador com paginação, que não empilha.
 - **Divisores verticais somem quando o bloco empilha.** Não viram divisores
   horizontais, apenas somem, e o gap sobe para 32.
 - **Matriz 4×4 (S07) nunca empilha.** Ela rola na horizontal dentro de um
@@ -141,6 +157,18 @@ Em `pointer: coarse` não existe hover. Elementos interativos continuam sendo
 - nenhuma informação existe só no hover. Se um tooltip carrega dado que não está
   em outro lugar, ele precisa estar visível em repouso no mobile.
 
+### Avanço automático
+
+Vale para qualquer conteúdo que troca sozinho (hoje, só o explorador da S02):
+
+- botão de pausar sempre visível ao lado (WCAG 2.2.2);
+- a S02 roda em ciclo, a pedido do Andreo; qualquer outro caso passa uma vez e
+  para;
+- troca por teclado desliga o avanço, e ele só volta pelo botão;
+- segura enquanto menos da metade está na tela e enquanto a aba está escondida;
+- `aria-live="off"` enquanto avança, `"polite"` parado;
+- nunca liga sozinho em reduced motion.
+
 ---
 
 ## 7. Motion por breakpoint
@@ -155,6 +183,7 @@ Em `pointer: coarse` não existe hover. Elementos interativos continuam sendo
 | parallax de scroll | sim | sim | não | não |
 | scrub ligado ao scroll | sim | não | não | não |
 | Lenis | sim | não | não | não |
+| avanço automático (S02) | sim | sim | sim | não, só pelo botão |
 
 `useCaseMotion().isDesktop` já resolve a coluna `≥1440` (hoje ele testa
 `min-width: 1024px and pointer: fine`, precisa subir para 1440 para bater com
@@ -181,7 +210,7 @@ primeira tentativa.
 
 - [ ] Nenhuma `width` fixa em px. Nenhum scroll horizontal em 360, 768, 1024,
       1280, 1440 e 1920.
-- [ ] Container de 1248 com gutter clamp.
+- [ ] Coluna de 1200 com margem clamp, via `Container.tsx`.
 - [ ] Tamanho de fonte par, espaçamento múltiplo de 8.
 - [ ] Nenhum hex solto: tudo em token de `case-ux-ai-tokens.css`.
 - [ ] Hover dentro de `@media (hover: hover)`.

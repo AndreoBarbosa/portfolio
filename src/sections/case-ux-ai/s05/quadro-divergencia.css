@@ -1,0 +1,141 @@
+/* Palco "89 problemas, dois julgamentos" da S05 — pareia com QuadroDivergencia.tsx.
+   BRIEF-S05-EXPERIMENTO v2 §5. Só tokens do case (case-ux-ai-tokens.css).
+
+   Linha do tempo: cada elemento animado tem .qd-a e traz o atraso numa
+   variável (--d1, --d2, --d3, --d) ou usa as do contêiner (tokens de
+   S05_QUADRO, postos em style pelo componente). As animações ficam pausadas
+   em data-estado="espera": com fill-mode both, o elemento mostra o quadro
+   inicial (escondido) até o quadro entrar na tela. "toca" solta; "fixo"
+   (reduced motion) desliga e mostra o estado final. */
+
+.case-uxai-root .quadro-divergencia .qd-a {
+  animation-play-state: paused;
+}
+.case-uxai-root .quadro-divergencia[data-estado='toca'] .qd-a {
+  animation-play-state: running;
+}
+.case-uxai-root .quadro-divergencia[data-estado='fixo'] .qd-a {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .case-uxai-root .quadro-divergencia .qd-a {
+    animation: none;
+  }
+}
+
+/* Pontos: nascem no eixo (fade, ordem sorteada) e viajam para a casa. */
+.case-uxai-root .qd-ponto {
+  animation:
+    qd-nasce var(--qd-nasce) linear var(--d1) both,
+    qd-divide var(--qd-divide) var(--ease-enter) var(--d2) both;
+}
+.case-uxai-root .qd-azul {
+  animation: qd-fade var(--qd-azul-dur) var(--ease-state) var(--d3) both;
+}
+@keyframes qd-nasce {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes qd-divide {
+  from { transform: translate(var(--dx), var(--dy)); }
+  to { transform: translate(0, 0); }
+}
+@keyframes qd-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.case-uxai-root .qd-halo {
+  animation: qd-fade var(--qd-halo-dur) var(--ease-enter) var(--qd-halo) both;
+}
+
+/* Âncora: o disco cresce do centro; o núcleo acende junto. */
+.case-uxai-root .qd-ancora {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: qd-surge var(--qd-ancora-dur) var(--ease-enter) var(--qd-ancora) both;
+}
+.case-uxai-root .qd-nucleo {
+  animation: qd-fade var(--qd-ancora-dur) var(--ease-enter) var(--qd-ancora) both;
+}
+@keyframes qd-surge {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.case-uxai-root .qd-vs {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: qd-vs var(--qd-vs-dur) var(--ease-enter) var(--qd-vs) both;
+}
+@keyframes qd-vs {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+.case-uxai-root .qd-vs-disco {
+  fill: var(--superficie-elevada);
+  stroke: var(--borda-ativa);
+  stroke-width: 1.5;
+}
+.case-uxai-root .qd-vs-texto {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  fill: var(--texto-principal);
+}
+
+/* Traços que desenham: pathLength 1, dash 1 1, offset 1 → 0. */
+.case-uxai-root .qd-desenho {
+  fill: none;
+  stroke-dasharray: 1 1;
+}
+.case-uxai-root .qd-divisor {
+  stroke: var(--borda-padrao);
+  stroke-width: 1;
+  animation: qd-desenha var(--qd-divisor-dur) var(--ease-state) var(--qd-divisor) both;
+}
+.case-uxai-root .qd-desenho--lig {
+  stroke: #fff;
+  stroke-width: 4;
+  animation: qd-desenha var(--qd-ligacao-dur) var(--ease-state) var(--qd-ligacao) both;
+}
+@keyframes qd-desenha {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+.case-uxai-root .qd-ligacao {
+  fill: none;
+  stroke: var(--borda-ativa);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+
+/* Rótulos: 12px, mínimo do sistema. */
+.case-uxai-root .qd-rotulo {
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.case-uxai-root .qd-rotulo--e {
+  fill: var(--texto-apoio);
+  animation: qd-fade var(--qd-rotulo-dur) var(--ease-enter) var(--qd-rotulo-e) both;
+}
+.case-uxai-root .qd-rotulo--i {
+  fill: var(--acao-link);
+  animation: qd-fade var(--qd-rotulo-dur) var(--ease-enter) var(--qd-rotulo-i) both;
+}
+.case-uxai-root .qd-rotulo-lig {
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-size: 12px;
+  fill: var(--texto-metadado);
+  animation: qd-fade var(--qd-rotulo-lig-dur) var(--ease-enter) var(--qd-rotulo-lig) both;
+}
+
+/* Totais: sobem 8px e aparecem. */
+.case-uxai-root .qd-total {
+  animation: qd-sobe var(--qd-total-dur) var(--ease-enter) var(--d) both;
+}
+@keyframes qd-sobe {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}

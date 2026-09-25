@@ -9,7 +9,7 @@
  * não por conveniência.
  */
 import type { Variants } from 'framer-motion'
-import { DUR, EASE, MOVE } from './caseUxAiTokens'
+import { DUR, EASE, MOVE, REDUCED_FADE } from './caseUxAiTokens'
 
 /** Texto de apoio, parágrafos, itens de lista. Nunca sobe mais que MOVE.md. */
 export const enterFadeUp: Variants = {
@@ -113,3 +113,21 @@ export const enterDivergence = (direction: 'left' | 'right', distance: number = 
 /** Estado atenuado (§14.2): opacidade 0.3 em objeto, 0.85 em texto. */
 export const DIMMED_OBJECT_OPACITY = 0.3
 export const DIMMED_TEXT_OPACITY = 0.85
+
+/** Fade puro, sem deslocamento (chip do hero, eyebrows, legendas). */
+export const enterFade = (duration: number = DUR.enter): Variants => ({
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration, ease: EASE.enter } },
+})
+
+/** Reduced motion: toda entrada vira fade de REDUCED_FADE, sem atraso nem cascata (contrato §6 e §7). */
+export const reducedFade: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: REDUCED_FADE } },
+}
+
+/** Acrescenta um atraso (o beat da seção) ao `transition` do estado `visible` de uma receita. */
+export function atBeat(variants: Variants, delay: number): Variants {
+  const visible = variants.visible as { transition?: object }
+  return { ...variants, visible: { ...visible, transition: { ...visible.transition, delay } } }
+}

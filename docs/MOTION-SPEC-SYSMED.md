@@ -31,7 +31,7 @@ Humanos saindo do mesmo objeto), seção 05 (especialistas e IA partindo do mesm
 corpus), seção 09 (as duas linhas de divisão de trabalho). Três vezes mantém o
 motivo significativo. Uma quarta o transforma em maneirismo.
 
-**Motivo B, a treliça.** A malha de linhas finas do fundo das seções 01 e 08
+**Motivo B, a treliça.** A malha de linhas finas do fundo da seção 08
 desenha o traço uma única vez, devagar, a 5% de opacidade. Nunca entra em loop.
 
 **A regra de cor vale para o motion.** Hierarquia vem de luminância, não de
@@ -73,10 +73,11 @@ não por conveniência.
 
 ### Constantes do vídeo do hero
 
-O tempo do hero é derivado do vídeo, não inventado. Medido no arquivo atual
-(23 set 2026): VP9, sem canal alfa, movimento real do objeto só nos primeiros
-1,6s, pico em 0,8s, e depois 8,3s de frame congelado. Ou seja, o arquivo original
-era um loop com pausa longa embutida.
+O tempo do hero é derivado do vídeo, não inventado. Vídeo atual, medido em
+24 set 2026: ciclo de 10s, 30fps, em que o objeto se transforma e **volta à forma
+inicial** (primeiro e último frame quase idênticos). A abertura tem um gesto forte
+de 0 a 0,6s, assenta por volta de 1,2s, e fica quase parada até 2,8s. Os gestos
+grandes vêm depois, com picos em 4,2s e 6,0s.
 
 Criar em `src/motion/caseUxAiTokens.ts`:
 
@@ -84,32 +85,36 @@ Criar em `src/motion/caseUxAiTokens.ts`:
 /** Vídeo do hero. Ao trocar o arquivo, remedir e atualizar SÓ este bloco:
  *  o resto da sequência é derivado daqui. */
 export const HERO_VIDEO = {
-  webm: '/case-ux-ai/hero-motion.webm',
-  mp4:  '/case-ux-ai/hero-motion.mp4',
-  poster: '/case-ux-ai/hero-poster.webp',
+  webm: '/case-ux-ai/hero-v2.webm',
+  mp4:  '/case-ux-ai/hero-v2.mp4',
+  poster: '/case-ux-ai/hero-v2-poster.webp',
   /** Duração do arquivo, em segundos. */
-  duration: 2.0,
-  /** Instante do pico de movimento do objeto. */
-  motionPeak: 0.8,
-  /** Instante em que o objeto para. */
-  motionEnd: 1.6,
+  duration: 10.0,
+  /** Pico do gesto de abertura do objeto. */
+  motionPeak: 0.4,
+  /** Instante em que o gesto de abertura assenta. */
+  motionEnd: 1.2,
 } as const
 
 /** Sequência do hero, derivada de HERO_VIDEO. Não hardcodar segundos aqui. */
 export const HERO_BEAT = {
   video:    0,
-  chip:     HERO_VIDEO.motionPeak * 0.25,  // 0.20s
-  headline: HERO_VIDEO.motionPeak * 0.40,  // 0.32s
-  subtitle: HERO_VIDEO.motionPeak * 0.95,  // 0.76s
-  columns:  HERO_VIDEO.motionEnd  * 0.63,  // 1.00s
-  stats:    HERO_VIDEO.motionEnd  * 0.75,  // 1.20s
-  hook:     HERO_VIDEO.motionEnd  * 1.06,  // 1.70s
+  chip:     HERO_VIDEO.motionPeak * 0.25,  // 0.10s
+  headline: HERO_VIDEO.motionPeak * 0.40,  // 0.16s
+  subtitle: HERO_VIDEO.motionPeak * 0.95,  // 0.38s
+  columns:  HERO_VIDEO.motionEnd  * 0.63,  // 0.76s
+  stats:    HERO_VIDEO.motionEnd  * 0.75,  // 0.90s
+  hook:     HERO_VIDEO.motionEnd  * 1.06,  // 1.27s
 } as const
 ```
 
 Trocou o vídeo: meça o novo com `ffprobe` mais uma varredura de diferença entre
 frames, atualize `duration`, `motionPeak` e `motionEnd`, e a sequência inteira se
 recalibra sozinha. Se não tiver ffmpeg à mão, me mande o arquivo que eu meço.
+
+Da S02, também em `caseUxAiTokens.ts`: `CAPACIDADES_PLAYER`, com
+`visibleRatio: 0.5`, `startDelay: 0.4` e `preloadMargin: '600px'`. O tempo de cada
+capacidade vem da duração do vídeo. Regras no brief da S02.
 
 Falta criar: `enterDivergence(direction)`, a receita do motivo A. Sai de
 `x: 0, opacity: 0` para `x: ±distância, opacity: 1` com `EASE.enter` e
@@ -140,7 +145,7 @@ Falta criar: `enterDivergence(direction)`, a receita do motivo A. Sai de
 9. **`prefers-reduced-motion` desliga deslocamento, escala, desenho de traço,
    parallax e contagem.** Sobra fade curto e troca de estado instantânea.
    Nenhuma informação se perde: todo dado tem número escrito, a barra da 06
-   renderiza cheia, a treliça renderiza pronta. WCAG 2.3.3, nível AAA, pede
+   renderiza cheia, a treliça da S08 renderiza pronta. WCAG 2.3.3, nível AAA, pede
    exatamente isso para motion disparado por interação.
 10. **Sticky, scrub e parallax só em L/XL com ponteiro fino.** Já resolvido por
     `useCaseMotion().isDesktop`. Abaixo disso, a rolagem nativa é a experiência.
@@ -184,108 +189,119 @@ Numeração igual à do Figma na v2. Arquivos em `src/sections/case-ux-ai/`,
 padrão `S01Hero.tsx`.
 
 ### S01 · Hero
-Já construído estaticamente. Falta o motion.
+Só vídeo e texto. A treliça foi removida do hero em 24 set 2026, a pedido do
+Andreo: o vídeo novo já carrega a atmosfera sozinho, e as linhas competiam com
+ele.
 
 | beat | t | elemento | movimento |
 |---|---|---|---|
-| `video` | 0ms | vídeo do objeto | `opacity 0→1` em 500ms, toca **uma vez**, congela no último frame |
-| — | 0ms | treliça de fundo | `enterDraw` em 2400ms, em paralelo, nunca bloqueia |
-| `chip` | 200ms | chip de tags | fade |
-| `headline` | 320ms | título | `lineMaskContainer` + `lineMaskLine`, por palavra, `STAGGER.item` |
-| `subtitle` | 760ms | subtítulo | `enterFadeUp` |
-| `columns` | 1000ms | colunas IA e Humanos | **motivo A**, 24px para fora, com fade |
-| `stats` | 1200ms | faixa de stats | `staggerContainer(STAGGER.stat)` + `useCountUp` de 800ms |
-| `hook` | 1700ms | frase-gancho | fade, 400ms |
+| `video` | 0ms | vídeo do objeto | `opacity 0→1` em 500ms, toca **uma vez** o ciclo de 10s e para |
+| `chip` | 100ms | chip de tags | fade |
+| `headline` | 160ms | título | `lineMaskContainer` + `lineMaskLine`, por palavra, `STAGGER.item` |
+| `subtitle` | 380ms | subtítulo | `enterFadeUp` |
+| `columns` | 760ms | colunas IA e Humanos | **motivo A**, 24px para fora, com fade |
+| `stats` | 900ms | faixa de stats | `staggerContainer(STAGGER.stat)` + `useCountUp` de 800ms |
+| `hook` | 1270ms | frase-gancho | fade, 400ms |
 
-Último elemento pousa em ~2,1s. O texto entra enquanto o objeto ainda se move,
-e isso é deliberado: título acima e objeto abaixo formam um gesto composto, não
-dois movimentos disputando foco. O que a regra proíbe é competição no mesmo
-ponto de atenção. O pico do objeto (0,8s) cai entre o título e o subtítulo de
-propósito, para o olho ter para onde ir.
+Último elemento pousa em ~1,7s. O título entra junto com o gesto de abertura do
+objeto, e isso é deliberado: título acima e objeto abaixo formam um gesto
+composto. O texto termina de entrar exatamente na janela em que o objeto assenta
+(1,2s a 2,8s), e os gestos grandes do vídeo, de 3s a 7s, acontecem depois que a
+pessoa já leu o hero. É um segundo ato, recompensa para quem fica.
 
-As palavras em destaque do título usam gradiente linear no Figma. O código hoje
-usa `--acao-link` sólido (decisão D2, registrada em `data/caseUxAi.ts`). Manter o
-sólido: o gradiente está fora da rampa do guia.
+As palavras em destaque do título e os rótulos IA e Humanos usam o gradiente
+linear do Figma, `--gradiente-destaque-de` → `--gradiente-destaque-para`. A
+decisão D2, que trocava por `--acao-link` sólido, está revogada: o Figma vence.
 
-**Vídeo.** Assets prontos em `public/case-ux-ai/`: `hero-motion.webm` (VP9,
-1440×1080, 2,0s, 31 KB), `hero-motion.mp4` (H.264, mesmo corte, 48 KB, fallback
-para Safari antigo) e `hero-poster.webp` (26 KB, frame de repouso).
+**Vídeo.** Assets em `public/case-ux-ai/`: `hero-v2.webm` (VP9, 1920×1440, 30fps,
+10s, 960 KB), `hero-v2.mp4` (H.264, mesmo corte, 1,2 MB, fallback) e
+`hero-v2-poster.webp` (41 KB, primeiro frame). O original tinha 8 MB em
+2880×2160; na comparação de detalhe do vidro a compressão não aparece.
 
-Três coisas que mudaram em relação ao que eu tinha assumido:
+- **Sem `loop`, toca uma vez.** O ciclo de 10s termina na mesma forma em que
+  começa, então parar no último frame parece uma volta para casa, não um
+  congelamento. Isso respeita a regra do master contra loop infinito que rouba
+  atenção do conteúdo, e o objeto não fica se mexendo atrás do texto para sempre.
+- **Poster é o primeiro frame.** Como o vídeo começa nele, não há salto quando a
+  reprodução começa.
+- **Sem canal alfa.** O arquivo original vinha marcado com alfa, mas era 100%
+  opaco. O alfa foi descartado: decodificar alfa custa sem entregar nada.
+- **Cor do fundo.** O fundo do vídeo foi levantado 1 ponto em vermelho e verde
+  para bater com `#050B0E`. Ainda assim, cada navegador converte cor de vídeo de
+  um jeito, então a borda do vídeo recebe uma máscara que dissolve no piso:
 
-- **O vídeo não tem canal alfa.** Não precisa, e é melhor assim: o fundo dele já
-  está gravado exatamente em `#050B0E`, medido pixel a pixel nos quatro cantos.
-  Some a exigência de trilha HEVC com alfa para Safari, que era o ponto mais
-  frágil do plano. Basta o MP4 comum como fallback.
-- **Sem `loop`.** O arquivo original tinha 1,6s de movimento e 8,3s de frame
-  parado, então repetir significava decodificar uma imagem estática 83% do tempo.
-  O corte novo tem só o movimento: toca uma vez e congela no último frame, o que
-  também respeita a regra de não ter loop na página.
-- **O original era 2880×2160.** Decodificar 4K em loop custa GPU sem entregar
-  nada. O corte em 1440×1080 baixou o peso de 456 KB para 31 KB.
+```css
+mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 80%, transparent 100%);
+-webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 80%, transparent 100%);
+```
 
-Atributos: `muted playsinline preload="auto"`, `poster={HERO_VIDEO.poster}`, sem
-`loop`. `hero.webm` original fica no repositório como referência, não é
-referenciado pelo código.
+  Medido em todos os frames: o objeto nunca passa de 76% do raio, então a máscara
+  só toca o fundo, nunca o vidro.
 
-> **Enquadramento, pendência real.** No vídeo o objeto fica abaixo e à direita do
-> centro, com muito vazio em cima. No Figma ele está centralizado no slot. Ou o
-> componente corrige com `object-position`, ou o vídeo definitivo precisa nascer
-> com o objeto centralizado. Isso vale para o vídeo final também, quando ele
-> aparecer.
+- **Enquadramento resolvido.** Com `object-fit: contain` no hero de 1440×1024, o
+  objeto ocupa x 394 a 1046 e y 497 a 903 ao longo do ciclo inteiro. Fica entre
+  os blocos IA (termina em 384) e Humanos (começa em 1087), e abaixo do subtítulo
+  (termina em 442). Não encosta em nenhum texto, e não precisa de
+  `object-position`.
+
+Atributos: `autoplay muted playsinline preload="auto"`, sem `poster` e sem
+`loop`. **Imagem estática por cima** (24 set 2026): um `<picture>` de alta
+qualidade (`HERO_STATIC`, 1440 e 2880 px) aparece antes do primeiro quadro e
+volta em cross-fade de 700ms no `ended`. No último 1,2s o `playbackRate` desce de
+1 para 0,4 com curva de saída, para o objeto chegar devagar na forma de repouso.
+Detalhe no brief do hero, seção 15. Pausa por `IntersectionObserver` se sair da viewport antes de
+terminar. Em reduced motion, não toca: mostra o poster.
 
 **Parallax.** Mouse: até 8px na direção oposta ao cursor, com suavização forte.
 Scroll: objeto a 0.85x da velocidade do texto, teto `PARALLAX_OBJECT` por
 breakpoint. Desligado em toque e em reduced motion.
 
-**Interação nas colunas.** A coluna sobe um degrau de luminância, a borda vai de
-`--borda-sutil` para `--borda-ativa`, e 68% e 48% na faixa de stats sobem o mesmo
-degrau enquanto 89 e 11 descem um. `DUR.hover`, `EASE.micro`.
+**Colunas IA e Humanos sem estado.** São texto: sem hover, sem foco, sem borda,
+sem parada no Tab. A faixa de stats também não reage. Revisto em 24 set 2026: a
+borda que aparecia no hover fazia a coluna parecer um botão, e ela não leva a
+lugar nenhum. O Figma `800:1033` foi atualizado.
 
-> Decisão aprovada, 23 set 2026. Não construir painel de vidro novo no hover. O
-> realce acontece na faixa de stats que já está na página. Uma superfície a menos,
-> um movimento por vez, nenhuma informação duplicada.
+### S02 · Visão Geral, o explorador das capacidades
+Versão 3, 24 set 2026. O detalhe completo está em
+`docs/BRIEF-S02-VISAO-GERAL.md`; aqui fica só a intenção.
 
-**Teclado.** As duas colunas são `<button>`. Foco produz o mesmo realce mais o
-anel.
+Um painel mostra uma capacidade por vez: texto à esquerda, o vídeo dela à
+direita. Embaixo, paginação em pílula no estilo das galerias da Apple, com botão
+de pausar. A cápsula do ponto ativo enche em degradê (o mesmo do hero) no ritmo
+do vídeo: o tempo de cada capacidade é a duração do vídeo dela, e o avanço
+acontece no fim do vídeo. Depois do 04 volta ao 01, em ciclo, a pedido do Andreo.
 
-### S02 · Visão Geral, as quatro capacidades
-Eyebrow, título e parágrafo em sequência padrão. Campo de pesquisa de fundo faz
-fade até 6% em 1.2s, pontos em `STAGGER.cell` com ordem de semente fixa. Os
-quatro nós entram da esquerda para a direita em `STAGGER.line`, com a linha
-conectora em `enterDraw`.
+Os vídeos chegam prontos: fundo normalizado quadro a quadro para
+`--superficie-elevada`, borda esfumada embutida e enquadramento sem corte. O
+painel não sincroniza cor em tempo real; o vídeo já nasce com o fundo do painel.
 
-Hover ou foco num nó: o nó cresce de 9 para 18px de diâmetro, o trecho de linha à
-esquerda sobe um degrau, e o painel "ETAPA ATIVA" **troca de conteúdo em
-cross-fade**, sem entrar e sair, sem deslocamento vertical. Se o painel
-aparecesse e sumisse, a altura mudaria e a página pularia sob o cursor. Em
-repouso ele mostra a etapa 01.
-
-Teclado: roving tabindex nos quatro nós, setas navegam, Home e End vão às pontas,
-painel segue o foco. O texto de affordance já foi corrigido no Figma para
-"Passe o mouse ou navegue com as setas para explorar cada capacidade."
+Troca de slide em cross-fade, vídeo e texto juntos, sem deslocamento e sem mudar
+altura.
 
 ### S03–04 · O Desafio e o Briefing
-Parágrafo, eyebrow, e a pergunta em display. A pergunta entra linha a linha com
-`lineMaskLine` em `STAGGER.line`. É o único texto do case com máscara além do
-fecho, porque é a pergunta que organiza o estudo. A expressão em acento entra
-120ms depois da linha dela.
+Detalhe em `docs/BRIEF-S03-DESAFIO.md`. Parágrafo, eyebrow, e a pergunta em
+display. A pergunta entra linha a linha com `lineMaskLine` em `STAGGER.line`. É o
+único texto do case com máscara além do fecho, porque é a pergunta que organiza o
+estudo. A expressão em acento entra 120ms depois da linha dela.
 
-Imagem de vidro à esquerda: fade, parallax 0.9x. Painel de briefing entra como
-bloco e as cinco linhas em `STAGGER.item`. A pílula fixa nasce daqui.
+Vidro à esquerda: imagem opaca gerada do original da Magnific, com a base
+esfumada no fundo da página. Fade de 1200ms, parallax 0.9x com teto de 40px, só
+a partir de 1024. Painel de briefing entra como bloco e as cinco linhas em
+`STAGGER.item`. A pílula fixa nasce daqui.
 
 ### S05 · Desenho do experimento
-ESPECIALISTAS e IA entram pelo **motivo A**, 32px cada. "VS" entra por último,
+Detalhe em `docs/BRIEF-S05-EXPERIMENTO.md` (24 set 2026). O quadro dos 89 pontos
+foi refeito a partir de uma animação entregue por outra IA: os 89 nascem num
+só conjunto, no eixo, **todos em `--dado-neutro`**, e se dividem em dois campos
+iguais, ponto a ponto. Só depois que os dois lados estão completos o lado da IA
+transiciona para azul, 600ms. Essa ordem é a tese. O disco VS aparece no lugar
+que o conjunto desocupou. Um mesmo problema fica em destaque nos dois campos.
+
+Sem tooltip por ponto e sem roving tabindex: o quadro é uma imagem com
+descrição, e o número vive na legenda. Sem lente de vidro no quadro.
+
+Nos cartões ESPECIALISTAS e IA, **motivo A**, 32px cada; "VS" entra por último,
 `scale 0.94→1`. As quatro etapas em `STAGGER.line` com as setas em `enterDraw`.
-
-Cluster dos 89: cada ponto em `STAGGER.cell`, ordem com semente fixa. **Os pontos
-nascem todos em `--dado-neutro`.** Só depois que os dois lados estão completos o
-lado da IA transiciona para azul, 600ms. Essa ordem é a tese.
-
-Hover ou foco num ponto: tooltip em `--vidro-leve`, `opacity` e `translateY 4px`,
-150ms. O ponto sobe um degrau. O tooltip ancora no ponto, nunca segue o cursor.
-
-Teclado: roving tabindex no cluster.
 
 ### S06 · O primeiro sinal, a barra de distância
 Momento assinatura. Única animação do case dirigida por scroll.
@@ -391,7 +407,7 @@ fundo e desloca a seta 4px para a direita. Primário é sólido em
 - [ ] Nenhuma altura muda durante interação.
 - [ ] No máximo uma superfície `--vidro-forte` visível.
 - [ ] `prefers-reduced-motion` não perde nenhuma informação.
-- [ ] Sem áudio, sem loop, sem scrolljacking.
+- [ ] Sem áudio, sem loop (exceto o ciclo da S02), sem scrolljacking.
 - [ ] 60fps no scroll em notebook de entrada.
 
 ---
@@ -401,7 +417,7 @@ fundo e desloca a seta 4px para a direita. Primário é sólido em
 1. **Contagem dos stats começa em zero.** O case inteiro é sobre a distância
    entre dois números. Começar em valor parcial esconde justamente a parte que
    importa, e economiza 200ms que ninguém percebe.
-2. **Duração da entrada do hero: ~2,1s, derivada do vídeo.** Não é um número
+2. **Duração da entrada do hero: ~1,7s, derivada do vídeo v2.** Não é um número
    escolhido, é o tempo que o objeto leva para parar. Ver `HERO_BEAT`.
 3. **Sem trilha com alfa.** O vídeo já vem com o fundo na cor do piso.
 4. **Eyebrow de seção em repouso é `acao/link`.** O guia de estilo é Figma
@@ -411,6 +427,17 @@ fundo e desloca a seta 4px para a direita. Primário é sólido em
    O DESAFIO, A PERGUNTA DO ESTUDO, DESENHO DO EXPERIMENTO e CONCLUSÃO. O
    comentário de `case-ux-ai-tokens.css` que diz que `--acao-hover` "também é a
    cor dos eyebrows" está errado e precisa ser corrigido na implementação.
+
+### Decisões de 24 set 2026
+
+5. **Colunas do hero sem estado.** A borda no hover fazia parecer clicável.
+6. **S02 é um explorador com avanço automático.** Painel de volta, paginação
+   estilo Apple no lugar da fileira de nós, pausa sempre à mão. Segue o padrão
+   de carrossel do WAI-ARIA APG e a WCAG 2.2.2 (movimento automático com mais de
+   5s precisa de pausa).
+7. **S02 com um vídeo por capacidade, em ciclo.** Pedido do Andreo: o tempo de
+   cada slide é a duração do vídeo, e o 04 volta ao 01. É a única exceção à regra
+   "sem loop" do case, e só vale enquanto a seção está na tela.
 
 ## 10. Pendência aberta
 

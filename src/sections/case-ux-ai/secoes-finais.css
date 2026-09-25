@@ -1,0 +1,304 @@
+/* Seções 06 a 15 — docs/BRIEF-S06-S15.md. Só o que Tailwind não expressa
+   bem: escala fluida dos números, hachura, tracejados. Só tokens do case. */
+
+/* S06 · números monumentais sobre as cristas da onda (Figma 1104:1138).
+   No palco do desktop o tamanho segue a escala do palco (--u, 1 = 1440):
+   144 no frame. No celular, 64. */
+.case-uxai-root .s06-numero {
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+.case-uxai-root .s06-numero--palco {
+  font-size: calc(144 * var(--u));
+}
+.case-uxai-root .s06-numero--compacto {
+  font-size: clamp(64px, 11vw, 96px);
+  line-height: 1;
+}
+.case-uxai-root .s06-pct {
+  font-size: 0.5em;
+  color: var(--texto-apoio);
+}
+.case-uxai-root .s06-rotulo {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0.02em;
+  color: var(--acao-hover);
+}
+.case-uxai-root .s06-fecho {
+  line-height: 1.2857; /* 36 em 28 */
+}
+
+/* A onda sangra da tela. Quando o palco fica mais estreito que a tela
+   (presa, em tela baixa ou muito larga), as pontas esmaecem em vez de
+   mostrar o corte do asset. */
+.case-uxai-root .s06-onda-borda {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+}
+
+/* S06 · hastes (bloco até a crista), pontos acesos e guias do vão.
+   Haste #4A9BF5 a 60%; guia tracejada 4/4 a 45% (= --borda-ativa). */
+.case-uxai-root .s06-haste {
+  background: rgba(74, 155, 245, 0.6);
+}
+.case-uxai-root .s06-ponto {
+  background: var(--acao-hover);
+  box-shadow: 0 0 14px 2px rgba(74, 155, 245, 0.9);
+}
+.case-uxai-root .s06-ponta-vao {
+  background: var(--acao-hover);
+}
+.case-uxai-root .s06-guia {
+  background: repeating-linear-gradient(to bottom, var(--borda-ativa) 0 4px, transparent 4px 8px);
+}
+.case-uxai-root .s06-guia-h {
+  background: repeating-linear-gradient(to right, var(--borda-ativa) 0 4px, transparent 4px 8px);
+}
+
+/* S07 · matriz. Grade: rótulo da linha, 4 células, marginal dos especialistas.
+   Linhas: eixo, cabeçalho, 4 linhas da matriz, marginal da IA. */
+.case-uxai-root .s07-grade {
+  display: grid;
+  grid-template-columns: 32px repeat(4, minmax(0, 1fr)) minmax(64px, 0.9fr);
+  grid-template-rows: auto auto repeat(4, 56px) 96px;
+  gap: 4px;
+}
+@media (min-width: 768px) {
+  .case-uxai-root .s07-grade {
+    grid-template-columns: 128px repeat(4, minmax(0, 96px)) minmax(96px, 168px);
+    grid-template-rows: auto auto repeat(4, 72px) 112px;
+  }
+}
+.case-uxai-root .s07-eixo-ia,
+.case-uxai-root .s07-eixo-humano,
+.case-uxai-root .s07-marg-titulo {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--texto-metadado);
+}
+.case-uxai-root .s07-eixo-ia {
+  grid-column: 2 / 6;
+  grid-row: 1;
+  padding-bottom: 8px;
+  color: var(--acao-link);
+}
+.case-uxai-root .s07-eixo-humano {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  align-self: end;
+  padding-bottom: 8px;
+  display: none;
+}
+@media (min-width: 768px) {
+  .case-uxai-root .s07-eixo-humano {
+    display: block;
+  }
+}
+.case-uxai-root .s07-marg-titulo--humano {
+  grid-column: 6;
+  grid-row: 2;
+  align-self: end;
+  padding: 0 0 8px 12px;
+}
+.case-uxai-root .s07-marg-titulo--ia {
+  grid-column: 1;
+  grid-row: 7;
+  align-self: start;
+  padding-top: 12px;
+  color: var(--acao-link);
+}
+.case-uxai-root .s07-cab,
+.case-uxai-root .s07-linha {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.case-uxai-root .s07-cab {
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 8px;
+  text-align: center;
+}
+.case-uxai-root .s07-linha {
+  justify-content: center;
+}
+.case-uxai-root .s07-cab-n {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--texto-metadado);
+}
+.case-uxai-root .s07-cab-nome {
+  display: none;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--texto-apoio);
+}
+@media (min-width: 768px) {
+  .case-uxai-root .s07-cab-nome {
+    display: block;
+  }
+}
+.case-uxai-root .s07-linha--destaque .s07-cab-nome,
+.case-uxai-root .s07-linha--destaque .s07-cab-n {
+  color: var(--acao-hover);
+}
+.case-uxai-root .s07-celula {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-xs);
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-principal);
+}
+.case-uxai-root .s07-celula--zero {
+  color: var(--texto-inativo);
+  box-shadow: inset 0 0 0 1px var(--borda-sutil);
+}
+.case-uxai-root .s07-diagonal {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1.5px var(--texto-principal);
+  pointer-events: none;
+}
+.case-uxai-root .s07-anel-linha {
+  grid-column: 2 / 6;
+  position: relative;
+  z-index: 1;
+  margin: -4px;
+  border-radius: var(--r-sm);
+  box-shadow: 0 0 0 1px var(--borda-ativa);
+  pointer-events: none;
+}
+.case-uxai-root .s07-grade {
+  --s07-marg: 40px;
+  --s07-marg-y: 56px;
+}
+@media (min-width: 768px) {
+  .case-uxai-root .s07-grade {
+    --s07-marg: 120px;
+    --s07-marg-y: 72px;
+  }
+}
+.case-uxai-root .s07-marg-x {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 12px;
+}
+.case-uxai-root .s07-marg-y {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-top: 12px;
+}
+.case-uxai-root .s07-barra {
+  display: block;
+  flex-shrink: 0;
+}
+.case-uxai-root .s07-marg-x .s07-barra {
+  height: 12px;
+}
+.case-uxai-root .s07-marg-y .s07-barra {
+  width: 12px;
+}
+.case-uxai-root .s07-barra--humano {
+  background: var(--dado-neutro);
+}
+.case-uxai-root .s07-barra--ia {
+  background: var(--acao-link);
+}
+.case-uxai-root .s07-marg-n {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-apoio);
+}
+
+/* S08 · traços dos fatores até a borda do vidro (Figma 1101:1991: branco a
+   22%, 1px). Contínuos: o desenho usa o dash. */
+.case-uxai-root .s08-traco {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 1;
+}
+.case-uxai-root .s08-ponta {
+  fill: var(--texto-apoio);
+}
+.case-uxai-root .s08-fator-nome {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--texto-principal);
+}
+/* Brilho de profundidade atrás do objeto: acao-link a 10%, desfoque 180 no
+   Figma (≈ 90px em CSS). */
+.case-uxai-root .s08-brilho {
+  background: rgba(74, 155, 245, 0.1);
+  filter: blur(90px);
+}
+/* Abaixo de 1280 o objeto cresce com a tela até o tamanho do desktop, com a
+   interface inteira à vista e a ponta direita sangrando. */
+.case-uxai-root .s08-objeto-compacto {
+  --s08-obj: min(160.5vw, 1038px);
+  height: calc(var(--s08-obj) * 0.50385);
+}
+
+/* S09–10 · raias e fluxo. */
+.case-uxai-root .s09-raia {
+  fill: none;
+  stroke: var(--borda-padrao);
+  stroke-width: 1;
+}
+.case-uxai-root .s09-origem {
+  fill: var(--texto-metadado);
+}
+.case-uxai-root .s09-fluxo {
+  fill: none;
+  stroke: var(--texto-apoio);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.case-uxai-root .s09-no-maquina {
+  fill: var(--acao-link);
+}
+.case-uxai-root .s09-no-humano {
+  fill: var(--fundo-pagina);
+  stroke: var(--texto-principal);
+  stroke-width: 1.5;
+}
+.case-uxai-root .s09-anel {
+  fill: none;
+  stroke: var(--texto-principal);
+  stroke-width: 1;
+}
+
+/* S14–15 · fios de vidro: somem em direção ao texto (esquerda) e ao pé. */
+.case-uxai-root .s14-fios {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 24%), linear-gradient(to bottom, #000 72%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 0%, #000 24%), linear-gradient(to bottom, #000 72%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* S15 · botão primário sólido: hover sobe um degrau de luminância. */
+.case-uxai-root .s15-botao {
+  transition: background-color var(--d-hover, 200ms) var(--ease-micro);
+}
+.case-uxai-root .s15-botao:hover {
+  background-color: #ffffff;
+}

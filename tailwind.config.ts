@@ -8,6 +8,12 @@ const config: Config = {
   darkMode: ['selector', '[data-theme="dark"]'],
   theme: {
     extend: {
+      screens: {
+        // Case UX + AI (blueprint §6.2 e §7): o breakpoint XL do case é
+        // 1440, não o xl:1280 padrão do Tailwind. Chave própria para não
+        // redefinir xl: e afetar o resto do site.
+        'case-xl': '1440px',
+      },
       spacing: {
         // --space-block (72px) — não existe por padrão na escala Tailwind
         // (o degrau 16 salta para 20). Habilita mt-18, gap-18, py-18 etc.

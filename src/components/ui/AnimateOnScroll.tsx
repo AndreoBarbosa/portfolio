@@ -1,18 +1,23 @@
-import { motion, useReducedMotion } from 'framer-motion'
-import { Children, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import LiquidReveal from '../liquid/LiquidReveal'
 
 type Props = {
   children: ReactNode
   className?: string
   delay?: number
   direction?: 'up' | 'fade'
-  /** Escalona os filhos diretos (60ms entre eles) em vez de animar o bloco inteiro. */
+  /** Escalona os filhos diretos em cascata em vez de animar o bloco inteiro. */
   stagger?: boolean
 }
 
-const EASE = [0.22, 1, 0.36, 1] as const
-const STAGGER_STEP = 0.06
-
+/**
+ * Compatibilidade. Este componente tinha a própria curva e o próprio
+ * stagger, diferentes dos do LiquidReveal, o que colocava duas cadências
+ * de motion na mesma página. Agora ele apenas delega, para que as chamadas
+ * existentes continuem funcionando sem precisar ser reescritas uma a uma.
+ *
+ * Em código novo, use LiquidReveal direto.
+ */
 export default function AnimateOnScroll({
   children,
   className = '',
@@ -20,49 +25,9 @@ export default function AnimateOnScroll({
   direction = 'up',
   stagger = false,
 }: Props) {
-  const shouldReduce = useReducedMotion()
-  const yOffset = direction === 'up' ? 24 : 0
-
-  if (shouldReduce) {
-    return <div className={className}>{children}</div>
-  }
-
-  if (stagger) {
-    return (
-      <motion.div
-        className={className}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: '-80px' }}
-        variants={{
-          hidden: {},
-          show: { transition: { staggerChildren: STAGGER_STEP, delayChildren: delay } },
-        }}
-      >
-        {Children.map(children, (child, i) => (
-          <motion.div
-            key={i}
-            variants={{
-              hidden: { opacity: 0, y: yOffset },
-              show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
-            }}
-          >
-            {child}
-          </motion.div>
-        ))}
-      </motion.div>
-    )
-  }
-
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: yOffset }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.6, delay, ease: EASE }}
-    >
+    <LiquidReveal className={className} delay={delay} stagger={stagger} fadeOnly={direction === 'fade'}>
       {children}
-    </motion.div>
+    </LiquidReveal>
   )
 }

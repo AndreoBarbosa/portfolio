@@ -24,6 +24,16 @@ export default function Home() {
   useEffect(() => {
     if (shouldReduceMotion) return
 
+    // index.css declara `html { scroll-behavior: smooth }`. Enquanto o Lenis
+    // é dono do scroll, os dois disputam a mesma posição: o navegador anima
+    // por conta própria e o Lenis corrige de volta a cada frame, o que
+    // aparece como tranco em âncora e em scrollTo. O Lenis precisa de
+    // scroll-behavior auto. Restaurado no cleanup para as rotas de case, que
+    // não instanciam Lenis e continuam usando o smooth nativo.
+    const root = document.documentElement
+    const previousScrollBehavior = root.style.scrollBehavior
+    root.style.scrollBehavior = 'auto'
+
     const lenis = new Lenis({ duration: 1.1, smoothWheel: true })
     let frameId: number
     function raf(time: number) {
@@ -48,6 +58,7 @@ export default function Home() {
     return () => {
       cancelAnimationFrame(frameId)
       lenis.destroy()
+      root.style.scrollBehavior = previousScrollBehavior
     }
   }, [shouldReduceMotion])
 

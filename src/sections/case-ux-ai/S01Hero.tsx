@@ -2,37 +2,22 @@ import { Fragment, useRef, useState, type FocusEvent, type MouseEvent } from 're
 import { motion, useInView, type Variants } from 'framer-motion'
 import EyebrowChip from '../../components/case-ux-ai/ui/EyebrowChip'
 import HeroMedia from '../../components/case-ux-ai/media/HeroMedia'
-import LatticeHero from '../../components/case-ux-ai/media/LatticeHero'
 import StatItem from '../../components/case-ux-ai/data/StatItem'
 import { hero, heroStats } from '../../data/caseUxAi'
 import { useCaseMotion } from '../../motion/CaseUxAiMotionProvider'
 import {
+  atBeat,
   enterDivergence,
+  enterFade,
   enterFadeUp,
+  reducedFade,
   lineMaskContainer,
   lineMaskLine,
   staggerContainer,
 } from '../../motion/caseUxAiRecipes'
-import { DUR, EASE, HERO_BEAT, HERO_DUR, REDUCED_FADE, STAGGER, VIEWPORT } from '../../motion/caseUxAiTokens'
+import { DUR, HERO_BEAT, HERO_DUR, STAGGER, VIEWPORT } from '../../motion/caseUxAiTokens'
 
 const GUTTER = { paddingInline: 'clamp(24px, 6.67vw, 96px)' }
-
-/** Reduced motion: toda entrada vira fade de REDUCED_FADE, sem atraso nem cascata (contrato §6 e §7). */
-const reducedFade: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: REDUCED_FADE } },
-}
-
-const fade = (duration: number): Variants => ({
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration, ease: EASE.enter } },
-})
-
-/** Acrescenta o beat do hero ao `transition` do estado `visible` de uma receita. */
-function atBeat(variants: Variants, delay: number): Variants {
-  const visible = variants.visible as { transition?: object }
-  return { ...variants, visible: { ...visible, transition: { ...visible.transition, delay } } }
-}
 
 /**
  * Parte o H1 em unidades de máscara: uma por palavra, exceto os trechos de
@@ -67,6 +52,9 @@ function headlineUnits(line: string) {
  * página (sticky para o resto do case), mas com altura 0: sobrepõe o hero
  * em vez de empurrá-lo. O hero começa em y0 da página; em case-xl o chip
  * em y142 já livra o nav, abaixo disso o `pt-36` (144 = nav ~80 + 64).
+ *
+ * Só vídeo e texto: a treliça saiu do hero em 24 set 2026 (MOTION-SPEC §6,
+ * S01). LatticeHero continua no repositório para a S08.
  *
  * Motion (MOTION-SPEC §6, S01): tabela de beats em HERO_BEAT, contada do
  * mount. A faixa de stats fica abaixo da dobra em 1440, então ela entra ao
@@ -117,10 +105,8 @@ export default function S01Hero() {
         initial="hidden"
         animate="visible"
       >
-        <LatticeHero />
-
         <div className="relative z-[1] flex w-full max-w-[692px] flex-col items-center gap-6 text-center case-xl:absolute case-xl:left-[374px] case-xl:top-[142px] case-xl:w-[692px] case-xl:max-w-none">
-          <motion.div variants={v(fade(DUR.enter), HERO_BEAT.chip)}>
+          <motion.div variants={v(enterFade(DUR.enter), HERO_BEAT.chip)}>
             <EyebrowChip>{hero.chip}</EyebrowChip>
           </motion.div>
 
@@ -224,7 +210,7 @@ export default function S01Hero() {
 
         <motion.p
           className="text-center text-[14px] font-semibold text-[var(--texto-apoio)] case-xl:text-[16px]"
-          variants={reduced ? reducedFade : atBeat(fade(HERO_DUR.hook), hookDelay)}
+          variants={reduced ? reducedFade : atBeat(enterFade(HERO_DUR.hook), hookDelay)}
           initial="hidden"
           animate={statsInView ? 'visible' : 'hidden'}
         >

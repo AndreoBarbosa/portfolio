@@ -1,0 +1,140 @@
+/* SYSMED — seção 05, Desenho do experimento.
+   Pareia com ExperimentDivergence.tsx.
+
+   Os tokens abaixo são fallbacks. Se o projeto já expõe as variáveis do guia de
+   estilo no :root, apague este bloco e deixe as reais valerem. */
+
+.xd {
+  --dado-neutro: #4a5c66;
+  --dado-ancora: #a3b5bf;
+  --acao-link: #4a9bf5;
+  --acao-hover: #69b1ff;
+  --texto-corpo: #a9b7c0;
+  --texto-apoio: #6e7f8a;
+  --borda-sutil-solida: rgba(160, 190, 210, 0.12);
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.xd-viz {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.xd-meta {
+  font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 2.2px;
+}
+
+.xd-meta--vs {
+  letter-spacing: 1.2px;
+}
+
+.xd-caption {
+  margin: 18px auto 0;
+  max-width: 38ch;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--texto-apoio);
+}
+
+/* ---- estado de repouso = estado FINAL ----
+   Se o observer nunca disparar, o quadro já está montado e legível. */
+
+.xd-dot {
+  transform: translate(var(--tx), var(--ty));
+  opacity: 1;
+}
+.xd-ink,
+.xd-halo,
+.xd-lens,
+.xd-vs,
+.xd-lbl-h,
+.xd-lbl-a,
+.xd-rule-cap,
+.xd-caption {
+  opacity: 1;
+}
+
+/* Render externo sobre preto puro: `screen` apaga o preto e soma o vidro no piso.
+   Sem o blend o PNG aparece como uma caixa preta sobre o fundo. */
+.xd-lens--sprite {
+  mix-blend-mode: screen;
+}
+.xd-vs {
+  transform: scale(1);
+  transform-origin: var(--vs-origin, 310px 104px);
+}
+.xd-rule {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+/* ---- keyframes: só opacity e transform ---- */
+
+@keyframes xd-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes xd-split {
+  from { transform: translate(var(--ox), var(--oy)); }
+  to   { transform: translate(var(--tx), var(--ty)); }
+}
+
+@keyframes xd-vs-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes xd-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes xd-draw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* ---- execução, disparada uma vez pelo useInView ---- */
+
+.xd[data-play="on"] .xd-dot {
+  animation:
+    xd-fade 250ms linear var(--din) both,
+    xd-split 700ms var(--ease) var(--dsp) both;
+}
+.xd[data-play="on"] .xd-ink      { animation: xd-fade 450ms var(--ease) var(--dblue) both; }
+/* o vidro existe antes dos dados: o cluster precisa nascer dentro de alguma coisa */
+.xd[data-play="on"] .xd-lens     { animation: xd-fade 600ms var(--ease) 0s both; }
+.xd[data-play="on"] .xd-halo     { animation: xd-fade 700ms linear 1.30s both; }
+.xd[data-play="on"] .xd-lbl-h    { animation: xd-fade 400ms var(--ease) 1.44s both; }
+.xd[data-play="on"] .xd-vs       { animation: xd-vs-in 300ms var(--ease) 1.50s both; }
+.xd[data-play="on"] .xd-rule     { animation: xd-draw 700ms var(--ease) 1.56s both; }
+.xd[data-play="on"] .xd-lbl-a    { animation: xd-fade 400ms var(--ease) 1.70s both; }
+.xd[data-play="on"] .xd-rule-cap { animation: xd-fade 300ms linear 2.10s both; }
+.xd[data-play="on"] .xd-caption  { animation: xd-rise 450ms var(--ease) 1.95s both; }
+
+/* ---- reduced motion: fade de 200 ms, estado final, nada se perde ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .xd[data-play="on"] .xd-dot,
+  .xd[data-play="on"] .xd-ink,
+  .xd[data-play="on"] .xd-halo,
+  .xd[data-play="on"] .xd-lens,
+  .xd[data-play="on"] .xd-vs,
+  .xd[data-play="on"] .xd-lbl-h,
+  .xd[data-play="on"] .xd-lbl-a,
+  .xd[data-play="on"] .xd-rule,
+  .xd[data-play="on"] .xd-rule-cap,
+  .xd[data-play="on"] .xd-caption {
+    animation: xd-fade 200ms linear both;
+  }
+  .xd[data-play="on"] .xd-dot { transform: translate(var(--tx), var(--ty)); }
+  .xd[data-play="on"] .xd-vs  { transform: scale(1); }
+}

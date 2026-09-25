@@ -1,6 +1,7 @@
 import { ArrowUpRight } from 'lucide-react'
 import Container from './Container'
 import { nav } from '../../../data/caseUxAi'
+import { useScrolled } from '../../../hooks/useScrolled'
 
 /**
  * Blueprint §8, nó 802:1033. Estático por enquanto — o vidro médio ao
@@ -13,11 +14,19 @@ import { nav } from '../../../data/caseUxAi'
  * conteúdo transborda por cima do que estiver embaixo. Quem reserva o
  * espaço do nav é o próprio hero (y142 do chip em case-xl, padding-top
  * abaixo disso).
+ *
+ * Vidro ao rolar (BRIEF-S01-HERO §14, MOTION-SPEC §5): passando de 120px, uma
+ * camada --vidro-medio aparece atrás dos links. O blur está montado desde o
+ * início; só a opacidade da camada anima. Sem ela, os links ficavam por cima
+ * do texto das seções.
  */
 export default function NavBar() {
+  const rolou = useScrolled(120)
   return (
     <header className="sticky top-0 z-40 h-0">
-      <Container className="flex items-center justify-between py-6">
+      <div className="relative">
+      <div aria-hidden="true" className={`nav-vidro absolute inset-0 ${rolou ? 'is-visivel' : ''}`} />
+      <Container className="relative flex items-center justify-between py-6">
         <a href="/" className="f-display font-semibold text-[20px] text-[var(--texto-principal)]" aria-label="Andreo Barbosa">
           {nav.logo}
         </a>
@@ -42,6 +51,7 @@ export default function NavBar() {
           <ArrowUpRight size={14} aria-hidden="true" />
         </a>
       </Container>
+      </div>
     </header>
   )
 }

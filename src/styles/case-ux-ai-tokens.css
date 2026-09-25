@@ -52,6 +52,7 @@
   --acao-fundo-selecionado:   rgba(47, 130, 214, 0.14);
   --acao-botao-fundo:         #F2F5F8; /* botão primário sólido */
   --acao-botao-texto:         #050B0E;
+  --controle-inativo:         #727F8B; /* ponto de paginação não visitado · 3,8:1 sobre a pílula */
 
   /* dado · G4. nivel-2 (não nivel-3) é usado na diagonal da matriz por
      decisão D10 — ver seção 07, o brilho de (4,4) precisa liderar. */
@@ -239,5 +240,60 @@
   .case-uxai-root .coluna-divergencia,
   .case-uxai-root .coluna-divergencia-texto {
     transition: none;
+  }
+}
+
+/* S02 · palco das capacidades — BRIEF-S02-VISAO-GERAL §5. A caixa do
+   <video> é o próprio quadro (width/height auto, limitados pelo palco),
+   então a máscara em % cai na margem de 12% do arquivo, onde só há fundo
+   #15252E. Rede de segurança para diferença de cor entre decodificador e
+   CSS. Estática: não animar. */
+.case-uxai-root .palco-video {
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 7%, #000 93%, transparent),
+    linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-composite: source-in;
+          mask-image:
+    linear-gradient(to right, transparent, #000 7%, #000 93%, transparent),
+    linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
+          mask-composite: intersect;
+}
+
+/* Nav · vidro ao rolar (BRIEF-S01-HERO §14). Blur fixo; só a opacidade anima. */
+.case-uxai-root .nav-vidro {
+  background: var(--vidro-medio);
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  border-bottom: 1px solid var(--borda-vidro);
+  opacity: 0;
+  transition: opacity 300ms var(--ease-state);
+  pointer-events: none;
+}
+.case-uxai-root .nav-vidro.is-visivel {
+  opacity: 1;
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .case-uxai-root .nav-vidro {
+    background: rgba(5, 11, 14, 0.96);
+  }
+}
+
+/* Pílula de briefing — BRIEF-S03-DESAFIO §10. A única superfície --vidro-forte
+   na tela. O blur é fixo: o que anima é a opacidade e o y do botão. */
+.case-uxai-root .briefing-pill {
+  background: var(--vidro-forte);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  box-shadow: inset 0 0 0 1px var(--borda-vidro);
+  transition: box-shadow var(--d-hover) var(--ease-micro);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .case-uxai-root .briefing-pill {
+    background: var(--superficie-elevada);
+  }
+}
+@media (hover: hover) {
+  .case-uxai-root .briefing-pill:hover {
+    box-shadow: inset 0 0 0 1px var(--borda-ativa);
   }
 }
