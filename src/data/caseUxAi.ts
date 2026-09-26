@@ -47,17 +47,6 @@ export const heroStats: Stat[] = [
   { value: 48, suffix: '%', label: ['concordância na severidade', 'humano vs IA'], source: { ref: 'TCC' } },
 ]
 
-// ── Nav — blueprint §8, nó 802:1033 ──────────────────────────────────────
-export const nav = {
-  logo: 'AB',
-  links: [
-    { label: 'Projetos', href: '/#projetos' },
-    { label: 'Trajetória', href: '/#trajetoria' },
-    { label: 'Sobre', href: '/#sobre' },
-  ],
-  cta: { label: 'Ver todos os projetos', href: '/#projetos' },
-}
-
 // ── 01 · Hero + Stats — blueprint §11.01 ─────────────────────────────────
 export const hero = {
   chip: 'UX RESEARCH · IA APLICADA · HEALTHTECH',

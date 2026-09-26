@@ -1,7 +1,8 @@
 import '../styles/case-ux-ai-tokens.css'
 import usePageMeta from '../hooks/usePageMeta'
 import { CaseUxAiMotionProvider } from '../motion/CaseUxAiMotionProvider'
-import NavBar from '../components/case-ux-ai/layout/NavBar'
+import '../styles/liquid-glass.css'
+import LiquidHeader from '../components/liquid/LiquidHeader'
 import BriefingPill from '../components/case-ux-ai/layout/BriefingPill'
 import S01Hero from '../sections/case-ux-ai/S01Hero'
 import S02VisaoGeral from '../sections/case-ux-ai/S02VisaoGeral'
@@ -43,7 +44,7 @@ export default function CaseUxAi() {
     <CaseUxAiMotionProvider>
       <main className="case-uxai-root min-h-screen">
         <div className="grain-layer" />
-        <NavBar />
+        <LiquidHeader tema="escuro" activeSection={null} basePath="/" ctaLabel="Ver todos os projetos" ctaHref="/#projetos" ctaArrow />
         <S01Hero />
         <S02VisaoGeral />
         <S03Desafio />

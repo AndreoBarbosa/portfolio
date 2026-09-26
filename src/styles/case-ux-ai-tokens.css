@@ -259,25 +259,6 @@
           mask-composite: intersect;
 }
 
-/* Nav · vidro ao rolar (BRIEF-S01-HERO §14). Blur fixo; só a opacidade anima. */
-.case-uxai-root .nav-vidro {
-  background: var(--vidro-medio);
-  backdrop-filter: blur(20px) saturate(120%);
-  -webkit-backdrop-filter: blur(20px) saturate(120%);
-  border-bottom: 1px solid var(--borda-vidro);
-  opacity: 0;
-  transition: opacity 300ms var(--ease-state);
-  pointer-events: none;
-}
-.case-uxai-root .nav-vidro.is-visivel {
-  opacity: 1;
-}
-@supports not (backdrop-filter: blur(1px)) {
-  .case-uxai-root .nav-vidro {
-    background: rgba(5, 11, 14, 0.96);
-  }
-}
-
 /* Pílula de briefing — BRIEF-S03-DESAFIO §10. A única superfície --vidro-forte
    na tela. O blur é fixo: o que anima é a opacidade e o y do botão. */
 .case-uxai-root .briefing-pill {

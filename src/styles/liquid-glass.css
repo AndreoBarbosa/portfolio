@@ -251,6 +251,72 @@
   border-bottom: none;
 }
 
+/* Nav bar · tema escuro (case SYSMED). Figma 1138:1138. Mesma geometria
+   da nav clara; só cor, borda e vidro mudam. Valores do guia 917:1133:
+   texto-principal, borda-padrao, borda-vidro, vidro-medio, acao-foco. */
+.liquid-header--escuro {
+  --nav-texto: #F2F5F8;
+  --nav-borda: rgba(255, 255, 255, 0.10);
+  --nav-borda-vidro: rgba(255, 255, 255, 0.14);
+  --nav-vidro: rgba(12, 26, 34, 0.68);
+  --nav-foco: #69B1FF;
+}
+.liquid-header--escuro .liquid-nav-link,
+.liquid-header--escuro .liquid-navbar-cta,
+.liquid-header--escuro .liquid-mobile-menu-btn {
+  color: var(--nav-texto);
+}
+/* Estado A: CTA só com contorno. nowrap: em 390 faltava 1px e o
+   "Ver todos os projetos" quebrava em duas linhas (Figma 1138:1169). */
+.liquid-header--escuro .liquid-navbar-cta {
+  border-color: var(--nav-borda);
+  white-space: nowrap;
+}
+/* Estado B: vidro médio do guia. */
+.liquid-header--escuro .liquid-navbar.is-scrolled {
+  background: var(--nav-vidro);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  backdrop-filter: blur(22px) saturate(1.2);
+  border-color: var(--nav-borda);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.24);
+}
+.liquid-header--escuro .liquid-navbar::before {
+  background: none;
+  box-shadow: inset 0 1px 0 var(--nav-borda-vidro);
+}
+.liquid-header--escuro .liquid-navbar.is-scrolled .liquid-navbar-cta,
+.liquid-header--escuro .liquid-navbar.is-scrolled .liquid-mobile-menu-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--nav-borda-vidro);
+}
+.liquid-header--escuro .liquid-mobile-menu-btn:hover,
+.liquid-header--escuro .liquid-mobile-menu-btn:active,
+.liquid-header--escuro .liquid-mobile-menu-btn:focus-visible {
+  background: rgba(242, 245, 248, 0.08);
+  border-color: var(--nav-texto);
+}
+/* Menu mobile. */
+.liquid-header--escuro .liquid-mobile-menu {
+  background: var(--nav-vidro);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  backdrop-filter: blur(22px) saturate(1.2);
+}
+.liquid-header--escuro .liquid-mobile-menu.is-open {
+  border-color: var(--nav-borda);
+  box-shadow: inset 0 1px 0 var(--nav-borda-vidro), 0 4px 20px rgba(0, 0, 0, 0.24);
+}
+/* Foco do guia no escuro: 2px, offset 3px, nunca igual ao hover. */
+.liquid-header--escuro :focus-visible {
+  outline: 2px solid var(--nav-foco);
+  outline-offset: 3px;
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .liquid-header--escuro .liquid-navbar.is-scrolled,
+  .liquid-header--escuro .liquid-mobile-menu {
+    background: #0C1A22;
+  }
+}
+
 /* Foco — visível em todo interativo, teclado. Sempre petróleo, nunca
    uma segunda cor. */
 .liquid-root :focus-visible {

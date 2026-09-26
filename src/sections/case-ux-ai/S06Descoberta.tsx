@@ -253,8 +253,8 @@ export default function S06Descoberta() {
       let u = Math.min(vw / D.larg, 1.25)
       if (preso) {
         const cab = cabRef.current?.offsetHeight ?? 78
-        // 88 da barra, 24 embaixo, 16 de respiro para o fecho.
-        u = Math.min(u, (window.innerHeight - 88 - 24 - 16 - cab - D.textoFixo) / (D.folga + 178 + D.ondaAlt))
+        // 120 da nav (lâmina até 104 + 16 de respiro), 24 embaixo, 16 de respiro para o fecho.
+        u = Math.min(u, (window.innerHeight - 120 - 24 - 16 - cab - D.textoFixo) / (D.folga + 178 + D.ondaAlt))
       }
       setEsc({ u, cheio: D.larg * u >= vw - 1 })
     }
@@ -398,7 +398,7 @@ export default function S06Descoberta() {
       className="relative bg-[var(--fundo-pagina)]"
     >
       <div ref={trechoRef} style={preso ? { height: `${S06_CLIMAX.alturaScroll}vh` } : undefined}>
-        <div className={preso ? 'sticky top-0 flex h-screen flex-col justify-center pb-6 pt-[88px]' : 'py-16 md:py-24'}>
+        <div className={preso ? 'sticky top-0 flex h-screen flex-col justify-center pb-6 pt-[120px]' : 'py-16 md:py-24'}>
           <Container>
             <motion.div ref={cabRef} initial="hidden" whileInView="visible" viewport={VIEWPORT}>
               <motion.p

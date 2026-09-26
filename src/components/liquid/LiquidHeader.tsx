@@ -23,21 +23,30 @@ type Props = {
   ctaLabel?: string
   ctaHref?: string
   ctaArrow?: boolean
+  /** Case SYSMED (Figma 1138:1138): mesma nav sobre fundo escuro. Só
+      troca logo, cor, borda e vidro (CSS .liquid-header--escuro).
+      Default 'claro' preserva a Home, o Sona e o Gabriel. */
+  tema?: 'claro' | 'escuro'
 }
 
-const logoSrc = '/logo/svg/logo-icon.svg'
+// logo-mark*: viewBox recortado no monograma, pra ele ocupar os 38×24
+// inteiros (Figma 290:281 e 1138:1141).
+const logoSrc = {
+  claro: '/logo/svg/logo-mark.svg',
+  escuro: '/logo/svg/logo-mark-dark.svg',
+}
 const contatoColor = '#0C1A22'
 
 export default function LiquidHeader({
   activeSection, navItems = defaultNavLinks, basePath = '',
-  ctaLabel = 'Contato', ctaHref, ctaArrow = false,
+  ctaLabel = 'Contato', ctaHref, ctaArrow = false, tema = 'claro',
 }: Props) {
   const scrolled = useScrolled()
   const [menuOpen, setMenuOpen] = useState(false)
   const mobileNavItems = [...navItems, { id: 'contato', label: 'Contato' }]
 
   return (
-    <div className="fixed top-4 md:top-7 left-4 right-4 md:left-12 md:right-12 z-40">
+    <div className={`fixed top-4 md:top-7 left-4 right-4 md:left-12 md:right-12 z-40 ${tema === 'escuro' ? 'liquid-header--escuro' : ''}`}>
       {/* Refinamento §9: lâmina fina — grid de 3 colunas pra centralizar
           o menu de verdade (não compensar com margens), largura igual
           ao container das seções (max-w-6xl), não a viewport inteira. */}
@@ -49,12 +58,11 @@ export default function LiquidHeader({
             grid de 3 colunas do desktop (o hamburger é md:hidden, então
             não consome coluna). */}
         <div className="flex items-center gap-3 md:contents">
-          {/* E3 (correção 03): 38×24 real. O SVG tem viewBox 107×120
-              (mais alto que largo) — h-full+w-auto deixava a proporção
-              intrínseca ditar a largura (~21px), bem menor que os 38px
-              do wrapper. w-full+h-full preenche a caixa inteira. */}
+          {/* E3 (correção 03): 38×24 real. logo-mark* já vem recortado
+              em 38×24 (o logo-icon tinha viewBox 107×120, com margem, e o
+              monograma saía com metade do tamanho). */}
           <a href={basePath || '#'} aria-label="Andreo Barbosa" className="flex items-center justify-self-start w-[38px] h-6">
-            <img src={logoSrc} alt="Andreo Barbosa" className="w-full h-full" />
+            <img src={logoSrc[tema]} alt="Andreo Barbosa" width={38} height={24} className="w-full h-full" />
           </a>
           <button
             type="button"
@@ -87,7 +95,7 @@ export default function LiquidHeader({
           <a
             href={ctaHref ?? `${basePath}#contato`}
             className="inline-flex items-center gap-2 liquid-navbar-cta liquid-type-nav justify-center px-4 py-3 rounded-full"
-            style={{ color: contatoColor }}
+            style={tema === 'claro' ? { color: contatoColor } : undefined}
           >
             {ctaLabel}
             {ctaArrow && <span aria-hidden="true">→</span>}
