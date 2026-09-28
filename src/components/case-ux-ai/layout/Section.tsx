@@ -9,16 +9,16 @@ type Props = {
 }
 
 /**
- * Padding vertical de seção — docs/CONTRATO-RESPONSIVO.md §2: 64 a partir
- * de 768, 48 abaixo. (A versão do blueprint, 120/96/80/64, foi substituída
- * pelo contrato em 24 set 2026.)
+ * Padding vertical de seção: token --ritmo-secao (case-ux-ai-tokens.css),
+ * 72 / 96 / 128 (base, ≥768, ≥1280). Revisão de ritmo de 28 set 2026, que
+ * substituiu o 48/64 do CONTRATO-RESPONSIVO §2.
  */
 export default function Section({ id, labelledBy, children, className = '' }: Props) {
   return (
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className={`py-12 md:py-16 ${className}`}
+      className={`py-[var(--ritmo-secao)] ${className}`}
     >
       {children}
     </section>

@@ -118,7 +118,7 @@ export default function S08Contexto() {
   const legenda = 'Interface ilustrativa. Não é o sistema avaliado no estudo.'
 
   return (
-    <section id="contexto" aria-labelledby="contexto-titulo" className="relative overflow-hidden bg-[var(--fundo-pagina)] py-16 md:py-24">
+    <section id="contexto" aria-labelledby="contexto-titulo" className="relative overflow-hidden bg-[var(--fundo-pagina)] py-[var(--ritmo-secao)]">
       <Container>
         <div ref={ref} className="relative" style={diagrama ? { height: COL.h * u } : undefined}>
           <motion.div className="relative z-[1]" initial="hidden" whileInView="visible" viewport={VIEWPORT}>

@@ -88,9 +88,9 @@ export default function S07Matriz() {
   const CATASTROFICO = MARGINAIS + 0.6
 
   return (
-    <section id="matriz" aria-labelledby="matriz-titulo" className="relative bg-[var(--fundo-pagina)] py-16 md:py-24">
+    <section id="matriz" aria-labelledby="matriz-titulo" className="relative bg-[var(--fundo-pagina)] py-[var(--ritmo-secao)]">
       <Container>
-        <div className="grid gap-y-12 lg:grid-cols-[minmax(0,400fr)_minmax(0,712fr)] lg:gap-x-16 xl:gap-x-[88px]">
+        <div className="grid gap-y-[var(--ritmo-cabeca)] lg:grid-cols-[minmax(0,400fr)_minmax(0,712fr)] lg:gap-x-16 xl:gap-x-[88px]">
           {/* Texto e os dois percentuais das regiões */}
           <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT}>
             <motion.p

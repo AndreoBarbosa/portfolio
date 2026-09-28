@@ -124,7 +124,7 @@ export default function S02VisaoGeral() {
       ref={sectionRef}
       id="visao-geral"
       aria-labelledby="visao-geral-heading"
-      className="bg-[var(--fundo-pagina)] py-12 md:py-16"
+      className="bg-[var(--fundo-pagina)] py-[var(--ritmo-secao)]"
     >
       <Container>
         <hr className="h-px border-0 bg-[var(--superficie-hover)]" />
@@ -147,7 +147,7 @@ export default function S02VisaoGeral() {
           <p className="text-[16px] leading-[1.5] text-[var(--texto-apoio)]">{body}</p>
         </div>
 
-        <div role="group" aria-roledescription="carrossel" aria-label={explorador.ariaLabel} className="mt-16">
+        <div role="group" aria-roledescription="carrossel" aria-label={explorador.ariaLabel} className="mt-[var(--ritmo-cabeca)]">
           {/* Painel: borda de 1px por dentro (inset), sem backdrop-filter. pan-y: o deslizar horizontal é nosso. */}
           <div
             className="grid h-[272px] touch-pan-y grid-cols-[1fr_432px] grid-rows-1 items-center gap-x-16 overflow-hidden rounded-[24px] bg-[var(--superficie-elevada)] px-12 shadow-[inset_0_0_0_1px_var(--borda-padrao)]"

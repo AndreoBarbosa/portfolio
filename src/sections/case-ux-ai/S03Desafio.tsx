@@ -14,6 +14,7 @@ import {
 } from '../../motion/caseUxAiRecipes'
 import { DUR, EASE, MOVE, S03_BEAT, S03_DUR, S03_PARALLAX, STAGGER, VIEWPORT } from '../../motion/caseUxAiTokens'
 import useMediaQuery from '../../motion/useMediaQuery'
+import useGatilhoProprio from '../../motion/useGatilhoProprio'
 
 const VIDRO = '/case-ux-ai/s03-vidro'
 
@@ -62,6 +63,10 @@ export default function S03Desafio() {
     visible: { opacity: 1, y: 0, transition: { duration: DUR.enter, ease: EASE.enter } },
   }
   const mascara = !reduced && linhasFixas
+  // A pergunta muda de forma em 1280 (linhas com máscara × bloco). Depois da
+  // seção revelada, cada troca remonta a pergunta com gatilho próprio, senão
+  // ela some ao redimensionar (28 set).
+  const { aoRevelar, proprio } = useGatilhoProprio(mascara)
   const ultimaLinha = pergunta.linhas.length - 1
 
   return (
@@ -69,13 +74,14 @@ export default function S03Desafio() {
       ref={sectionRef}
       id="desafio"
       aria-labelledby="desafio-heading"
-      className="relative overflow-hidden bg-[var(--fundo-pagina)] py-12 md:py-16"
+      className="relative overflow-hidden bg-[var(--fundo-pagina)] py-[var(--ritmo-secao)]"
       initial="hidden"
       whileInView="visible"
       viewport={VIEWPORT}
+      onViewportEnter={aoRevelar}
     >
       <motion.picture
-        className="pointer-events-none absolute top-[96px] hidden h-[976px] w-[536px] xl:block"
+        className="pointer-events-none absolute top-[calc(var(--ritmo-secao)+32px)] hidden h-[976px] w-[536px] xl:block"
         aria-hidden="true"
         style={{
           left: 'min(0px, calc(100% - clamp(24px, 8.33vw, 120px) - 1320px))',
@@ -113,13 +119,15 @@ export default function S03Desafio() {
           </motion.p>
 
           <motion.p
-            className="mt-12 text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-link)] md:mt-[72px]"
+            className="mt-[var(--ritmo-bloco)] text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-link)]"
             variants={v(enterFade(), S03_BEAT.eyebrowPergunta)}
           >
             {pergunta.eyebrow}
           </motion.p>
 
           <motion.h2
+            key={mascara ? 'linhas' : 'bloco'}
+            {...proprio}
             id="desafio-heading"
             className="f-display mt-4 text-[32px] font-semibold leading-[1.1] tracking-[-0.02em] text-[var(--texto-principal)] md:text-[40px] xl:text-[48px] xl:leading-[52px]"
             variants={
@@ -187,7 +195,7 @@ export default function S03Desafio() {
               o destino da pílula (BriefingPill). */}
           <motion.div
             id="briefing"
-            className="relative mt-16 pt-6 md:mt-20"
+            className="relative mt-[var(--ritmo-bloco)] pt-6"
             initial="hidden"
             whileInView="visible"
             viewport={VIEWPORT}

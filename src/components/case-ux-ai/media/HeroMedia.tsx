@@ -17,7 +17,8 @@ import {
  * Figma → `object-fit: contain`, absolute inset-0. Abaixo de 1440 entra no
  * fluxo normal, proporção 4:3, largura total (docs/CONTRATO-RESPONSIVO.md
  * §5 e §8 do brief) — nunca `position: absolute` fora de case-xl (§2 do
- * contrato).
+ * contrato). De 1024 a 1439 (28 set) faz o mesmo papel dentro do quadro em
+ * escala que o S01Hero monta: absolute inset-0, `contain`.
  *
  * Imagem estática (brief §15): um <picture> de alta qualidade fica por cima
  * do <video>, na mesma caixa, e aparece nos dois momentos parados — antes do
@@ -190,7 +191,7 @@ export default function HeroMedia() {
 
   return (
     <motion.div
-      className="relative z-0 mx-auto block aspect-[4/3] w-full max-w-[692px] case-xl:absolute case-xl:inset-0 case-xl:z-0 case-xl:h-full case-xl:w-full case-xl:max-w-none case-xl:aspect-auto"
+      className="relative z-0 mx-auto block aspect-[4/3] w-full max-w-[692px] lg:absolute lg:inset-0 lg:h-full lg:w-full lg:max-w-none lg:aspect-auto"
       aria-hidden="true"
       style={parallax ? { x: springX, y } : undefined}
       initial={{ opacity: 0 }}

@@ -50,7 +50,7 @@ export default function S14Fechamento() {
         />
       </motion.picture>
 
-      <section id="aprendizado" aria-labelledby="aprendizado-titulo" className="relative z-[1] pb-16 pt-24 md:pb-24 md:pt-32">
+      <section id="aprendizado" aria-labelledby="aprendizado-titulo" className="relative z-[1] py-[var(--ritmo-secao)]">
         <Container>
           <motion.p
             className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-link)]"
@@ -69,7 +69,7 @@ export default function S14Fechamento() {
             delay={0.12}
             className="f-display mt-6 max-w-[800px] text-[32px] font-semibold leading-[1.1] tracking-[-0.02em] text-[var(--texto-principal)] md:text-[44px] xl:text-[56px] xl:leading-[60px]"
           />
-          <motion.div className="mt-10 max-w-[560px] md:mt-12" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
+          <motion.div className="mt-[var(--ritmo-cabeca)] max-w-[560px]" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
             <motion.p
               className="text-[16px] leading-[1.5] text-[var(--texto-apoio)] md:text-[18px] md:leading-[28px]"
               variants={v(enterFadeUp, 0.5)}
@@ -86,7 +86,7 @@ export default function S14Fechamento() {
         </Container>
       </section>
 
-      <section id="contato-case" aria-labelledby="contato-case-titulo" className="relative z-[1] pb-24 pt-16 md:pb-40 md:pt-24">
+      <section id="contato-case" aria-labelledby="contato-case-titulo" className="relative z-[1] pb-24 pt-[var(--ritmo-secao)] md:pb-40">
         <Container>
           <motion.div className="max-w-[640px]" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
             <motion.h2

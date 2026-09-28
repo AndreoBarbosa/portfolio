@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState, type FocusEvent, type MouseEvent } from 'react'
+import { Fragment, useRef } from 'react'
 import { motion, useInView, type Variants } from 'framer-motion'
 import EyebrowChip from '../../components/case-ux-ai/ui/EyebrowChip'
 import HeroMedia from '../../components/case-ux-ai/media/HeroMedia'
@@ -18,6 +18,11 @@ import {
 import { DUR, HERO_BEAT, HERO_DUR, STAGGER, VIEWPORT } from '../../motion/caseUxAiTokens'
 
 const GUTTER = { paddingInline: 'clamp(24px, 6.67vw, 96px)' }
+
+/* Hero em ≥1024: margem lateral no bloco de texto, não na seção. A seção
+   fica com a largura toda para o quadro do vídeo (e as colunas IA e
+   Humanos, que se posicionam nele) usar a mesma escala do frame de 1440. */
+const GUTTER_HERO = 'px-[clamp(24px,6.67vw,96px)] lg:px-0'
 
 /**
  * Parte o H1 em unidades de máscara: uma por palavra, exceto os trechos de
@@ -61,14 +66,19 @@ function headlineUnits(line: string) {
  * aparecer na viewport, com o que sobrar do beat `stats` (zero se o
  * usuário demorou a rolar) — senão a contagem terminaria fora da tela.
  *
- * Colunas IA e Humanos são <button> (spec: "Teclado"). Hover (só em
- * `hover: hover`) ou foco visível realçam a coluna e fazem 89 e 11 recuarem
- * para --texto-apoio, deixando 68% e 48% no topo.
+ * Colunas IA e Humanos são texto comum, sem hover nem foco (pedido do
+ * Andreo, 28 set: não são botões).
+ *
+ * Entre 1024 e 1439 (28 set): a mesma composição do desktop, em escala. O
+ * quadro do vídeo tem a proporção do frame de 1440 (1440×1024) e ocupa a
+ * largura da seção; IA e Humanos ficam à esquerda e à direita do objeto,
+ * na altura dele. Medidas em cqw da seção (1440 = 100cqw). O título fica no
+ * fluxo, com o respiro da nav, e o quadro sobe por baixo dele como no
+ * desktop, onde o título já fica sobre a parte vazia do vídeo.
  */
 export default function S01Hero() {
   const { reduced } = useCaseMotion()
   const mountedAt = useRef(performance.now())
-  const [columnActive, setColumnActive] = useState(false)
 
   const statsRef = useRef<HTMLDivElement>(null)
   const statsInView = useInView(statsRef, VIEWPORT)
@@ -82,26 +92,12 @@ export default function S01Hero() {
 
   const v = (variants: Variants, beat: number) => (reduced ? reducedFade : atBeat(variants, beat))
 
-  const columnHandlers = {
-    onMouseEnter: () => {
-      if (window.matchMedia('(hover: hover)').matches) setColumnActive(true)
-    },
-    onMouseLeave: (e: MouseEvent<HTMLButtonElement>) => {
-      if (!e.currentTarget.matches(':focus-visible')) setColumnActive(false)
-    },
-    onFocus: (e: FocusEvent<HTMLButtonElement>) => {
-      if (e.currentTarget.matches(':focus-visible')) setColumnActive(true)
-    },
-    onBlur: () => setColumnActive(false),
-  }
-
   return (
     <>
       <motion.section
         id="hero"
         aria-labelledby="hero-heading"
-        className="relative mx-auto flex w-full max-w-[1440px] flex-col items-center gap-8 overflow-hidden bg-[var(--fundo-pagina)] pb-16 pt-36 case-xl:block case-xl:h-[1024px] case-xl:gap-0 case-xl:py-0"
-        style={GUTTER}
+        className={`relative mx-auto flex w-full max-w-[1440px] flex-col items-center gap-8 overflow-hidden bg-[var(--fundo-pagina)] pb-16 pt-36 lg:gap-0 lg:pb-0 lg:[container-type:inline-size] case-xl:block case-xl:h-[1024px] case-xl:py-0 ${GUTTER_HERO}`}
         initial="hidden"
         animate="visible"
       >
@@ -141,14 +137,15 @@ export default function S01Hero() {
           </motion.p>
         </div>
 
+        {/* Quadro: no fluxo abaixo de 1024; de 1024 a 1439, a caixa em escala do
+            frame de 1440; em ≥1440 some (contents) e tudo se posiciona na seção. */}
+        <div className="relative flex w-full flex-col items-center gap-8 lg:mt-[calc(-440*100cqw/1440)] lg:block lg:h-[calc(1024*100cqw/1440)] case-xl:contents">
         <HeroMedia />
 
-        <div className="relative z-[1] flex w-full max-w-[692px] flex-col gap-8 lg:flex-row lg:justify-between case-xl:contents">
-          <motion.button
-            type="button"
-            className="coluna-divergencia flex w-full flex-col gap-4 rounded-[var(--r-md)] text-left lg:flex-1 case-xl:absolute case-xl:left-[160px] case-xl:top-[600px] case-xl:w-[224px] case-xl:max-w-none case-xl:p-4"
+        <div className="relative z-[1] flex w-full max-w-[692px] flex-col gap-8 lg:contents">
+          <motion.div
+            className="flex w-full flex-col gap-4 text-left lg:absolute lg:left-[calc(368*100cqw/1440-192px)] lg:top-[calc(616*100cqw/1440)] lg:z-[1] lg:w-[192px] case-xl:left-[176px] case-xl:top-[616px] case-xl:max-w-none"
             variants={v(enterDivergence('left'), HERO_BEAT.columns)}
-            {...columnHandlers}
           >
             <span
               className="f-display block font-semibold leading-[1.1] tracking-[-0.03em] texto-gradiente"
@@ -156,16 +153,14 @@ export default function S01Hero() {
             >
               {hero.sideIA.label}
             </span>
-            <span className="coluna-divergencia-texto block text-[16px] leading-[1.5] case-xl:text-[18px]">
+            <span className="block text-[16px] leading-[1.5] text-[var(--texto-apoio)] case-xl:text-[18px]">
               {hero.sideIA.text}
             </span>
-          </motion.button>
+          </motion.div>
 
-          <motion.button
-            type="button"
-            className="coluna-divergencia flex w-full flex-col gap-4 rounded-[var(--r-md)] text-left lg:flex-1 case-xl:absolute case-xl:left-[1087px] case-xl:top-[627px] case-xl:w-[193px] case-xl:max-w-none"
+          <motion.div
+            className="flex w-full flex-col gap-4 text-left lg:absolute lg:left-[calc(1087*100cqw/1440)] lg:top-[calc(627*100cqw/1440)] lg:z-[1] lg:w-[193px] case-xl:left-[1087px] case-xl:top-[627px] case-xl:max-w-none"
             variants={v(enterDivergence('right'), HERO_BEAT.columns)}
-            {...columnHandlers}
           >
             <span
               className="f-display block font-semibold leading-[1.1] tracking-[-0.03em] texto-gradiente"
@@ -173,14 +168,15 @@ export default function S01Hero() {
             >
               {hero.sideHumanos.label}
             </span>
-            <span className="coluna-divergencia-texto block text-[16px] leading-[1.5] case-xl:text-[18px]">
+            <span className="block text-[16px] leading-[1.5] text-[var(--texto-apoio)] case-xl:text-[18px]">
               {hero.sideHumanos.text}
             </span>
-          </motion.button>
+          </motion.div>
+        </div>
         </div>
       </motion.section>
 
-      <section className="mx-auto flex w-full max-w-[1440px] flex-col gap-6 pb-10" style={GUTTER}>
+      <section className="mx-auto flex w-full max-w-[1440px] flex-col gap-6 pb-[var(--ritmo-secao)]" style={GUTTER}>
         <motion.div
           ref={statsRef}
           className="grid w-full grid-cols-2 gap-8 rounded-[20px] bg-[var(--superficie-dado)] p-6 lg:flex lg:flex-row lg:items-center lg:gap-0 lg:px-2 lg:py-10"
@@ -201,8 +197,6 @@ export default function S01Hero() {
                 active={statsInView}
                 delay={reduced ? 0 : statsDelay + i * STAGGER.stat}
                 variants={reduced ? reducedFade : enterFadeUp}
-                // 68% e 48% (os percentuais) ficam no topo; 89 e 11 recuam.
-                emphasis={columnActive && stat.suffix !== '%' ? 'down' : 'up'}
               />
             </Fragment>
           ))}

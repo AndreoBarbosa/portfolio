@@ -7,6 +7,31 @@
 
    Import só em CaseUxAi.tsx. */
 
+/* Ritmo vertical do case (revisão de 28 set: mais respiro, menos densidade).
+   Três degraus, em múltiplos de 8, sempre na mesma ordem de grandeza:
+   seção (padding de cima e de baixo; entre duas seções soma o dobro),
+   bloco (entre blocos com rótulo próprio dentro da mesma seção) e
+   cabeça (do título da seção até o conteúdo que ele apresenta). */
+.case-uxai-root {
+  --ritmo-secao: 72px;
+  --ritmo-bloco: 64px;
+  --ritmo-cabeca: 40px;
+}
+@media (min-width: 768px) {
+  .case-uxai-root {
+    --ritmo-secao: 96px;
+    --ritmo-bloco: 96px;
+    --ritmo-cabeca: 48px;
+  }
+}
+@media (min-width: 1280px) {
+  .case-uxai-root {
+    --ritmo-secao: 128px;
+    --ritmo-bloco: 120px;
+    --ritmo-cabeca: 64px;
+  }
+}
+
 .case-uxai-root {
   /* fundo e superfície */
   --fundo-pagina:        #050B0E; /* petroleo/950 · piso, fixado pelo vídeo do hero */
@@ -205,41 +230,6 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-/* Colunas IA e Humanos do hero — MOTION-SPEC §6 S01, CONTRATO-RESPONSIVO §6.
-   Borda desenhada por box-shadow inset: nasce e some sem mudar a geometria
-   do Figma (uma `border` de 1px deslocaria o conteúdo). Hover só onde há
-   hover; o foco acrescenta o anel e mantém o realce do hover. */
-.case-uxai-root .coluna-divergencia {
-  box-shadow: inset 0 0 0 1px transparent;
-  transition: box-shadow var(--d-hover) var(--ease-micro);
-}
-.case-uxai-root .coluna-divergencia-texto {
-  color: var(--texto-apoio);
-  transition: color var(--d-hover) var(--ease-micro);
-}
-@media (hover: hover) {
-  .case-uxai-root .coluna-divergencia:hover {
-    box-shadow: inset 0 0 0 1px var(--borda-ativa);
-  }
-  .case-uxai-root .coluna-divergencia:hover .coluna-divergencia-texto {
-    color: var(--texto-principal);
-  }
-}
-.case-uxai-root .coluna-divergencia:focus-visible {
-  box-shadow: inset 0 0 0 1px var(--borda-ativa);
-  outline: 2px solid var(--acao-foco);
-  outline-offset: 3px;
-}
-.case-uxai-root .coluna-divergencia:focus-visible .coluna-divergencia-texto {
-  color: var(--texto-principal);
-}
-@media (prefers-reduced-motion: reduce) {
-  .case-uxai-root .coluna-divergencia,
-  .case-uxai-root .coluna-divergencia-texto {
-    transition: none;
   }
 }
 

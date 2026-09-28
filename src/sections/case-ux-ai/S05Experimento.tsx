@@ -82,7 +82,7 @@ export default function S05Experimento() {
         </motion.div>
 
         {/* 2 · Palco, na largura toda. Linha do tempo própria (CSS), gatilho próprio. */}
-        <div className="mt-16 md:mt-24">
+        <div className="mt-[var(--ritmo-cabeca)]">
           <QuadroDivergencia
             total={quadro.total}
             unidade={quadro.unidade}
@@ -93,7 +93,7 @@ export default function S05Experimento() {
         </div>
 
         {/* 3 · Régua, etapas e comparação */}
-        <motion.div className="mt-16 md:mt-24 xl:mt-[136px]" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
+        <motion.div className="mt-[var(--ritmo-bloco)]" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
           <motion.div
             aria-hidden="true"
             className="h-px origin-left bg-[var(--borda-padrao)]"

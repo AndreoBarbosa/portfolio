@@ -116,7 +116,7 @@ export default function S09Divisao() {
       id="divisao"
       aria-labelledby="divisao-titulo"
       data-briefing-fim
-      className="relative bg-[var(--fundo-pagina)] py-16 md:py-24"
+      className="relative bg-[var(--fundo-pagina)] py-[var(--ritmo-secao)]"
     >
       <Container>
         {/* A pergunta de virada */}
@@ -150,7 +150,7 @@ export default function S09Divisao() {
         </motion.div>
 
         {/* A resposta desenhada */}
-        <motion.figure className="m-0 mt-16 md:mt-24" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
+        <motion.figure className="m-0 mt-[var(--ritmo-bloco)]" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
           <figcaption>
             <motion.p
               className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--texto-metadado)]"
@@ -168,10 +168,13 @@ export default function S09Divisao() {
             </motion.p>
           </figcaption>
 
-          {/* ≥1280: raias */}
-          <div ref={ref} className="relative mt-12 hidden xl:block" style={{ height: G.altura }}>
+          {/* ≥1280: raias. Gatilho próprio (como a figura da S08): o desenho só
+              monta quando a caixa tem largura, e isso pode acontecer depois da
+              figura revelada (ao redimensionar de <1280 para ≥1280). Herdando da
+              figura, as raias e os textos das etapas ficavam invisíveis (28 set). */}
+          <div ref={ref} className="relative mt-[var(--ritmo-cabeca)] hidden xl:block" style={{ height: G.altura }}>
             {W > 0 && (
-              <>
+              <motion.div className="absolute inset-0" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
                 <svg
                   className="absolute inset-0 h-full w-full overflow-visible"
                   viewBox={`0 0 ${W} ${G.altura}`}
@@ -229,12 +232,12 @@ export default function S09Divisao() {
                     </motion.li>
                   ))}
                 </ol>
-              </>
+              </motion.div>
             )}
           </div>
 
           {/* <1280: uma coluna, o dono em cada etapa */}
-          <ol className="mt-10 xl:hidden">
+          <ol className="mt-[var(--ritmo-cabeca)] xl:hidden">
             {etapas.map((e, i) => (
               <Fragment key={e.n}>
                 <motion.li className="relative flex gap-4 pb-8 last:pb-0" variants={v(enterFadeUp, i * STAGGER.item)}>
@@ -261,7 +264,7 @@ export default function S09Divisao() {
 
         {/* Fecho */}
         <motion.p
-          className="mt-16 max-w-[880px] text-[20px] leading-[1.4] md:mt-20 md:text-[24px]"
+          className="mt-[var(--ritmo-bloco)] max-w-[880px] text-[20px] leading-[1.4] md:text-[24px]"
           initial="hidden"
           whileInView="visible"
           viewport={VIEWPORT}

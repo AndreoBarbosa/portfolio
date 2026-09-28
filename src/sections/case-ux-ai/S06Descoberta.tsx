@@ -51,6 +51,7 @@ const D = {
   numeroAlt: 130, // 144 × 0.9
   textoFixo: 82, // rótulo, frase e nota: 16 + 18 + 4 + 20 + 4 + 20, não escalam
   fecho: { x: 120, y: 342, w: 440 },
+  respiro: 64, // título até o palco, fixo em px (pedido do Andreo, 28 set): não escala com u
 } as const
 
 /** Celular e tablet (nó 1119:1138, 390): a onda em vw, sangrando dos dois lados. */
@@ -211,6 +212,7 @@ export default function S06Descoberta() {
   const trechoRef = useRef<HTMLDivElement>(null)
   const cabRef = useRef<HTMLDivElement>(null)
   const palcoRef = useRef<HTMLDivElement>(null)
+  const fechoRef = useRef<HTMLParagraphElement>(null)
   const emVista = useInView(palcoRef, VIEWPORT)
 
   // Um progresso só, alimentado pela rolagem (preso) ou pelo tempo.
@@ -253,16 +255,30 @@ export default function S06Descoberta() {
       let u = Math.min(vw / D.larg, 1.25)
       if (preso) {
         const cab = cabRef.current?.offsetHeight ?? 78
-        // 120 da nav (lâmina até 104 + 16 de respiro), 24 embaixo, 16 de respiro para o fecho.
-        u = Math.min(u, (window.innerHeight - 120 - 24 - 16 - cab - D.textoFixo) / (D.folga + 178 + D.ondaAlt))
+        // 120 da nav (lâmina até 104 + 16 de respiro), 24 embaixo, 16 de respiro para o fecho,
+        // e os 64 fixos entre o título e o palco.
+        const livre = window.innerHeight - 120 - 24 - 16 - cab - D.textoFixo - D.respiro
+        const altura = D.numeroAlt + D.folga + D.ondaAlt
+        u = Math.min(u, livre / altura)
+        // Em tela baixa a fonte do fecho para no mínimo de 20px e ele passa da
+        // base do palco (a onda termina 106u abaixo do topo dele). O que passar
+        // dos 16 de respiro sai da escala, para a última linha não cortar.
+        const fechoH = fechoRef.current?.offsetHeight ?? 0
+        const sobra = fechoH - (D.ondaAlt - D.fecho.y) * u - 16
+        if (sobra > 0) u = Math.min(u, (livre - sobra) / altura)
       }
       setEsc({ u, cheio: D.larg * u >= vw - 1 })
     }
     medir()
+    // Segunda medida com o fecho já na escala nova (a altura dele muda com u).
+    const raf = requestAnimationFrame(medir)
     // A altura do título muda quando a fonte carrega.
     document.fonts?.ready.then(medir)
     window.addEventListener('resize', medir)
-    return () => window.removeEventListener('resize', medir)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', medir)
+    }
   }, [largo, preso])
 
   const v = (variants: Parameters<typeof atBeat>[0], beat: number) => (reduced ? reducedFade : atBeat(variants, beat))
@@ -288,8 +304,8 @@ export default function S06Descoberta() {
   const palcoDesktop = (
     <div
       ref={palcoRef}
-      className="relative mx-auto mt-[calc(48*var(--u))]"
-      style={{ '--u': `${u}px`, width: D.larg * u, height: (D.numeroAlt + D.folga + D.ondaAlt) * u + D.textoFixo } as CSSProperties}
+      className="relative mx-auto"
+      style={{ '--u': `${u}px`, marginTop: D.respiro, width: D.larg * u, height: (D.numeroAlt + D.folga + D.ondaAlt) * u + D.textoFixo } as CSSProperties}
     >
       {sr}
       <motion.div className="absolute left-0 w-full" style={{ top: ondaTopo }} initial="hidden" whileInView="visible" viewport={VIEWPORT} variants={lerOnda}>
@@ -331,6 +347,7 @@ export default function S06Descoberta() {
       />
 
       <motion.p
+        ref={fechoRef}
         className="s06-fecho f-display absolute font-medium tracking-[-0.01em] text-[var(--texto-principal)]"
         style={{
           // No bolsão sob a onda, na posição do Figma dentro do palco (em
@@ -353,7 +370,7 @@ export default function S06Descoberta() {
   // ── Celular e tablet: números em duas colunas, onda embaixo ───────────
   const vw = (n: number) => `${n}vw`
   const palcoCompacto = (
-    <div ref={palcoRef} className="relative mt-8">
+    <div ref={palcoRef} className="relative mt-[var(--ritmo-cabeca)]">
       {sr}
       <Container>
         <div aria-hidden="true" className="grid grid-cols-2 gap-4">
@@ -398,7 +415,7 @@ export default function S06Descoberta() {
       className="relative bg-[var(--fundo-pagina)]"
     >
       <div ref={trechoRef} style={preso ? { height: `${S06_CLIMAX.alturaScroll}vh` } : undefined}>
-        <div className={preso ? 'sticky top-0 flex h-screen flex-col justify-center pb-6 pt-[120px]' : 'py-16 md:py-24'}>
+        <div className={preso ? 'sticky top-0 flex h-screen flex-col justify-center pb-6 pt-[120px]' : 'py-[var(--ritmo-secao)]'}>
           <Container>
             <motion.div ref={cabRef} initial="hidden" whileInView="visible" viewport={VIEWPORT}>
               <motion.p

@@ -21,7 +21,7 @@ export function S12Implicacoes() {
   const v = (variants: Variants, beat: number) => (reduced ? reducedFade : atBeat(variants, beat))
 
   return (
-    <section id="implicacoes" aria-labelledby="implicacoes-titulo" className="relative bg-[var(--fundo-pagina)] py-16 md:py-24">
+    <section id="implicacoes" aria-labelledby="implicacoes-titulo" className="relative bg-[var(--fundo-pagina)] py-[var(--ritmo-secao)]">
       <Container>
         <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT}>
           <motion.p
@@ -42,7 +42,7 @@ export function S12Implicacoes() {
           </motion.p>
         </motion.div>
 
-        <ol className="mt-12 md:mt-16">
+        <ol className="mt-[var(--ritmo-cabeca)]">
           {itens.map((item, k) => (
             <motion.li
               key={item.n}
@@ -88,10 +88,10 @@ export function S13Limites() {
   const v = (variants: Variants, beat: number) => (reduced ? reducedFade : atBeat(variants, beat))
 
   return (
-    <section id="limites" aria-labelledby="limites-titulo" className="relative bg-[var(--fundo-pagina)] py-24 md:py-32">
+    <section id="limites" aria-labelledby="limites-titulo" className="relative bg-[var(--fundo-pagina)] py-[var(--ritmo-secao)]">
       <Container>
         <motion.div
-          className="grid gap-y-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-x-16"
+          className="grid gap-y-[var(--ritmo-cabeca)] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-x-16"
           initial="hidden"
           whileInView="visible"
           viewport={VIEWPORT}
