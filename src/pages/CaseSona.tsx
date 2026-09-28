@@ -1,3 +1,4 @@
+import Picture from '../components/ui/Picture'
 import {
   PenLine, Lightbulb, SlidersHorizontal, Handshake,
   Flag, Users, Target, UserCog, Layers,
@@ -249,7 +250,7 @@ export default function CaseSona() {
               {research.body}
             </p>
           </LiquidReveal>
-          <div className="mt-10 grid lg:grid-cols-[1fr_378px] gap-10 items-start">
+          <div className="mt-10 grid lg:grid-cols-[1fr_378px] gap-10 items-start lg:items-stretch">
             <div>
               {/* B5 (Ajustes 02) + R2.3 (Ajustes 03): "O que a pesquisa
                   revelou:" — nó 585:3639 no Figma, elemento que faltava
@@ -270,7 +271,7 @@ export default function CaseSona() {
                 ))}
               </LiquidReveal>
             </div>
-            <LiquidReveal delay={0.15}>
+            <LiquidReveal delay={0.15} className="h-full">
               <HypothesisCard
                 label={research.hypothesis.label}
                 question={research.hypothesis.question}
@@ -280,19 +281,13 @@ export default function CaseSona() {
           </div>
         </SonaSection>
 
-        {/* S07 — A Principal Decisão do Projeto */}
-        <SonaSection id="decisao-principal" eyebrow={mainDecision.eyebrow}>
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <LiquidReveal>
-              <SonaHeading>{mainDecision.title}</SonaHeading>
-              <div className="mt-6 flex flex-col gap-4">
-                {mainDecision.paragraphs.map((p) => (
-                  <p key={p} className="font-outfit text-base leading-[1.5]" style={{ color: 'var(--text-body)' }}>
-                    {p}
-                  </p>
-                ))}
-              </div>
-            </LiquidReveal>
+        {/* S07 — A Principal Decisão do Projeto. Figma 577:2146: texto à
+            esquerda com o eyebrow dentro da coluna, imagem à direita
+            alinhada pelo topo do eyebrow (prop aside do SonaSection). */}
+        <SonaSection
+          id="decisao-principal"
+          eyebrow={mainDecision.eyebrow}
+          aside={
             <CaseImage
               src={mainDecision.image}
               alt={mainDecision.imageAlt}
@@ -300,7 +295,18 @@ export default function CaseSona() {
               height={622}
               frame={false}
             />
-          </div>
+          }
+        >
+          <LiquidReveal>
+            <SonaHeading>{mainDecision.title}</SonaHeading>
+            <div className="mt-6 flex flex-col gap-4">
+              {mainDecision.paragraphs.map((p) => (
+                <p key={p} className="font-outfit text-base leading-[1.5]" style={{ color: 'var(--text-body)' }}>
+                  {p}
+                </p>
+              ))}
+            </div>
+          </LiquidReveal>
         </SonaSection>
 
         {/* S08 + S09 + S10 — mesma seção Figma (sem eyebrow própria, uma
@@ -412,11 +418,8 @@ export default function CaseSona() {
           </LiquidReveal>
           {/* R5 (Ajustes 03): mt-6 (24px) → mt-8 (32px). Cards → regra do
               sistema no Figma (nó 577:2303) = 32px. */}
-          <LiquidReveal delay={0.1} className="mt-8 flex items-center gap-3 rounded-xl px-5 py-4 bg-[#F7F8F9]">
-            <span className="w-5 h-5 rounded-full shrink-0" style={{ background: '#628E70' }} aria-hidden="true" />
-            <p className="font-outfit font-medium text-[13px] leading-[1.5]" style={{ color: 'var(--text-strong)' }}>
-              {prototyping.systemRule}
-            </p>
+          <LiquidReveal delay={0.1} className="mt-8">
+            <IconCallout variant="nota">{prototyping.systemRule}</IconCallout>
           </LiquidReveal>
         </SonaSection>
 
@@ -496,8 +499,9 @@ export default function CaseSona() {
               </MiniCard>
 
               <MiniCard label={consistency.goalIcons.label}>
-                <img
+                <Picture
                   src={consistency.goalIcons.image}
+                  sizes="(min-width: 1024px) 216px, 80vw"
                   alt={consistency.goalIcons.imageAlt}
                   width={consistency.goalIcons.dims.width}
                   height={consistency.goalIcons.dims.height}
@@ -507,8 +511,9 @@ export default function CaseSona() {
               </MiniCard>
 
               <MiniCard label={consistency.components.label}>
-                <img
+                <Picture
                   src={consistency.components.image}
+                  sizes="(min-width: 1024px) 216px, 80vw"
                   alt={consistency.components.imageAlt}
                   width={consistency.components.dims.width}
                   height={consistency.components.dims.height}
@@ -522,7 +527,7 @@ export default function CaseSona() {
           {/* R5 (Ajustes 03): mt-10 (40px) → mt-8 (32px). Cards → callout
               de fechamento no Figma (nó 577:2359) = 32px. */}
           <LiquidReveal delay={0.1} className="mt-8">
-            <IconCallout>{consistency.closing}</IconCallout>
+            <IconCallout variant="nota">{consistency.closing}</IconCallout>
           </LiquidReveal>
         </SonaSection>
 
@@ -586,13 +591,9 @@ export default function CaseSona() {
                   />
                 ))}
               </LiquidReveal>
-              {/* D2 (correção 02): w-[395px] fixo a partir do desktop (não
-                  max-w) — confirmado via get_metadata (nó 577:2591) que
-                  o card tem 395px reais, com bloco de texto 299×48 (2
-                  linhas de 24px). max-w permitia encolher abaixo disso
-                  dentro da coluna de 473px e quebrava em 3 linhas. Sem
-                  fixar no mobile — 3 linhas ali é aceitável. */}
-              <LiquidReveal delay={0.1} className="mt-6 w-full lg:w-[395px]">
+              {/* Destaque em régua (Direção A, 28 set): ocupa a coluna
+                  inteira; a largura fixa de 395px era da caixa antiga. */}
+              <LiquidReveal delay={0.1} className="mt-6 w-full">
                 <IconCallout>{conceptToReality.closing}</IconCallout>
               </LiquidReveal>
             </div>
@@ -690,8 +691,6 @@ export default function CaseSona() {
           {/* R5 (Ajustes 03): mt-10 (40px) → mt-8 (32px). Itens → callout
               de fechamento no Figma (nó 577:2682) = 32px. */}
           <LiquidReveal delay={0.1} className="mt-8">
-            {/* D1 (correção 02): sem override — todos os 5 IconCallout do
-              Sona, incluindo este, usam o badge secundaria-500 default. */}
             <IconCallout>{learning.closing}</IconCallout>
           </LiquidReveal>
         </SonaSection>

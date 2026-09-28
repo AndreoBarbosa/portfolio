@@ -3,6 +3,7 @@ import { LinkedInIcon } from '../icons/LinkedInIcon'
 import LiquidReveal from '../liquid/LiquidReveal'
 import LiquidSectionHeading from '../liquid/LiquidSectionHeading'
 import { contact } from '../../data/home'
+import Picture from '../ui/Picture'
 
 export default function ContactSection() {
   return (
@@ -55,7 +56,7 @@ export default function ContactSection() {
       </div>
 
       <div className="liquid-contact-wave-wrap" aria-hidden="true">
-        <img src="/onda-faixa-horizontal.webp" alt="" className="liquid-contact-wave" loading="lazy" decoding="async" />
+        <Picture src="/onda-faixa-horizontal.webp" sizes="(min-width: 768px) 145vw, 185vw" alt="" className="liquid-contact-wave" loading="lazy" decoding="async" />
       </div>
     </section>
   )

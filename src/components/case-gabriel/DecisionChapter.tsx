@@ -1,6 +1,7 @@
 import LiquidReveal from '../liquid/LiquidReveal'
 import NoteBox from './NoteBox'
 import { gabrielAccent } from '../../data/gabriel'
+import Picture from '../ui/Picture'
 
 type BodyBlock = { label?: string; text: string }
 
@@ -64,7 +65,7 @@ export default function DecisionChapter({
         className="rounded-[20px] overflow-hidden border"
         style={{ borderColor: gabrielAccent.cardBorder, boxShadow: '0px 24px 60px 0px rgba(12,26,34,0.1)', aspectRatio: imageAspect }}
       >
-        <img src={image} alt={imageAlt} width={imageWidth} height={imageHeight} loading="lazy" className="w-full h-full object-cover" />
+        <Picture src={image} sizes="(min-width: 1024px) 640px, 100vw" alt={imageAlt} width={imageWidth} height={imageHeight} loading="lazy" className="w-full h-full object-cover" />
       </div>
     </LiquidReveal>
   )
@@ -85,7 +86,7 @@ export default function DecisionChapter({
       </div>
       {note && (
         <LiquidReveal delay={0.15}>
-          <NoteBox variant="blue" textColor={gabrielAccent.noteBlue} fontSize="15px" className="inline-block w-auto px-5 py-4">
+          <NoteBox>
             {note}
           </NoteBox>
         </LiquidReveal>

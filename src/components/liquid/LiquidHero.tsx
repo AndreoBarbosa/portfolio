@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
+import Picture, { srcOtimizado } from '../ui/Picture'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
@@ -19,15 +20,14 @@ export default function LiquidHero() {
 
   return (
     <section id="hero" className="relative overflow-hidden" style={{ background: '#FFFFFF' }}>
-      {/* Node 133:247 (Figma): caixa de conteúdo 1198px. O vídeo ocupa a
-          largura INTEIRA da caixa (não um círculo de ~720px) — ele
-          domina o topo. Texto/botões ficam logados a ele (o vídeo é um
-          fundo absoluto no Figma; aqui reproduzimos a proximidade com
-          uma margem negativa pequena, já que o asset tem folga própria
-          na base). Nada de máscara/parallax — não estão no Figma. */}
-      <div className="relative max-w-[1198px] mx-auto px-4 flex flex-col items-center pt-[140px] pb-12 md:pt-[164px] md:pb-16">
+      {/* Figma 1149:1138 (validado em 28 set): título e botões sempre na
+          primeira dobra. .liquid-hero-stage e .liquid-hero-media
+          (liquid-glass.css) calculam a altura da mídia pelo espaço que
+          sobra na tela; o texto vem logo abaixo, como no hero 133:247. A
+          máscara em volta do objeto esconde a caixa do vídeo. */}
+      <div className="liquid-hero-stage relative max-w-[1198px] mx-auto px-4 flex flex-col items-center">
         <motion.div
-          className="w-full"
+          className="liquid-hero-media"
           initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 1.02 }}
           animate={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: EASE }}
@@ -35,13 +35,12 @@ export default function LiquidHero() {
         >
           {canPlayVideo ? (
             <video
-              className="w-full h-auto object-contain"
               autoPlay
               muted
               loop
               playsInline
               preload="auto"
-              poster="/hero-poster.webp"
+              poster={srcOtimizado('/hero-poster.webp', 1664)}
             >
               {/* J2 (correção 13): type precisa acompanhar o src — apontar
                   pra .webm com type="video/mp4" faz alguns navegadores
@@ -55,14 +54,14 @@ export default function LiquidHero() {
               <source src="/hero-bg.mp4" type="video/mp4" />
             </video>
           ) : (
-            <img src="/hero-poster.webp" alt="" className="w-full h-auto object-contain" decoding="async" />
+            <Picture src="/hero-poster.webp" sizes="(min-width: 768px) 832px, 80vw" width={2048} height={1152} decoding="async" />
           )}
         </motion.div>
 
-        {/* D9 (correção 02): gap-[40px] confirmado via MCP (nó 133:248) —
-            era mt-8/mt-12 (32/48px), nenhum dos dois batia. */}
-        <div className="flex flex-col items-center gap-10 mt-10">
-          <div className="flex flex-col gap-6 items-center text-center w-full">
+        {/* Desktop: 40 e 24, do nó 133:248. Celular: 32 e 16, com os
+            botões em largura cheia (Figma 1149:1140). */}
+        <div className="flex flex-col items-center gap-8 md:gap-10 md:mt-2 w-full">
+          <div className="flex flex-col gap-4 md:gap-6 items-center text-center w-full">
             <motion.h1
               className="liquid-type-hero-title text-balance"
               style={{ color: '#0C1A22' }}
@@ -73,14 +72,14 @@ export default function LiquidHero() {
               Transformo complexidade em clareza
             </motion.h1>
 
-            <p className="liquid-type-hero-sub" style={{ color: '#625F5D' }}>
+            <p className="liquid-type-hero-sub">
               Product Designer com base em UX Research. Transformo pesquisa em decisões de produto{' '}
               <br className="hidden md:block" />
               que reduzem esforço e simplificam experiências complexas.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 items-center w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center w-full sm:w-auto">
             <a
               href="#projetos"
               className="liquid-hero-btn-primary liquid-type-btn inline-flex items-center justify-center w-full sm:w-[186px] px-8 py-3"

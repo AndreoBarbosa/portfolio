@@ -1,6 +1,7 @@
 import ScrollAccent from '../liquid/ScrollAccent'
 import LiquidReveal from '../liquid/LiquidReveal'
 import { manifesto, pillars, type Pillar } from '../../data/home'
+import Picture from '../ui/Picture'
 
 function ThesisCard({ pillar }: { pillar: Pillar }) {
   return (
@@ -59,7 +60,7 @@ export default function ThesisSection() {
               a grid de 1440 e continua crescendo com a viewport. */}
           <div className="liquid-thesis-bg-zone" aria-hidden="true">
             <div className="liquid-thesis-bg">
-              <img src="/onda-faixa-horizontal.webp" alt="" loading="lazy" decoding="async" />
+              <Picture src="/onda-faixa-horizontal.webp" sizes="(min-width: 768px) 120vw, 116vw" alt="" loading="lazy" decoding="async" />
             </div>
           </div>
 

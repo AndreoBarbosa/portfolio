@@ -23,14 +23,16 @@ type Props = {
 // mesmo fundo (Briefing = 5 colunas soltas, Princípios = 4 colunas com
 // borda e divisória) e vai reaproveitar esta casca em commit separado,
 // sem duplicar a receita do gradiente/brilho.
+// Vidro fumê (Figma 659:997 "Briefing · glass fumê", gradiente do Andreo;
+// Direção A escolhida em 28 set). O nome ficou do cartão escuro antigo. O
+// brilho "Optical sheen" (branco 16%) continua por cima do gradiente.
 export default function DarkGradientCard({ children, className = '' }: Props) {
   return (
     <div
-      className={`relative overflow-hidden rounded-[24px] p-6 md:p-10 ${className}`}
+      className={`vidro-fume relative overflow-hidden rounded-[24px] p-6 md:p-10 ${className}`}
       style={{
-        background: 'linear-gradient(135deg, #21323B 0%, #122028 100%)',
-        border: '1px solid rgba(255,255,255,0.14)',
-        boxShadow: '0 24px 60px rgba(12,26,34,0.18)',
+        border: '1px solid rgba(12, 26, 34, 0.06)',
+        boxShadow: '0 24px 60px rgba(12, 26, 34, 0.18)',
       }}
     >
       <div

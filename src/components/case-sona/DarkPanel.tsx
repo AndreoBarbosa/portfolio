@@ -1,6 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
 import LiquidReveal from '../liquid/LiquidReveal'
-import { sonaAccent } from '../../data/sona'
 
 type Item = {
   icon: LucideIcon
@@ -27,29 +26,25 @@ const colsClass: Record<number, string> = {
   5: 'md:grid-cols-3 lg:grid-cols-5',
 }
 
+// Vidro fumê (Figma 382:1141 Briefing e 574:1285 Princípios, gradiente do
+// Andreo; Direção A escolhida em 28 set). O nome ficou do painel escuro
+// antigo. Texto sempre petróleo sobre o vidro: títulos a 100%, corpo a 90%.
+// Princípios: ícone em caixa petróleo e divisória azul a 45% entre colunas.
 export default function DarkPanel({ title, items, cols = 5, variant = 'plain' }: Props) {
   const boxed = variant === 'boxed'
 
   return (
     <div
-      className="rounded-[20px] p-8"
-      style={{
-        background: sonaAccent.panelBg,
-        border: boxed ? `1px solid ${sonaAccent.blueSoft}` : undefined,
-      }}
+      className={`vidro-fume rounded-[20px] ${boxed ? 'p-8' : 'px-8 py-10'}`}
+      style={{ border: boxed ? '1px solid #EBEEF1' : undefined }}
     >
       {title && boxed && (
-        <p className="font-hanken font-semibold text-2xl leading-[1.1] mb-10" style={{ color: '#EBEEF1' }}>
+        <p className="font-hanken font-semibold text-2xl leading-[1.1] mb-10" style={{ color: '#0C1A22' }}>
           {title}
         </p>
       )}
       {title && !boxed && (
-        // R2.2 (Ajustes 03): revertido pro original — Outfit SemiBold
-        // 12px, mb-6 (24px, confirmado via get_design_context = gap-[24px]
-        // do nó 577:2099, exato). O Ajustes 02 tinha trocado por CaseLabel,
-        // cujo margin:0 interno matava o mb-6 (mesma causa do R0) — "BRIEFING"
-        // ficava colado no ícone de "Desafio".
-        <p className="font-outfit font-semibold text-xs uppercase mb-6" style={{ color: '#EBEEF1', letterSpacing: '0.24px' }}>
+        <p className="font-outfit font-semibold text-sm uppercase mb-6" style={{ color: '#0C1A22', letterSpacing: '0.24px' }}>
           {title}
         </p>
       )}
@@ -61,27 +56,27 @@ export default function DarkPanel({ title, items, cols = 5, variant = 'plain' }:
               className={`flex flex-col gap-4 pb-8 md:pb-0 ${
                 boxed ? `border-b md:border-b-0 md:border-l ${i === 0 ? 'md:border-l-0' : 'md:pl-8'} last:border-b-0` : ''
               }`}
-              style={boxed ? { borderColor: 'rgba(255,255,255,0.12)' } : undefined}
+              style={boxed ? { borderColor: 'rgba(31, 109, 181, 0.45)' } : undefined}
             >
               {boxed ? (
                 <span
                   className="flex items-center justify-center w-11 h-11 rounded-xl shrink-0"
-                  style={{ background: sonaAccent.hypothesisBg }}
+                  style={{ background: '#0C1A22' }}
                   aria-hidden="true"
                 >
-                  <item.icon size={24} strokeWidth={1.75} style={{ color: sonaAccent.panelBg }} />
+                  <item.icon size={24} strokeWidth={1.75} style={{ color: '#FFFFFF' }} />
                 </span>
               ) : (
-                <item.icon size={28} strokeWidth={1.5} style={{ color: '#E5E7EB' }} aria-hidden="true" />
+                <item.icon size={32} strokeWidth={1.5} style={{ color: '#0C1A22' }} aria-hidden="true" />
               )}
               <div className="flex flex-col gap-2">
                 <p
                   className={boxed ? 'font-outfit font-semibold text-base' : 'font-hanken font-semibold text-xl leading-[1.1]'}
-                  style={{ color: '#EBEEF1', letterSpacing: boxed ? undefined : '-0.6px' }}
+                  style={{ color: '#0C1A22', letterSpacing: boxed ? undefined : '-0.6px' }}
                 >
                   {item.title}
                 </p>
-                <p className="font-outfit text-base leading-[1.5]" style={{ color: boxed ? '#9CA3AF' : '#D3D6D9' }}>
+                <p className="font-outfit text-base leading-[1.5]" style={{ color: 'rgba(12, 26, 34, 0.9)' }}>
                   {item.body}
                 </p>
               </div>

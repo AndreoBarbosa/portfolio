@@ -132,8 +132,8 @@ export const research = {
   ],
   hypothesis: {
     label: 'Hipótese de design',
-    question: 'Como reduzir o esforço necessário para transformar informação financeira em uma decisão ?',
-    answer: 'A solução deve transformar dados em clareza , priorizar o que importa e guiar próximos passos com confiança.',
+    question: 'Como reduzir o esforço necessário para transformar informação financeira em uma decisão?',
+    answer: 'A solução deve transformar dados em clareza, priorizar o que importa e guiar próximos passos com confiança.',
   },
 }
 

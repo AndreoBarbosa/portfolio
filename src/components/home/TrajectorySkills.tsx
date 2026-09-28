@@ -3,6 +3,7 @@ import { FileText, Headphones, Monitor, GraduationCap, User, Figma, PenTool, Bar
 import LiquidReveal from '../liquid/LiquidReveal'
 import LiquidSectionHeading from '../liquid/LiquidSectionHeading'
 import { timeline, trajectoryStats, education, certifications } from '../../data/home'
+import Picture from '../ui/Picture'
 
 const timelineIcons = {
   faturamento: FileText,
@@ -51,7 +52,7 @@ export default function TrajectorySkills() {
             (mesmo enquadramento do Figma: começa ANTES da timeline,
             termina DEPOIS dos cards), não apenas a zona da timeline. */}
         <div className="liquid-trajectory-bg" aria-hidden="true">
-          <img src="/fundo-trajetoria.webp" alt="" loading="lazy" decoding="async" />
+          <Picture src="/fundo-trajetoria.webp" sizes="100vw" alt="" loading="lazy" decoding="async" />
         </div>
 
         <LiquidReveal blur>

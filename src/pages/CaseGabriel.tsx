@@ -1,3 +1,4 @@
+import Picture from '../components/ui/Picture'
 import { motion, useReducedMotion } from 'framer-motion'
 import {
   Users, Route, Smartphone, MessageCircle, ShieldCheck, Sparkles, Sprout,
@@ -135,8 +136,9 @@ export default function CaseGabriel() {
                 <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#D9DEE3' }} aria-hidden="true" />
                 <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#D9DEE3' }} aria-hidden="true" />
               </div>
-              <img
+              <Picture
                 src={`${IMG}/cover.png`}
+                sizes="(min-width: 1024px) 800px, 100vw"
                 alt="Landing page do psicólogo Gabriel Alves, visão desktop: hero com a mensagem 'Um espaço seguro para você ser quem é'"
                 width={611}
                 height={386}
@@ -221,7 +223,7 @@ export default function CaseGabriel() {
                   {challengeDiscovery.challenge.transitionLine}
                 </p>
 
-                <NoteBox variant="blue" fontSize="18px">
+                <NoteBox>
                   {challengeDiscovery.challenge.designQuestion}
                 </NoteBox>
               </LiquidReveal>
@@ -255,7 +257,7 @@ export default function CaseGabriel() {
                   }))}
                 />
 
-                <NoteBox variant="white" fontSize="16px">
+                <NoteBox>
                   {challengeDiscovery.discovery.closingNote}
                 </NoteBox>
               </LiquidReveal>
@@ -272,7 +274,7 @@ export default function CaseGabriel() {
               <DarkGradientCard>
                 <p
                   className="font-outfit font-semibold text-xs uppercase mb-8"
-                  style={{ color: gabrielAccent.darkCardEyebrow, letterSpacing: '0.24px' }}
+                  style={{ color: '#0C1A22', letterSpacing: '0.24px' }}
                 >
                   {briefing.eyebrow}
                 </p>
@@ -283,7 +285,6 @@ export default function CaseGabriel() {
                       icon={briefingIcons[item.icon as keyof typeof briefingIcons]}
                       title={item.title}
                       body={item.body}
-                      bodyColor={item.bodyColor === 'darkCardBodyFirst' ? gabrielAccent.darkCardBodyFirst : undefined}
                     />
                   ))}
                 </LiquidReveal>
@@ -349,17 +350,20 @@ export default function CaseGabriel() {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl pt-8 px-8 pb-16 flex flex-col gap-8" style={{ background: gabrielAccent.resultBg }}>
-                    <p className="font-mono text-xs uppercase" style={{ color: gabrielAccent.resultLabel }}>
+                  {/* Resultado: destaque principal da página, no vidro fumê
+                      (Direção A, 28 set). Texto em petróleo; o trecho em
+                      azul usa #10558F para passar de 4,5:1 sobre o vidro. */}
+                  <div className="vidro-fume rounded-[20px] p-8 flex flex-col gap-8">
+                    <p className="font-mono text-xs uppercase" style={{ color: 'rgba(12, 26, 34, 0.72)' }}>
                       {mainChange.result.label}
                     </p>
                     <div className="flex flex-col gap-1">
-                      <p className="font-hanken font-semibold text-5xl leading-none" style={{ color: 'rgba(0,100,140,0.1)' }} aria-hidden="true">
+                      <p className="font-hanken font-semibold text-5xl leading-none" style={{ color: 'rgba(16, 85, 143, 0.35)' }} aria-hidden="true">
                         &ldquo;
                       </p>
                       <p className="font-hanken font-semibold text-2xl leading-[1.1] max-w-[314px]" style={{ color: 'var(--text-strong)' }}>
                         {mainChange.result.quoteBefore}
-                        <span style={{ color: 'var(--secundaria-500)' }}>{mainChange.result.quoteHighlight}</span>
+                        <span style={{ color: '#10558F' }}>{mainChange.result.quoteHighlight}</span>
                       </p>
                     </div>
                   </div>
@@ -495,8 +499,9 @@ export default function CaseGabriel() {
                 ordem no DOM é invertida via order-* pra achar as duas
                 coisas ao mesmo tempo. */}
             <div className="relative mt-8 flex flex-col lg:flex-row gap-8 items-start">
-              <img
+              <Picture
                 src="/gabriel-liquid-wave.webp"
+                sizes="112vw"
                 alt=""
                 width={1610}
                 height={1610}
@@ -515,8 +520,9 @@ export default function CaseGabriel() {
                   className="rounded-[20px] overflow-hidden border"
                   style={{ borderColor: gabrielAccent.cardBorder, boxShadow: '0px 24px 30px 0px rgba(12,26,34,0.1)', aspectRatio: '800 / 520' }}
                 >
-                  <img
+                  <Picture
                     src={strategyToInterface.image}
+                    sizes="(min-width: 1024px) 800px, 100vw"
                     alt={strategyToInterface.imageAlt}
                     width={800}
                     height={520}
@@ -618,7 +624,7 @@ export default function CaseGabriel() {
             ))}
           </LiquidReveal>
           <LiquidReveal delay={0.1} className="mt-8">
-            <NoteBox variant="blue" textColor={gabrielAccent.noteBlueAlt} fontSize="14px" className="inline-block w-auto px-5 py-4">
+            <NoteBox variant="nota">
               {nextStep.note}
             </NoteBox>
           </LiquidReveal>
@@ -667,8 +673,9 @@ export default function CaseGabriel() {
                 viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
                 transition={{ duration: 0.6, ease: EASE }}
               >
-                <img
+                <Picture
                   src="/gabriel-liquid-composition.webp"
+                  sizes="(min-width: 1024px) 488px, 122vw"
                   alt=""
                   width={620}
                   height={620}

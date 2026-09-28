@@ -572,6 +572,64 @@
   transform: translateX(2px);
 }
 
+/* Hero da Home · 1ª dobra (Figma 1149:1138, validado em 28 set).
+   Título e botões ficam sempre dentro da primeira tela: o texto fica a
+   40 a 64px do fim da tela e a mídia ocupa o espaço que sobra entre a nav
+   e o texto, de 300 a 468px de altura (468 = o vídeo no hero 133:247).
+   240 = bloco de texto (232) + 8 de respiro. Em telas altas
+   nada muda. Sem svh (navegador antigo), vale a versão em vh. */
+.liquid-hero-stage {
+  padding-top: clamp(96px, 14vh, 120px);
+  padding-bottom: 48px;
+}
+.liquid-hero-media {
+  position: relative;
+  width: min(80vw, 340px);
+  aspect-ratio: 16 / 9;
+}
+@media (min-width: 768px) {
+  .liquid-hero-stage {
+    padding-top: clamp(72px, 10vh, 89px);
+    padding-bottom: clamp(40px, 7vh, 64px);
+  }
+  .liquid-hero-media {
+    width: min(100%, calc(clamp(300px, calc(100vh - clamp(72px, 10vh, 89px) - clamp(40px, 7vh, 64px) - 240px), 468px) * 16 / 9));
+  }
+}
+@supports (height: 1svh) {
+  .liquid-hero-stage {
+    padding-top: clamp(96px, 14svh, 120px);
+  }
+  @media (min-width: 768px) {
+    .liquid-hero-stage {
+      padding-top: clamp(72px, 10svh, 89px);
+      padding-bottom: clamp(40px, 7svh, 64px);
+    }
+    .liquid-hero-media {
+      width: min(100%, calc(clamp(300px, calc(100svh - clamp(72px, 10svh, 89px) - clamp(40px, 7svh, 64px) - 240px), 468px) * 16 / 9));
+    }
+  }
+}
+/* O fundo do vídeo não é branco puro e mostra a caixa. Máscara centrada
+   no objeto (a mesma do Figma, "Borda esmaecida"), mais um corte suave no
+   topo e na base, onde o objeto quase encosta. O arquivo não muda. */
+.liquid-hero-media > video,
+.liquid-hero-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-mask-image:
+    radial-gradient(ellipse 56% 80% at 50.7% 50.6%, #000 62%, rgba(0, 0, 0, 0.25) 80%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 6%, #000 93%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(ellipse 56% 80% at 50.7% 50.6%, #000 62%, rgba(0, 0, 0, 0.25) 80%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 6%, #000 93%, transparent 100%);
+  mask-composite: intersect;
+}
+
 /* Botões do hero — caso à parte do LiquidButton compartilhado. O fundo
    do hero é branco fixo, então o texto/botões são sempre em tons de
    petróleo, sem scrim — contraste natural sobre o branco. */
@@ -714,6 +772,28 @@
   object-fit: cover;
   object-position: center;
 }
+/* Desktop e tablet: o recorte do Figma (retângulo 133:367, CROP; validado
+   em 28 set, seção 1153:1168). A ponta esquerda da onda é reta no próprio
+   arquivo, então a imagem fica 19,76% maior que a tela e sai pelas duas
+   bordas: 8,69% pela esquerda (leva a ponta junto) e 7,8% pela direita.
+   O topo perde 2%, onde uma crista encosta na borda do arquivo. A base
+   fica inteira: a gota grande do centro termina na última linha do
+   arquivo e o corte de 1,6% do Figma achatava o fundo dela. Faixa:
+   29,41vw de altura (-0,62 + 30,03). */
+@media (min-width: 768px) {
+  .liquid-thesis-bg-zone {
+    height: 29.41vw;
+  }
+  .liquid-thesis-bg img {
+    inset: auto;
+    left: -10.4vw;
+    top: -0.62vw;
+    width: 119.76vw;
+    height: 30.03vw;
+    max-width: none;
+    object-fit: fill;
+  }
+}
 /* Node 133:369 etc. (Figma): bg transparente, sem borda, sem sombra —
    as duas fileiras de cards ficam sobre branco liso (a onda é uma faixa
    separada, sem overlap), então não existe problema de legibilidade a
@@ -789,11 +869,13 @@
   line-height: 1.1;
   letter-spacing: -3.12px;
 }
+/* Figma 133:251: Outfit 16/24, texto-apoio #54636E. */
 .liquid-type-hero-sub {
-  font-family: 'Hanken Grotesk', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-weight: 400;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.5;
+  color: #54636E;
 }
 .liquid-type-body {
   font-family: 'Outfit', sans-serif;
@@ -1460,4 +1542,71 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+/* ------------------------------------------------------------------
+   Cases Sona e Gabriel · hierarquia de destaques (Figma 1166:1268,
+   Direção A "Régua", escolhida em 28 set). Três níveis:
+   1. Principal · .vidro-fume: o gradiente do Andreo. Briefing,
+      Princípios, Hipótese de design (Sona) e Resultado da Principal
+      Mudança (Gabriel). Texto sempre petróleo.
+   2. Destaque · .destaque-regua: sem caixa. Régua de 2px na cor do
+      rótulo da seção e a frase em Hanken Grotesk 20/28.
+   3. Nota · .nota-linha: linha fina em cima, Outfit 14/20 a 72%.
+   Largura máxima 640px (cerca de 70 caracteres por linha).
+   ------------------------------------------------------------------ */
+
+/* Camadas de cima para baixo, na ordem do Figma: brilho #B9CEDD à
+   esquerda, brilho #EDF3F7 à direita, gradiente escuro a 42%, branco. */
+.vidro-fume {
+  background:
+    radial-gradient(100% 69.4% at 0% 25%, #B9CEDD 0%, rgba(185, 206, 221, 0) 100%),
+    radial-gradient(119% 80.6% at 114.3% 74.2%, #EDF3F7 0%, rgba(237, 243, 247, 0) 100%),
+    linear-gradient(140deg, rgba(12, 26, 34, 0.42) 0%, rgba(22, 48, 61, 0.42) 45%, rgba(10, 20, 27, 0.42) 100%),
+    #FFFFFF;
+  color: #0C1A22;
+}
+/* Chip de vidro do cartão da Hipótese (Figma 549:1339): branco 55%. */
+.vidro-fume-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.destaque-regua {
+  max-width: 640px;
+  border-left: 2px solid var(--regua, var(--secundaria-500));
+  padding: 4px 0 4px 22px;
+}
+.destaque-regua p {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: -0.01em;
+  color: #0C1A22;
+  text-wrap: pretty;
+}
+/* Com <strong>, o trecho comum fica em petróleo 72% e o destaque em 100%. */
+.destaque-regua p:has(strong) {
+  color: rgba(12, 26, 34, 0.72);
+}
+.destaque-regua strong {
+  font-weight: inherit;
+  color: #0C1A22;
+}
+
+.nota-linha {
+  max-width: 640px;
+  border-top: 1px solid rgba(12, 26, 34, 0.1);
+  padding-top: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(12, 26, 34, 0.72);
 }

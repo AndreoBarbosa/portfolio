@@ -5,6 +5,7 @@ import { useReducedMotion } from 'framer-motion'
 import LiquidReveal from '../liquid/LiquidReveal'
 import LiquidSectionHeading from '../liquid/LiquidSectionHeading'
 import { projects, type Project } from '../../data/home'
+import Picture, { srcOtimizado } from '../ui/Picture'
 
 function NeutralPattern() {
   return (
@@ -106,9 +107,11 @@ function ProjectCard({ project }: { project: Project }) {
         <div className="liquid-project-media">
           {project.media ? (
             <>
-              <img
+              <Picture
                 src={project.media.static}
+                sizes="356px"
                 alt=""
+                loading="lazy"
                 decoding="async"
                 style={{ opacity: hovering ? 0 : 1 }}
               />
@@ -119,7 +122,7 @@ function ProjectCard({ project }: { project: Project }) {
                   loop
                   playsInline
                   preload="metadata"
-                  poster={project.media.static}
+                  poster={srcOtimizado(project.media.static, 720)}
                   style={{ opacity: hovering ? 1 : 0 }}
                   aria-hidden="true"
                 >

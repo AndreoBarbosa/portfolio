@@ -1,4 +1,5 @@
-import CaseLabel from './CaseLabel'
+import { Lightbulb } from 'lucide-react'
+import { caseLabelStyle } from './CaseLabel'
 
 type Props = {
   label: string
@@ -6,50 +7,34 @@ type Props = {
   answer: string
 }
 
-// Card "Hipótese de design" — B4 (Ajustes 02). O círculo preto com o
-// ícone de lâmpada saiu. O label que antes vivia FORA do card (parágrafo
-// irmão acima dele) agora é o kicker da própria zona superior — mudança
-// estrutural pedida no B4, não um desvio meu. O card mantém a mesma
-// posição/largura/sobreposição com a lista 01–04 (não mexi nisso); o que
-// mudou foi o conteúdo interno, que agora INCLUI o que antes era um
-// elemento irmão externo.
-//
-// Pergunta sem trecho em destaque por enquanto — o nó atual do Figma
-// (585:3664) não mostra nenhum recorte colorido; aguardando o recorte
-// exato combinado com o autor do briefing (ver relatório da rodada).
+// Card "Hipótese de design", destaque principal do case (Figma 549:1336,
+// vidro fumê; Direção A escolhida em 28 set). O rótulo fica fora do cartão,
+// na mesma linha do "O que a pesquisa revelou:" ao lado, e o cartão estica
+// até a base da lista (h-full + flex-1; a grade da seção usa
+// lg:items-stretch). Texto sempre petróleo sobre o vidro: o rótulo
+// "Direção" deixou o cinza #6E7F86, que não passava de 3:1 aqui.
 export default function HypothesisCard({ label, question, answer }: Props) {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden" style={{ border: '1px solid #E4E9EC' }}>
-      <div className="px-7 pt-7 pb-[26px]" style={{ background: '#EDF3F7', borderBottom: '1px solid #E4E9EC' }}>
-        <div className="flex items-center gap-2.5 mb-[18px]">
-          <span className="w-6 h-px shrink-0" style={{ background: '#00648C', opacity: 0.5 }} aria-hidden="true" />
-          <CaseLabel variant="column">{label}</CaseLabel>
-        </div>
-        <span
-          aria-hidden="true"
-          className="font-hanken font-bold block"
-          style={{ fontSize: '48px', lineHeight: 1, color: '#00648C', opacity: 0.22, marginBottom: '-6px' }}
-        >
-          &ldquo;
+    <div className="flex h-full flex-col">
+      <p className="mb-6 font-outfit text-base font-semibold" style={{ color: '#3B3F46' }}>
+        {label}
+      </p>
+      <div className="vidro-fume flex flex-1 flex-col gap-6 rounded-[20px] p-8">
+        <span className="vidro-fume-chip" aria-hidden="true">
+          <Lightbulb size={24} strokeWidth={1.5} color="#0C1A22" />
         </span>
-        <p
-          className="font-hanken font-semibold"
-          style={{ fontSize: '24px', lineHeight: 1.28, letterSpacing: '-0.02em', color: '#0C1A22' }}
-        >
-          {question}
-        </p>
-      </div>
-      <div className="px-7 pt-[22px] pb-[26px]">
-        {/* R0 (Ajustes 03): margin:0 do CaseLabel matava o mb-2 quando
-            aplicado direto nele (inline style sempre vence className) —
-            mesma causa do bug do "BRIEFING". Corrigido envolvendo num
-            wrapper com a margem, em vez de aplicar direto no CaseLabel. */}
-        <div className="mb-2">
-          <CaseLabel variant="muted">Direção</CaseLabel>
+        <div className="flex flex-col gap-5">
+          <p className="font-hanken text-2xl font-semibold leading-[30px] tracking-[-0.01em]" style={{ color: '#0C1A22' }}>
+            {question}
+          </p>
+          <span className="h-px w-full" style={{ background: 'rgba(12, 26, 34, 0.14)' }} aria-hidden="true" />
+          <div className="flex flex-col gap-2">
+            <span style={{ ...caseLabelStyle('muted'), color: 'rgba(12, 26, 34, 0.72)' }}>Direção</span>
+            <p className="font-outfit text-base leading-6" style={{ color: 'rgba(12, 26, 34, 0.8)' }}>
+              {answer}
+            </p>
+          </div>
         </div>
-        <p className="font-outfit font-light text-[15px]" style={{ lineHeight: 1.6, color: '#2C3B43' }}>
-          {answer}
-        </p>
       </div>
     </div>
   )

@@ -6,3 +6,16 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Arquivos com hash no nome (JS e CSS do build): nunca mudam, cache de 1 ano.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Imagens otimizadas (scripts/otimizar-imagens.py): 30 dias. Para trocar uma
+# imagem, gere com outro nome ou espere o prazo.
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"

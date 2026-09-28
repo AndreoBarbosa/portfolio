@@ -1,5 +1,6 @@
 import type { LucideIcon } from 'lucide-react'
 import { sonaAccent } from '../../data/sona'
+import Picture from '../ui/Picture'
 
 type Props = {
   icon: LucideIcon
@@ -58,8 +59,9 @@ export default function DecisionCard({ icon: Icon, title, problem, decision, imp
           </div>
         ))}
       </div>
-      <img
+      <Picture
         src={image}
+        sizes="120px"
         alt=""
         width={imageWidth}
         height={imageHeight}

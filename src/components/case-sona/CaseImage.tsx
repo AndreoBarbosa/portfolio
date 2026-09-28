@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
+import { Fontes, srcOtimizado } from '../ui/Picture'
 
 type Props = {
   src: string
@@ -33,7 +34,7 @@ export default function CaseImage({ src, alt, width, height, priority = false, f
   const style = frame ? { boxShadow: '0 10px 28px rgba(12,26,34,0.14)' } : undefined
 
   const imgProps = {
-    src,
+    src: srcOtimizado(src),
     alt,
     width,
     height,
@@ -46,17 +47,30 @@ export default function CaseImage({ src, alt, width, height, priority = false, f
     style,
   }
 
+  // AVIF/WebP responsivos (scripts/otimizar-imagens.py). display:
+  // contents deixa o layout igual ao de um <img> solto.
+  const sizes = '(min-width: 1024px) 600px, 92vw'
+
   if (priority || shouldReduceMotion) {
-    return <img {...imgProps} />
+    return (
+      <picture style={{ display: 'contents' }}>
+        <Fontes src={src} sizes={sizes} />
+        <img {...imgProps} sizes={sizes} />
+      </picture>
+    )
   }
 
   return (
-    <motion.img
-      {...imgProps}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
-      transition={{ duration: 0.6, ease: EASE }}
-    />
+    <picture style={{ display: 'contents' }}>
+      <Fontes src={src} sizes={sizes} />
+      <motion.img
+        {...imgProps}
+        sizes={sizes}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
+        transition={{ duration: 0.6, ease: EASE }}
+      />
+    </picture>
   )
 }
