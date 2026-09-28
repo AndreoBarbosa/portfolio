@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, type ReactNode } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ScrollToTop from './components/ScrollToTop'
+import TituloDaRota from './components/TituloDaRota'
 import Home from './pages/Home'
 
 // Cada case é um arquivo JS à parte: quem abre a Home não baixa o código
@@ -45,6 +46,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <TituloDaRota />
       <PreCarregarCases />
       <Routes>
         <Route path="/" element={<Home />} />
