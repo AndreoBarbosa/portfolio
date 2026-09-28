@@ -8,6 +8,7 @@ import LiquidArrowLink from '../components/liquid/LiquidArrowLink'
 import LiquidCard from '../components/liquid/LiquidCard'
 import LiquidSectionHeading from '../components/liquid/LiquidSectionHeading'
 import { useActiveSection } from '../hooks/useActiveSection'
+import usePageMeta from '../hooks/usePageMeta'
 
 const SECTIONS = [
   { id: 'paleta', label: 'Paleta' },
@@ -60,6 +61,11 @@ function Swatch({ name, hex }: { name: string; hex: string }) {
 export default function DesignSystemShowcase() {
   const rootRef = useRef<HTMLDivElement>(null)
   const activeSection = useActiveSection(SECTIONS.map((s) => s.id))
+
+  usePageMeta({
+    title: 'Design System · Andreo Barbosa',
+    description: 'Paleta, tipografia, vidro, botões e contraste do sistema visual do portfólio.',
+  })
 
   return (
     <div ref={rootRef} className="liquid-root min-h-screen">

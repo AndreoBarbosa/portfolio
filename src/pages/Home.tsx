@@ -3,6 +3,7 @@ import { useReducedMotion } from 'framer-motion'
 import Lenis from 'lenis'
 import '../styles/liquid-glass.css'
 import { useActiveSection } from '../hooks/useActiveSection'
+import usePageMeta from '../hooks/usePageMeta'
 import LiquidHeader from '../components/liquid/LiquidHeader'
 import LiquidHero from '../components/liquid/LiquidHero'
 import LiquidFooter from '../components/liquid/LiquidFooter'
@@ -18,6 +19,15 @@ export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null)
   const activeSection = useActiveSection(NAV_SECTIONS)
   const shouldReduceMotion = useReducedMotion()
+
+  // Mesmo título e mesma descrição que já estão no index.html: nada muda na
+  // página. A Home passa pelo hook para o page_view do GA4 sair do mesmo
+  // lugar que o dos cases, logo depois do título.
+  usePageMeta({
+    title: 'Andreo Barbosa · Product/UX Designer',
+    description:
+      'Andreo Barbosa — Product/UX Designer com raiz técnica e 5+ anos vivendo a dor real do usuário em saúde digital.',
+  })
 
   // Scroll suave (Lenis) — nunca trava o scroll nativo, e nem inicializa
   // com reduced-motion (o usuário pediu para não ter esse tipo de efeito).
