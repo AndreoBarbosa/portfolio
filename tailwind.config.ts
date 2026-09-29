@@ -36,8 +36,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['Satoshi', 'Inter', 'system-ui', 'sans-serif'],
-        body: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Outfit', 'system-ui', 'sans-serif'],
+        body: ['Outfit', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
         outfit: ['Outfit', 'system-ui', 'sans-serif'],
         hanken: ['"Hanken Grotesk"', 'sans-serif'],

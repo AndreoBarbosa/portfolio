@@ -61,7 +61,11 @@ function CardBody({ project }: { project: Project }) {
 function ProjectCard({ project }: { project: Project }) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const shouldReduceMotion = useReducedMotion()
-  const [isDesktop, setIsDesktop] = useState(false)
+  /* Síncrono na primeira renderização: evita o passo extra em que o
+     desktop monta o ramo mobile e troca logo depois. */
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches,
+  )
   const [hovering, setHovering] = useState(false)
 
   useEffect(() => {
@@ -121,7 +125,11 @@ function ProjectCard({ project }: { project: Project }) {
                   muted
                   loop
                   playsInline
-                  preload="metadata"
+                  /* preload="none": os três cards somavam 10 MB de vídeo
+                     pedidos já no carregamento da home. O poster é a mesma
+                     estática que aparece parada, então nada muda na tela; o
+                     .play() do hover dispara o download na hora. */
+                  preload="none"
                   poster={srcOtimizado(project.media.static, 720)}
                   style={{ opacity: hovering ? 1 : 0 }}
                   aria-hidden="true"

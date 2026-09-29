@@ -75,33 +75,46 @@
       (function (c, l, a, r, i, t, y) {
         if (!c.__medir) return
         c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }
-        t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i
-        y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y)
+        // Carrega depois do load: o gravador de sessão não precisa
+        // disputar banda com a primeira pintura.
+        var injetar = function () {
+          t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i
+          y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y)
+        }
+        if (l.readyState === 'complete') injetar()
+        else c.addEventListener('load', injetar, { once: true })
       })(window, document, 'clarity', 'script', 'ypht14ka1v')
     </script>
 
-    <!-- Satoshi (Fontshare) -->
-    <link rel="preconnect" href="https://api.fontshare.com" />
-    <link
-      href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Fontes servidas pelo próprio domínio (public/fonts, subconjunto
+         latin em woff2, gerado a partir dos pacotes @fontsource das mesmas
+         famílias do Google Fonts). Motivo da troca, medido em 29/09: os dois
+         <link> externos (fonts.googleapis.com e api.fontshare.com) eram CSS
+         que bloqueia a renderização em domínios de terceiros, somando DNS,
+         TLS e ida e volta antes de qualquer texto aparecer. Com o @font-face
+         embutido aqui não existe mais essa ida e volta, e os três arquivos
+         da primeira dobra entram em preload.
 
-    <!-- Inter + JetBrains Mono + Outfit + Hanken Grotesk + ABeeZee + Newsreader + Source Serif 4 (Google Fonts) -->
-    <!-- Newsreader: só Regular + Italic 400 — case Gabriel, título do Hero
-         (nó 669:3805 do Figma). Source Serif 4: só Bold 700 — case
-         Gabriel, amostra serifada da seção 07 Identidade Visual (nó
-         653:1013 — rotulado no Figma como substituto temporário de
-         "Sentient"; Google Fonts escolhido por confiabilidade de CDN,
-         ver decisão do Andreo). Nenhum outro peso de nenhuma das duas é
-         usado no site. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=ABeeZee&family=Hanken+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,wght@0,400;1,400&family=Outfit:wght@200;300;400;500;600&family=Source+Serif+4:wght@700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
+         Satoshi (Fontshare) saiu: a família só aparecia no stack do html e
+         na classe .font-satoshi, e nenhum elemento renderizado do site usa
+         esse stack (conferido elemento a elemento). Inter também saiu: era
+         usada num único elemento por página, o botão da nav, que passou a
+         usar Outfit como os outros botões do site.
+
+         Para trocar peso ou família: ajuste o mesmo @fontsource em
+         node_modules e regenere public/fonts + este bloco. -->
+    <!-- Recurso de LCP: a imagem do hero. Ela nasce dentro de um elemento
+         criado pelo React, então sem este preload o navegador só descobre
+         que precisa dela depois de baixar e executar o bundle. Os dois
+         endereços são exatamente os que <Picture>/poster pedem em cada
+         faixa, para não baixar duas vezes. -->
+    <link rel="preload" as="image" type="image/webp" href="/img/hero-poster-1664.webp" fetchpriority="high" media="(min-width: 768px)" />
+    <link rel="preload" as="image" type="image/avif" href="/img/hero-poster-640.avif" fetchpriority="high" media="(max-width: 767px)" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/hanken-grotesk-latin-600-normal.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/hanken-grotesk-latin-400-normal.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/outfit-latin-400-normal.woff2" />
+    <style>@font-face{font-family:"ABeeZee";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/abeezee-latin-400-normal.woff2) format("woff2")}@font-face{font-family:"Hanken Grotesk";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/hanken-grotesk-latin-400-normal.woff2) format("woff2")}@font-face{font-family:"Hanken Grotesk";font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/hanken-grotesk-latin-500-normal.woff2) format("woff2")}@font-face{font-family:"Hanken Grotesk";font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/hanken-grotesk-latin-600-normal.woff2) format("woff2")}@font-face{font-family:"Hanken Grotesk";font-style:normal;font-weight:700;font-display:swap;src:url(/fonts/hanken-grotesk-latin-700-normal.woff2) format("woff2")}@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2")}@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/jetbrains-mono-latin-500-normal.woff2) format("woff2")}@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/jetbrains-mono-latin-600-normal.woff2) format("woff2")}@font-face{font-family:"Newsreader";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/newsreader-latin-400-normal.woff2) format("woff2")}@font-face{font-family:"Newsreader";font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/newsreader-latin-400-italic.woff2) format("woff2")}@font-face{font-family:"Outfit";font-style:normal;font-weight:200;font-display:swap;src:url(/fonts/outfit-latin-200-normal.woff2) format("woff2")}@font-face{font-family:"Outfit";font-style:normal;font-weight:300;font-display:swap;src:url(/fonts/outfit-latin-300-normal.woff2) format("woff2")}@font-face{font-family:"Outfit";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/outfit-latin-400-normal.woff2) format("woff2")}@font-face{font-family:"Outfit";font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/outfit-latin-500-normal.woff2) format("woff2")}@font-face{font-family:"Outfit";font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/outfit-latin-600-normal.woff2) format("woff2")}@font-face{font-family:"Source Serif 4";font-style:normal;font-weight:700;font-display:swap;src:url(/fonts/source-serif-4-latin-700-normal.woff2) format("woff2")}</style>
+</head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

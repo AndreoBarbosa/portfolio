@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import Picture, { srcOtimizado } from '../ui/Picture'
 
@@ -6,7 +6,22 @@ const EASE = [0.16, 1, 0.3, 1] as const
 
 export default function LiquidHero() {
   const shouldReduceMotion = useReducedMotion()
-  const [isDesktop, setIsDesktop] = useState(false)
+  /* Lido de forma síncrona na primeira renderização. Começando em false,
+     o desktop renderizava primeiro o ramo mobile e só depois trocava para
+     o vídeo: o navegador baixava o poster das duas versões (medido em
+     29/09: hero-poster-960.avif + hero-poster-1664.webp) e o candidato a
+     LCP mudava no meio do caminho. */
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches,
+  )
+  /* O vídeo de fundo pesa 3,4 MB e não é o que o visitante lê primeiro.
+     Medido em 29/09: com preload="auto" ele disputava banda com o LCP.
+     Agora o <video> nasce com as fontes vazias e o poster (WebP otimizado,
+     o mesmo de antes) já pintado; as <source> entram depois do load da
+     página. A caixa, o poster e a animação de entrada são idênticos, só o
+     momento do download mudou. */
+  const [fontesLiberadas, setFontesLiberadas] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 768px)')
@@ -16,7 +31,23 @@ export default function LiquidHero() {
     return () => mq.removeEventListener('change', onChange)
   }, [])
 
+  useEffect(() => {
+    const liberar = () => setFontesLiberadas(true)
+    if (document.readyState === 'complete') {
+      const id = window.setTimeout(liberar, 150)
+      return () => window.clearTimeout(id)
+    }
+    window.addEventListener('load', liberar, { once: true })
+    return () => window.removeEventListener('load', liberar)
+  }, [])
+
   const canPlayVideo = isDesktop && !shouldReduceMotion
+
+  /* <source> adicionada depois da montagem não é notada sozinha: precisa de
+     um load() explícito para o navegador reavaliar as fontes. */
+  useEffect(() => {
+    if (canPlayVideo && fontesLiberadas) videoRef.current?.load()
+  }, [canPlayVideo, fontesLiberadas])
 
   return (
     <section id="hero" className="relative overflow-hidden" style={{ background: '#FFFFFF' }}>
@@ -35,13 +66,16 @@ export default function LiquidHero() {
         >
           {canPlayVideo ? (
             <video
+              ref={videoRef}
               autoPlay
               muted
               loop
               playsInline
-              preload="auto"
+              preload="none"
               poster={srcOtimizado('/hero-poster.webp', 1664)}
             >
+              {fontesLiberadas && (
+                <>
               {/* J2 (correção 13): type precisa acompanhar o src — apontar
                   pra .webm com type="video/mp4" faz alguns navegadores
                   recusarem antes mesmo de tentar decodificar. WebM em VP9
@@ -52,6 +86,8 @@ export default function LiquidHero() {
                   usa, então isso não pesa nada onde webm já funciona. */}
               <source src="/hero-bg.webm" type="video/webm" />
               <source src="/hero-bg.mp4" type="video/mp4" />
+                </>
+              )}
             </video>
           ) : (
             <Picture src="/hero-poster.webp" sizes="(min-width: 768px) 832px, 80vw" width={2048} height={1152} decoding="async" />

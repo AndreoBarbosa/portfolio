@@ -896,10 +896,15 @@
   font-weight: 400;
   font-size: 16px;
 }
-/* Botão da NAV (Contato) — Figma usa Inter, distinto do Outfit dos
-   CTAs do hero. */
+/* Botão da NAV (Contato / Ver todos os projetos). O Figma trazia Inter
+   aqui, herdado do sistema escuro antigo. Era o único lugar do site que
+   ainda renderizava Inter: uma família inteira baixada (cerca de 100 KB)
+   para um botão. Passou para Outfit, que é o mesmo papel de botão já
+   definido em .liquid-type-btn, no mesmo tamanho e peso. A distinção que
+   o Figma queria (botão diferente dos links em Hanken ao lado) continua
+   valendo, agora com uma família que o sistema já usa. */
 .liquid-type-nav {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-weight: 400;
   font-size: 16px;
 }

@@ -1,0 +1,21 @@
+/assets-fonte
+/assets-src
+/dist
+/docs
+/Mockups
+/Trato
+/Portifolio
+/Ver 1
+/Landing page - Gabriel
+/Claude outputs
+/Portifolio.code-workspace
+/Portifolio-*.zip
+/hero-seq.zip
+/Profile.pdf
+/*.png
+/*.html
+!/index.html
+/netlify.toml
+*.tsbuildinfo
+.claude
+.vscode

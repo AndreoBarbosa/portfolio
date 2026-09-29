@@ -6,7 +6,8 @@ Uso, na raiz do projeto:
 
 Lê cada original listado em MANIFESTO, grava public/img/<nome>-<largura>.avif
 e .webp e reescreve src/data/imagens.gerado.ts, que o componente <Picture>
-usa para montar o srcset. O original continua em public/ e não é alterado.
+usa para montar o srcset. O original fica em assets-fonte/ (fora do deploy)
+e não é alterado.
 
 Para uma imagem nova: acrescente uma linha ao MANIFESTO e rode de novo.
 Larguras: a maior deve cobrir o tamanho exibido em tela 2x; nunca acima
@@ -23,6 +24,10 @@ from PIL import Image
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PUBLIC = os.path.join(RAIZ, 'public')
+# Originais pesados moram fora de public/ (assets-fonte/), para não subirem
+# no deploy: o navegador só baixa as versões de public/img. Quem ainda
+# estiver em public/ continua funcionando, a busca tenta os dois lugares.
+ORIGINAIS = os.path.join(RAIZ, 'assets-fonte')
 SAIDA = os.path.join(PUBLIC, 'img')
 TS = os.path.join(RAIZ, 'src', 'data', 'imagens.gerado.ts')
 
@@ -92,13 +97,14 @@ def main() -> None:
     tabela: dict[str, dict] = {}
     antes = depois = 0
     for chave, origem, nome, larguras in MANIFESTO:
-        caminho = os.path.join(PUBLIC, origem)
+        caminho = os.path.join(ORIGINAIS, origem)
         if not os.path.exists(caminho):
-            sys.exit(f'Falta o original: {origem}')
+            caminho = os.path.join(PUBLIC, origem)
+        if not os.path.exists(caminho):
+            sys.exit(f'Falta o original: {origem} (procurei em assets-fonte/ e public/)')
         im = abrir(caminho)
         w0, h0 = im.size
-        publicado = os.path.join(PUBLIC, chave.lstrip('/'))
-        antes += os.path.getsize(publicado) if os.path.exists(publicado) else 0
+        antes += os.path.getsize(caminho)
         for w in larguras:
             if w > w0:
                 sys.exit(f'{nome}: largura {w} maior que o original ({w0})')
