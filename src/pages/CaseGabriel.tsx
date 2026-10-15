@@ -71,7 +71,7 @@ export default function CaseGabriel() {
                 transition={{ duration: 0.5, ease: EASE }}
               >
                 <p
-                  className="font-outfit text-xs uppercase whitespace-nowrap"
+                  className="font-outfit text-xs leading-4 uppercase md:whitespace-nowrap"
                   style={{ color: 'var(--secundaria-500)', letterSpacing: '0.96px' }}
                 >
                   {hero.eyebrow}
@@ -308,11 +308,11 @@ export default function CaseGabriel() {
                   <span style={{ color: 'var(--secundaria-500)' }}>{mainChange.titleLine2}</span>
                 </h2>
 
-                <div className="flex flex-wrap items-center justify-between gap-8">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <div className="flex items-center">
+                <div className="flex flex-col lg:flex-row lg:flex-wrap lg:items-center lg:justify-between gap-8">
+                  <div className="flex flex-col md:flex-row md:flex-wrap md:items-center gap-3">
+                    <div className="flex flex-col md:flex-row items-center">
                       <div
-                        className="bg-white rounded-2xl p-8 flex flex-col gap-3 items-center mr-[-8px]"
+                        className="w-full md:w-auto bg-white rounded-2xl p-6 md:p-8 flex flex-col gap-3 items-center mb-[-8px] md:mb-0 md:mr-[-8px]"
                         style={{ border: `1px solid ${gabrielAccent.cardBorderSoft}` }}
                       >
                         <p className="font-outfit font-semibold text-xs self-start" style={{ color: gabrielAccent.textMuted, letterSpacing: '0.24px' }}>
@@ -330,21 +330,21 @@ export default function CaseGabriel() {
                         ))}
                       </div>
                       <div
-                        className="rounded-full flex items-center justify-center shrink-0 bg-white"
-                        style={{ width: 64, height: 64, border: '1.5px solid var(--secundaria-500)' }}
+                        className="rounded-full flex items-center justify-center shrink-0 bg-white w-12 h-12 md:w-16 md:h-16"
+                        style={{ border: '1.5px solid var(--secundaria-500)' }}
                         aria-hidden="true"
                       >
-                        <span className="text-[22px]" style={{ color: 'var(--secundaria-500)' }}>→</span>
+                        <span className="text-[22px] inline-block rotate-90 md:rotate-0" style={{ color: 'var(--secundaria-500)' }}>→</span>
                       </div>
                     </div>
-                    <div className="bg-white rounded-2xl p-8 flex flex-col gap-3" style={{ border: `1px solid ${gabrielAccent.cardBorderSoft}` }}>
+                    <div className="w-full md:w-auto bg-white rounded-2xl p-6 md:p-8 flex flex-col gap-3" style={{ border: `1px solid ${gabrielAccent.cardBorderSoft}` }}>
                       <p className="font-outfit font-semibold text-xs" style={{ color: 'var(--secundaria-500)', letterSpacing: '0.24px' }}>
                         {mainChange.after.label}
                       </p>
                       {mainChange.after.steps.map((step) => (
-                        <div key={step.n} className="flex items-center gap-4 rounded-[10px] px-5 py-3.5">
-                          <p className="font-outfit font-semibold text-sm" style={{ color: 'var(--secundaria-500)' }}>{step.n}</p>
-                          <p className="font-outfit font-medium text-sm whitespace-nowrap" style={{ color: 'var(--text-strong)' }}>{step.label}</p>
+                        <div key={step.n} className="flex items-baseline gap-3 md:gap-4 rounded-[10px] px-0 md:px-5 py-2 md:py-3.5">
+                          <p className="font-outfit font-semibold text-sm w-6 shrink-0 tabular-nums" style={{ color: 'var(--secundaria-500)' }}>{step.n}</p>
+                          <p className="font-outfit font-medium text-sm md:whitespace-nowrap" style={{ color: 'var(--text-strong)' }}>{step.label}</p>
                         </div>
                       ))}
                     </div>
@@ -353,7 +353,7 @@ export default function CaseGabriel() {
                   {/* Resultado: destaque principal da página, no vidro fumê
                       (Direção A, 28 set). Texto em petróleo; o trecho em
                       azul usa #10558F para passar de 4,5:1 sobre o vidro. */}
-                  <div className="vidro-fume rounded-[20px] p-8 flex flex-col gap-8">
+                  <div className="vidro-fume w-full lg:w-auto rounded-[20px] p-6 md:p-8 flex flex-col gap-6 md:gap-8">
                     <p className="font-mono text-xs uppercase" style={{ color: 'rgba(12, 26, 34, 0.72)' }}>
                       {mainChange.result.label}
                     </p>
