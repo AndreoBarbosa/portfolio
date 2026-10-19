@@ -121,12 +121,12 @@ export default function S09Divisao() {
       <Container>
         {/* A pergunta de virada */}
         <motion.div
-          className="grid gap-y-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end lg:gap-x-16"
+          className="grade-12 grid gap-y-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end lg:gap-x-16"
           initial="hidden"
           whileInView="visible"
           viewport={VIEWPORT}
         >
-          <div>
+          <div className="xl:col-[1/span_6]">
             <motion.p
               className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-link)]"
               variants={v(enterFade(0.4), 0)}
@@ -142,7 +142,7 @@ export default function S09Divisao() {
             </motion.h2>
           </div>
           <motion.p
-            className="text-[16px] leading-[1.5] text-[var(--texto-apoio)] md:text-[18px] md:leading-[28px]"
+            className="text-[16px] leading-[1.5] text-[var(--texto-apoio)] md:text-[18px] md:leading-[28px] xl:col-[8/-1]"
             variants={v(enterFadeUp, 0.24)}
           >
             {resposta}
@@ -151,15 +151,15 @@ export default function S09Divisao() {
 
         {/* A resposta desenhada */}
         <motion.figure className="m-0 mt-[var(--ritmo-bloco)]" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
-          <figcaption>
+          <figcaption className="grade-12">
             <motion.p
-              className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--texto-metadado)]"
+              className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--texto-metadado)] xl:col-[1/-1]"
               variants={v(enterFade(0.4), 0)}
             >
               {fluxo.eyebrow}
             </motion.p>
             <motion.p
-              className="f-display mt-3 max-w-[720px] text-[24px] font-semibold leading-[1.2] tracking-[-0.02em] text-[var(--texto-principal)] md:text-[32px]"
+              className="f-display mt-3 max-w-[720px] xl:col-[1/span_7] xl:max-w-none text-[24px] font-semibold leading-[1.2] tracking-[-0.02em] text-[var(--texto-principal)] md:text-[32px]"
               variants={v(enterFadeUp, 0.08)}
             >
               {tA}
@@ -263,16 +263,18 @@ export default function S09Divisao() {
         </motion.figure>
 
         {/* Fecho */}
-        <motion.p
-          className="mt-[var(--ritmo-bloco)] max-w-[880px] text-[20px] leading-[1.4] md:text-[24px]"
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT}
-          variants={v(enterFadeUp, 0)}
-        >
-          <span className="text-[var(--texto-apoio)]">{fecho.ia}</span>{' '}
-          <span className="text-[var(--texto-principal)]">{fecho.humano}</span>
-        </motion.p>
+        <div className="grade-12 mt-[var(--ritmo-bloco)]">
+          <motion.p
+            className="max-w-[880px] text-[20px] leading-[1.4] md:text-[24px] xl:col-[1/span_5] xl:max-w-none"
+            initial="hidden"
+            whileInView="visible"
+            viewport={VIEWPORT}
+            variants={v(enterFadeUp, 0)}
+          >
+            <span className="text-[var(--texto-apoio)]">{fecho.ia}</span>{' '}
+            <span className="text-[var(--texto-principal)]">{fecho.humano}</span>
+          </motion.p>
+        </div>
       </Container>
     </section>
   )

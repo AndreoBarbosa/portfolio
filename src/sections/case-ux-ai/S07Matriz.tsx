@@ -90,9 +90,9 @@ export default function S07Matriz() {
   return (
     <section id="matriz" aria-labelledby="matriz-titulo" className="relative bg-[var(--fundo-pagina)] py-[var(--ritmo-secao)]">
       <Container>
-        <div className="grid gap-y-[var(--ritmo-cabeca)] lg:grid-cols-[minmax(0,400fr)_minmax(0,712fr)] lg:gap-x-16 xl:gap-x-[88px]">
+        <div className="grade-12 grid gap-y-[var(--ritmo-cabeca)] lg:grid-cols-[minmax(0,400fr)_minmax(0,712fr)] lg:gap-x-16 xl:gap-x-[88px]">
           {/* Texto e os dois percentuais das regiões */}
-          <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT}>
+          <motion.div className="xl:col-[1/span_4]" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
             <motion.p
               className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-link)]"
               variants={v(enterFade(0.4), 0)}
@@ -130,7 +130,7 @@ export default function S07Matriz() {
           </motion.div>
 
           {/* A figura */}
-          <motion.figure className="m-0 min-w-0" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
+          <motion.figure className="m-0 min-w-0 xl:col-[5/-1] xl:w-[696px] xl:max-w-full xl:justify-self-end" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
             {/* Tabela real para leitor de tela; a grade visual é aria-hidden. O
                 sr-only fica num div: tabela não encolhe abaixo do conteúdo. */}
             <div className="sr-only">

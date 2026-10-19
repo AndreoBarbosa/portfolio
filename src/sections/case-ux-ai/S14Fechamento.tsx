@@ -51,9 +51,9 @@ export default function S14Fechamento() {
       </motion.picture>
 
       <section id="aprendizado" aria-labelledby="aprendizado-titulo" className="relative z-[1] py-[var(--ritmo-secao)]">
-        <Container>
+        <Container className="grade-12">
           <motion.p
-            className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-link)]"
+            className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-link)] xl:col-[1/-1]"
             initial="hidden"
             whileInView="visible"
             viewport={VIEWPORT}
@@ -67,9 +67,9 @@ export default function S14Fechamento() {
             as="h2"
             staggerChildren={STAGGER.line * 2}
             delay={0.12}
-            className="f-display mt-6 max-w-[800px] text-[32px] font-semibold leading-[1.1] tracking-[-0.02em] text-[var(--texto-principal)] md:text-[44px] xl:text-[56px] xl:leading-[60px]"
+            className="f-display mt-6 max-w-[800px] xl:col-[1/span_8] xl:max-w-none text-[32px] font-semibold leading-[1.1] tracking-[-0.02em] text-[var(--texto-principal)] md:text-[44px] xl:text-[56px] xl:leading-[60px]"
           />
-          <motion.div className="mt-[var(--ritmo-cabeca)] max-w-[560px]" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
+          <motion.div className="mt-[var(--ritmo-cabeca)] max-w-[560px] xl:col-[1/span_6] xl:max-w-none" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
             <motion.p
               className="text-[16px] leading-[1.5] text-[var(--texto-apoio)] md:text-[18px] md:leading-[28px]"
               variants={v(enterFadeUp, 0.5)}
@@ -87,8 +87,8 @@ export default function S14Fechamento() {
       </section>
 
       <section id="contato-case" aria-labelledby="contato-case-titulo" className="relative z-[1] pb-24 pt-[var(--ritmo-secao)] md:pb-40">
-        <Container>
-          <motion.div className="max-w-[640px]" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
+        <Container className="grade-12">
+          <motion.div className="max-w-[640px] xl:col-[1/span_6] xl:max-w-none" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
             <motion.h2
               id="contato-case-titulo"
               className="f-display text-[40px] font-semibold leading-[1.05] tracking-[-0.03em] text-[var(--texto-principal)] md:text-[64px]"

@@ -121,19 +121,19 @@ export default function S08Contexto() {
     <section id="contexto" aria-labelledby="contexto-titulo" className="relative overflow-hidden bg-[var(--fundo-pagina)] py-[var(--ritmo-secao)]">
       <Container>
         <div ref={ref} className="relative" style={diagrama ? { height: COL.h * u } : undefined}>
-          <motion.div className="relative z-[1]" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
+          <motion.div className="grade-12 relative z-[1]" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
             <motion.p
-              className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-link)]"
+              className="xl:col-[1/-1] text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-link)]"
               variants={v(enterFade(0.4), 0)}
             >
               {eyebrow}
             </motion.p>
             <motion.h2
               id="contexto-titulo"
-              className="f-display mt-[14px] text-[32px] font-semibold leading-[40px] tracking-[-0.02em] md:mt-4 md:text-[44px] md:leading-[48px] xl:text-[56px] xl:leading-[60px]"
+              className="xl:col-[1/span_9] f-display mt-[14px] text-[32px] font-semibold leading-[40px] tracking-[-0.02em] md:mt-4 md:text-[44px] md:leading-[48px] xl:text-[56px] xl:leading-[60px]"
               variants={reduced ? reducedFade : lineMaskContainer(STAGGER.line * 2, 0.12)}
             >
-              <motion.span className="texto-gradiente block max-w-[900px]" variants={reduced ? undefined : lineMaskLine}>
+              <motion.span className="texto-gradiente block max-w-[900px] xl:max-w-none" variants={reduced ? undefined : lineMaskLine}>
                 {titulo.ia}
               </motion.span>
               <motion.span className="block text-[var(--texto-principal)]" variants={reduced ? undefined : lineMaskLine}>
@@ -141,7 +141,7 @@ export default function S08Contexto() {
               </motion.span>
             </motion.h2>
             <motion.p
-              className="mt-6 max-w-[560px] text-[16px] leading-[1.5] text-[var(--texto-apoio)] md:mt-8 md:text-[18px] md:leading-[28px]"
+              className="mt-6 max-w-[560px] text-[16px] leading-[1.5] text-[var(--texto-apoio)] xl:col-[1/span_6] xl:max-w-none md:mt-8 md:text-[18px] md:leading-[28px]"
               variants={v(enterFadeUp, 0.4)}
             >
               {texto}

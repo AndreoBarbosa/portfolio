@@ -268,3 +268,14 @@
     box-shadow: inset 0 0 0 1px var(--borda-ativa);
   }
 }
+
+/* Grade de 12 colunas do desktop. Figma 814:1164, grid/desktop.
+   Margem 120 vem do container que já existe; aqui só as colunas.
+   Escopada em .case-uxai-root para ganhar das grades por seção em Tailwind. */
+@media (min-width: 1280px) {
+  .case-uxai-root .grade-12 {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+  }
+}

@@ -62,10 +62,10 @@ export default function S05Experimento() {
           >
             {eyebrow}
           </motion.p>
-          <div className="mt-4 grid gap-y-6 lg:grid-cols-[minmax(0,594fr)_minmax(0,518fr)] lg:gap-x-16 xl:gap-x-[88px]">
+          <div className="grade-12 mt-4 grid gap-y-6 lg:grid-cols-[minmax(0,594fr)_minmax(0,518fr)] lg:gap-x-16 xl:gap-x-[88px]">
             <motion.h2
               id="experimento-titulo"
-              className="f-display text-[32px] font-bold leading-[1.1] tracking-[-0.01em] text-[var(--texto-principal)] md:text-[clamp(32px,2.78vw,40px)]"
+              className="f-display text-[32px] font-bold leading-[1.1] tracking-[-0.01em] text-[var(--texto-principal)] md:text-[clamp(32px,2.78vw,40px)] xl:col-[1/span_6]"
               variants={v(enterFadeUp, S05_BEAT.titulo)}
             >
               {tAntes}
@@ -73,7 +73,7 @@ export default function S05Experimento() {
               {tDepois}
             </motion.h2>
             <motion.p
-              className="text-[16px] leading-[1.5] text-[var(--texto-apoio)] lg:pt-1"
+              className="text-[16px] leading-[1.5] text-[var(--texto-apoio)] lg:pt-1 xl:col-[8/-1]"
               variants={v(enterFadeUp, S05_BEAT.metodo)}
             >
               {metodo}

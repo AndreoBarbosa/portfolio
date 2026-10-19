@@ -416,8 +416,8 @@ export default function S06Descoberta() {
     >
       <div ref={trechoRef} style={preso ? { height: `${S06_CLIMAX.alturaScroll}vh` } : undefined}>
         <div className={preso ? 'sticky top-0 flex h-screen flex-col justify-center pb-6 pt-[120px]' : 'py-[var(--ritmo-secao)]'}>
-          <Container>
-            <motion.div ref={cabRef} initial="hidden" whileInView="visible" viewport={VIEWPORT}>
+          <Container className="grade-12">
+            <motion.div ref={cabRef} className="xl:col-[1/span_11]" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
               <motion.p
                 className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-link)]"
                 variants={v(enterFade(0.4), 0)}
@@ -426,7 +426,7 @@ export default function S06Descoberta() {
               </motion.p>
               <motion.h2
                 id="descoberta-titulo"
-                className="f-display mt-[14px] max-w-[1040px] text-[28px] font-bold leading-[36px] tracking-[-0.01em] text-[var(--texto-principal)] md:mt-4 md:text-[clamp(32px,2.78vw,40px)] md:leading-[1.1]"
+                className="f-display mt-[14px] max-w-[1040px] xl:max-w-none text-[28px] font-bold leading-[36px] tracking-[-0.01em] text-[var(--texto-principal)] md:mt-4 md:text-[clamp(32px,2.78vw,40px)] md:leading-[1.1]"
                 variants={v(enterFadeUp, 0.12)}
               >
                 {titulo}

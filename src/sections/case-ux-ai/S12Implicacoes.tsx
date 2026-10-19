@@ -23,21 +23,21 @@ export function S12Implicacoes() {
   return (
     <section id="implicacoes" aria-labelledby="implicacoes-titulo" className="relative bg-[var(--fundo-pagina)] py-[var(--ritmo-secao)]">
       <Container>
-        <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT}>
+        <motion.div className="grade-12" initial="hidden" whileInView="visible" viewport={VIEWPORT}>
           <motion.p
-            className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-link)]"
+            className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-link)] xl:col-[1/-1]"
             variants={v(enterFade(0.4), 0)}
           >
             {eyebrow}
           </motion.p>
           <motion.h2
             id="implicacoes-titulo"
-            className="f-display mt-4 max-w-[880px] text-[32px] font-bold leading-[1.1] tracking-[-0.01em] text-[var(--texto-principal)] md:text-[clamp(32px,2.78vw,40px)]"
+            className="f-display mt-4 max-w-[880px] xl:col-[1/span_9] xl:max-w-none text-[32px] font-bold leading-[1.1] tracking-[-0.01em] text-[var(--texto-principal)] md:text-[clamp(32px,2.78vw,40px)]"
             variants={v(enterFadeUp, 0.12)}
           >
             {titulo}
           </motion.h2>
-          <motion.p className="mt-6 text-[16px] leading-[1.5] text-[var(--texto-apoio)]" variants={v(enterFadeUp, 0.24)}>
+          <motion.p className="mt-6 text-[16px] leading-[1.5] text-[var(--texto-apoio)] xl:col-[1/span_6]" variants={v(enterFadeUp, 0.24)}>
             {lead}
           </motion.p>
         </motion.div>
@@ -46,7 +46,7 @@ export function S12Implicacoes() {
           {itens.map((item, k) => (
             <motion.li
               key={item.n}
-              className="relative grid gap-y-3 py-8 md:grid-cols-[120px_minmax(0,1fr)_minmax(0,1fr)] md:gap-x-12 md:py-10"
+              className="grade-12 relative grid gap-y-3 py-8 md:grid-cols-[120px_minmax(0,1fr)_minmax(0,1fr)] md:gap-x-12 md:py-10"
               initial="hidden"
               whileInView="visible"
               viewport={VIEWPORT}
@@ -57,19 +57,19 @@ export function S12Implicacoes() {
                 variants={v(enterRule, k * STAGGER.line)}
               />
               <motion.p
-                className="f-display text-[40px] font-semibold leading-none tracking-[-0.02em] text-[var(--acao-link)] md:text-[56px]"
+                className="f-display text-[40px] font-semibold leading-none tracking-[-0.02em] text-[var(--acao-link)] md:text-[56px] xl:col-[1/span_1]"
                 variants={v(enterFade(0.6), 0.1 + k * STAGGER.line)}
               >
                 {item.n}
               </motion.p>
               <motion.h3
-                className="f-display text-[24px] font-semibold leading-[1.2] tracking-[-0.02em] text-[var(--texto-principal)] md:text-[28px]"
+                className="f-display text-[24px] font-semibold leading-[1.2] tracking-[-0.02em] text-[var(--texto-principal)] md:text-[28px] xl:col-[2/span_5]"
                 variants={v(enterFadeUp, 0.16 + k * STAGGER.line)}
               >
                 {item.titulo}
               </motion.h3>
               <motion.p
-                className="text-[16px] leading-[1.5] text-[var(--texto-apoio)] md:pt-1 md:text-[18px] md:leading-[28px]"
+                className="text-[16px] leading-[1.5] text-[var(--texto-apoio)] md:pt-1 md:text-[18px] md:leading-[28px] xl:col-[8/-1]"
                 variants={v(enterFadeUp, 0.24 + k * STAGGER.line)}
               >
                 {item.texto}
@@ -91,12 +91,12 @@ export function S13Limites() {
     <section id="limites" aria-labelledby="limites-titulo" className="relative bg-[var(--fundo-pagina)] py-[var(--ritmo-secao)]">
       <Container>
         <motion.div
-          className="grid gap-y-[var(--ritmo-cabeca)] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-x-16"
+          className="grade-12 grid gap-y-[var(--ritmo-cabeca)] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-x-16"
           initial="hidden"
           whileInView="visible"
           viewport={VIEWPORT}
         >
-          <div>
+          <div className="xl:col-[1/span_5]">
             <motion.p
               className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--texto-metadado)]"
               variants={v(enterFade(0.4), 0)}
@@ -112,8 +112,8 @@ export function S13Limites() {
             </motion.h2>
           </div>
 
-          <div>
-            <dl className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+          <div className="xl:col-[7/-1]">
+            <dl className="grid gap-x-10 gap-y-8 sm:grid-cols-2 xl:gap-x-6">
               {itens.map((l, k) => (
                 <motion.div key={l.nome} variants={v(enterFadeUp, 0.2 + k * STAGGER.item)}>
                   <dt className="text-[14px] font-semibold leading-[20px] text-[var(--texto-apoio)]">{l.nome}</dt>

@@ -102,8 +102,8 @@ export default function S03Desafio() {
         />
       </motion.picture>
 
-      <Container className="relative z-[1]">
-        <div className="xl:ml-auto xl:w-[720px]">
+      <Container className="relative z-[1] grade-12">
+        <div className="xl:col-[6/-1]">
           <motion.p
             className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-link)]"
             variants={v(enterFade(S03_DUR.eyebrow), S03_BEAT.eyebrow)}
@@ -112,7 +112,7 @@ export default function S03Desafio() {
           </motion.p>
 
           <motion.p
-            className="mt-4 max-w-[520px] text-[16px] leading-[1.5] text-[var(--texto-apoio)]"
+            className="mt-4 max-w-[520px] xl:max-w-none text-[16px] leading-[1.5] text-[var(--texto-apoio)]"
             variants={v(enterFadeUp, S03_BEAT.intro)}
           >
             {intro}
@@ -182,7 +182,7 @@ export default function S03Desafio() {
           </motion.h2>
 
           <motion.p
-            className="mt-8 max-w-[560px] text-[16px] leading-[1.5] text-[var(--texto-apoio)]"
+            className="mt-8 max-w-[560px] xl:max-w-none text-[16px] leading-[1.5] text-[var(--texto-apoio)]"
             variants={v(enterFadeUp, S03_BEAT.intencao)}
           >
             {antes}
@@ -217,7 +217,7 @@ export default function S03Desafio() {
               {briefing.textos.map((t, k) => (
                 <motion.div
                   key={t.rotulo}
-                  className="flex flex-col gap-2"
+                  className="flex min-w-0 flex-col gap-2"
                   variants={v(curto, S03_BEAT.ficha.celulas + k * STAGGER.item)}
                 >
                   <dt className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-hover)]">
@@ -229,7 +229,7 @@ export default function S03Desafio() {
               {briefing.listas.map((l, k) => (
                 <motion.div
                   key={l.rotulo}
-                  className="flex flex-col gap-2"
+                  className="flex min-w-0 flex-col gap-2"
                   variants={v(curto, S03_BEAT.ficha.celulas + (k + briefing.textos.length) * STAGGER.item)}
                 >
                   <dt className="text-[12px] font-semibold leading-[1.5] tracking-[0.02em] text-[var(--acao-hover)]">
